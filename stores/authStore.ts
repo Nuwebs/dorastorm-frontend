@@ -28,6 +28,14 @@ const useAuthStore = defineStore("auth", () => {
     );
   }
 
+  function hasEveryPermissions(permissions: string[]): boolean {
+    if (!isLoggedIn) return false;
+    for (const permission of permissions) {
+      if (!hasPermission(permission)) return false;
+    }
+    return true;
+  }
+
   function $reset(): void {
     user.value = null;
     token.value = null;
@@ -42,7 +50,8 @@ const useAuthStore = defineStore("auth", () => {
     getPermissions,
     hasPermission,
     hasAnyPermission,
-    $reset
+    hasEveryPermissions,
+    $reset,
   };
 });
 
