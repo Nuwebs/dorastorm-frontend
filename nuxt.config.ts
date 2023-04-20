@@ -8,5 +8,16 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt'
-  ]
+  ],
+  runtimeConfig: {
+    public: {
+      backendURL: 'http://localhost:8000',
+      authEndpoints: {
+        login: '/login',
+        refresh: '/token',
+        logout: '/logout',
+        me: '/me'
+      }
+    }
+  }
 })
