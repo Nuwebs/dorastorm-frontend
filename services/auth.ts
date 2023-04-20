@@ -57,20 +57,23 @@ const calculateExpireEpoch = (expiresIn: number): number => {
 // THIS METHOD NEEDS TO BE FIXED
 const refreshToken = async (): Promise<number> => {
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
-  const { data, error } = await useFetch<JWTResponse, ErrorBag>(
-    ep,
-    useAuthOptions()
-  );
-
-  if (error.value) return error.value.statusCode;
-
-  const authStore = useAuthStore();
-  authStore.token = data.value!.accessToken;
-  authStore.expiresEpoch = calculateExpireEpoch(data.value!.expiresIn);
-  return 200;
+  try {
+    const response = await $fetch<JWTResponse>(ep, useAuthOptions());
+    const authStore = useAuthStore();
+    authStore.token = response.accessToken;
+    authStore.expiresEpoch = calculateExpireEpoch(response.expiresIn);
+    saveToken(authStore.token);
+    saveExpiresEpoch(authStore.expiresEpoch);
+    return 200;
+  } catch (error: any) {
+    if (error.statusCode) return error.statusCode;
+    return 422;
+  }
 };
 
-export const login = async (credentials: DsLoginCredentials): Promise<void | ErrorBag> => {
+export const login = async (
+  credentials: DsLoginCredentials
+): Promise<void | ErrorBag> => {
   const config = useRuntimeConfig();
   let ep = config.public.authEndpoints.login;
   try {
@@ -85,15 +88,15 @@ export const login = async (credentials: DsLoginCredentials): Promise<void | Err
     ep = config.public.authEndpoints.me;
     // Get the user info
     const user = await $fetch<User>(ep, {
-      ...useAuthOptions()
+      ...useAuthOptions(),
     });
     authStore.user = user;
     authStore.expiresEpoch = calculateExpireEpoch(response.expiresIn);
     // Save the user info into storage
     saveUser(authStore.user);
     saveToken(authStore.token);
-    saveExpiresEpoch(authStore.expiresEpoch)
-  } catch (error) {
+    saveExpiresEpoch(authStore.expiresEpoch);
+  } catch (error: any) {
     return error as ErrorBag;
   }
 };
@@ -115,6 +118,8 @@ export const loadUserData = async (): Promise<void> => {
 
   const response: number = await refreshToken();
   if (response === 200) return;
+  cleanSavedKeys();
+  authStore.$reset();
   if (response === 409) throw new ExpiredTokenException("");
   throw new InvalidTokenException("");
 };

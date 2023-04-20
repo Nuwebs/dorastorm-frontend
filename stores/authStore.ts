@@ -28,6 +28,12 @@ const useAuthStore = defineStore("auth", () => {
     );
   }
 
+  function $reset(): void {
+    user.value = null;
+    token.value = null;
+    expiresEpoch.value = -1;
+  }
+
   return {
     user,
     token,
@@ -36,6 +42,7 @@ const useAuthStore = defineStore("auth", () => {
     getPermissions,
     hasPermission,
     hasAnyPermission,
+    $reset
   };
 });
 
