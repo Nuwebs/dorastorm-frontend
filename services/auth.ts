@@ -1,6 +1,6 @@
 import useAuthStore from "~/stores/authStore";
 import { DsLoginCredentials, User } from "~/types/dorastorm";
-import { useAsyncData, useFetch, useRuntimeConfig } from "nuxt/app";
+import { useRuntimeConfig } from "nuxt/app";
 import useAuthOptions from "~/composables/useAuthOptions";
 import ExpiredTokenException from "~/utils/exceptions/ExpiredTokenException";
 import InvalidTokenException from "~/utils/exceptions/InvalidTokenException";
@@ -54,7 +54,6 @@ const calculateExpireEpoch = (expiresIn: number): number => {
   return getActualEpoch() + expiresIn - 30;
 };
 
-// THIS METHOD NEEDS TO BE FIXED
 const refreshToken = async (): Promise<number> => {
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
   try {
