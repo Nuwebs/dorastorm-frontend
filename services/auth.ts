@@ -102,6 +102,19 @@ export const login = async (
   }
 };
 
+export const logout = async (): Promise<void | ErrorBag> => {
+  const authStore = useAuthStore();
+  const ep = useRuntimeConfig().public.authEndpoints.logout;
+  try {
+    await $fetch(ep, { ...useAuthOptions(), method: "post" });
+    authStore.$reset();
+    cleanSavedKeys();
+  } catch (error: any) {
+    // Possible no internet connection
+    return error as ErrorBag;
+  }
+};
+
 export const loadUserData = (): void => {
   const authStore = useAuthStore();
   authStore.appBooted = true;
