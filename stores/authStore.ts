@@ -6,6 +6,7 @@ const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
   const token = ref<string | null>(null);
   const expiresEpoch = ref<number>(-1);
+  const appBooted = ref<boolean>(false);
 
   const isLoggedIn = computed<boolean>(() => {
     return user.value === null ? false : true;
@@ -46,6 +47,7 @@ const useAuthStore = defineStore("auth", () => {
     user,
     token,
     expiresEpoch,
+    appBooted,
     isLoggedIn,
     getPermissions,
     hasPermission,

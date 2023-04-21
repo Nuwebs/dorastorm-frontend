@@ -38,12 +38,6 @@ const getActualEpoch = (): number => {
   return Math.floor(Date.now() / 1000);
 };
 
-// The expiresEpoch is the past Date.now()/1000 + expiresIn - diff
-const isTokenExpired = (expiresEpoch: number): boolean => {
-  const epoch: number = getActualEpoch();
-  return epoch >= expiresEpoch;
-};
-
 const cleanSavedKeys = (): void => {
   localStorage.removeItem("ds-jwt");
   localStorage.removeItem("user");
@@ -54,19 +48,27 @@ const calculateExpireEpoch = (expiresIn: number): number => {
   return getActualEpoch() + expiresIn - 30;
 };
 
-const refreshToken = async (): Promise<number> => {
+// The expiresEpoch is the past Date.now()/1000 + expiresIn - diff
+export const isTokenExpired = (expiresEpoch: number): boolean => {
+  const epoch: number = getActualEpoch();
+  return epoch >= expiresEpoch;
+};
+
+export const refreshToken = async (): Promise<void> => {
+  const authStore = useAuthStore();
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
   try {
     const response = await $fetch<JWTResponse>(ep, useAuthOptions());
-    const authStore = useAuthStore();
     authStore.token = response.accessToken;
     authStore.expiresEpoch = calculateExpireEpoch(response.expiresIn);
     saveToken(authStore.token);
     saveExpiresEpoch(authStore.expiresEpoch);
-    return 200;
   } catch (error: any) {
-    if (error.statusCode) return error.statusCode;
-    return 422;
+    cleanSavedKeys();
+    authStore.$reset();
+    if (error.statusCode && error.statusCode === 409)
+      throw new ExpiredTokenException("");
+    throw new InvalidTokenException("");
   }
 };
 
@@ -100,25 +102,17 @@ export const login = async (
   }
 };
 
-export const loadUserData = async (): Promise<void> => {
+export const loadUserData = (): void => {
+  const authStore = useAuthStore();
+  authStore.appBooted = true;
   const token = isPotentiallyLoggedIn();
   if (token === false) return cleanSavedKeys();
   const user = getUserData();
   if (user === false) return cleanSavedKeys();
 
   const expiresEpoch = getExpiresEpoch();
-  const authStore = useAuthStore();
 
   authStore.token = token as string;
   authStore.user = user as User;
   authStore.expiresEpoch = expiresEpoch;
-
-  if (!isTokenExpired(expiresEpoch)) return;
-
-  const response: number = await refreshToken();
-  if (response === 200) return;
-  cleanSavedKeys();
-  authStore.$reset();
-  if (response === 409) throw new ExpiredTokenException("");
-  throw new InvalidTokenException("");
 };

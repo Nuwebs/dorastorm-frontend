@@ -1,6 +1,7 @@
 <template>
   <section>
     <h1>Home page for logged users</h1>
+    <NuxtLink to="/">home</NuxtLink>
   </section>
 </template>
 
