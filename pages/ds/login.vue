@@ -1,12 +1,23 @@
 <template>
-  <section>
-    <form @submit.prevent="submit">
-      <label for="email">Email:</label>
-      <input type="email" required v-model="credentials.email">
-      <label for="password">Password:</label>
-      <input type="password" required v-model="credentials.password">
-      <input type="submit">
-    </form>
+  <section class="grid flex-column justify-content-center min-w-screen">
+    <div class="col-12 md:col-6 md:col-offset-3">
+      <Card>
+        <template #title>Sign in</template>
+        <template #content>
+          <form @submit.prevent="submit">
+            <div class="p-inputgroup flex-1 mb-2">
+              <span class="p-inputgroup-addon"><i class="pi pi-at"></i></span>
+              <InputText v-model="credentials.email" type="email" required/>
+            </div>
+            <div class="p-inputgroup flex-1 mb-2">
+              <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+              <InputText v-model="credentials.password" type="password" required />
+            </div>
+            <Button type="submit">Submit</Button>
+          </form>
+        </template>
+      </Card>
+    </div>
   </section>
 </template>
 
@@ -15,6 +26,9 @@ import { ref } from 'vue';
 import { definePageMeta, navigateTo } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
+import Card from "primevue/card";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 
 definePageMeta({
   middleware: ['guest-guard']
