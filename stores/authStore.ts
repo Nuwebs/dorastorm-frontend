@@ -13,8 +13,8 @@ const useAuthStore = defineStore("auth", () => {
   });
 
   const getPermissions = computed<string[] | null>(() => {
-    if (!isLoggedIn) return null;
-    return user.value!.role.permissions;
+    if (!user.value) return null;
+    return user.value.role.permissions;
   });
 
   function hasPermission(permission: string): boolean {
