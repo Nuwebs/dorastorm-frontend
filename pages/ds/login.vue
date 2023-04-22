@@ -1,6 +1,6 @@
 <template>
-  <section class="grid flex-column justify-content-center min-h-screen">
-    <div class="col-12 md:col-6 md:col-offset-3">
+  <section class="grid-nogutter flex flex-column justify-content-center py-8">
+    <div class="col-12 md:col-4 md:col-offset-4">
       <Card>
         <template #title>Sign in</template>
         <template #content>
