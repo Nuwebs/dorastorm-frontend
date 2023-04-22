@@ -17,9 +17,13 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.8",
+    "@vee-validate/nuxt": "^4.8.6",
+    "@vee-validate/yup": "^4.8.6",
     "pinia": "^2.0.34",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primevue": "^3.27.0"
+    "primevue": "^3.27.0",
+    "vee-validate": "^4.8.6",
+    "yup": "^1.1.1"
   }
 }

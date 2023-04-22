@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: false,
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt",'@vee-validate/nuxt'],
   runtimeConfig: {
     public: {
       backendURL: "http://localhost:8000",
