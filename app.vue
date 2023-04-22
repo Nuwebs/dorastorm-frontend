@@ -1,11 +1,13 @@
 <template>
   <DefaultLayout>
     <NuxtPage></NuxtPage>
+    <Toast/>
   </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import DefaultLayout from "~/layouts/default.vue";
+import Toast from "primevue/toast";
 </script>
 <style>
 body {
