@@ -5,7 +5,7 @@
         <h3 class="my-0 mr-4">Dorastorm</h3>
       </template>
       <template #end>
-        <NuxtLink to="/ds/login" class="nlink">
+        <NuxtLink to="/login" class="nlink">
           Log in
         </NuxtLink>
       </template>
