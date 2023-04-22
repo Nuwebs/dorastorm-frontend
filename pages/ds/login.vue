@@ -7,13 +7,15 @@
           <form @submit.prevent="submit">
             <div class="p-inputgroup flex-1 mb-2">
               <span class="p-inputgroup-addon"><i class="pi pi-at"></i></span>
-              <InputText name="email" v-model="credentials.email" type="email" required placeholder="example@example.com"/>
+              <InputText name="email" v-model="credentials.email" type="email" required
+                placeholder="example@example.com" />
             </div>
             <div class="p-inputgroup flex-1 mb-2">
               <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
-              <InputText v-model="credentials.password" type="password" required placeholder="password"/>
+              <InputText v-model="credentials.password" type="password" required placeholder="password" />
             </div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" class="w-full justify-content-center mb-2" :loading="loading">Submit</Button>
+            <Hr />
           </form>
         </template>
       </Card>
@@ -29,6 +31,7 @@ import { DsLoginCredentials } from '~/types/dorastorm';
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import Hr from '~/components/Hr.vue';
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -39,7 +42,10 @@ const credentials = ref<DsLoginCredentials>({
   password: ''
 });
 
+const loading = ref<boolean>(false);
+
 async function submit(): Promise<void> {
+  loading.value = true;
   const response = await login(credentials.value);
   if (response) {
     console.log(response.data);
