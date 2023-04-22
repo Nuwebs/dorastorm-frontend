@@ -42,7 +42,7 @@ const credentials = ref<DsLoginCredentials>({
 const validations = object({
   email: string().required().email(),
   password: string().required()
-})
+});
 
 const loading = ref<boolean>(false);
 
@@ -56,9 +56,4 @@ async function submit(): Promise<void> {
   }
   navigateTo('/ds');
 }
-
-function test() {
-  console.log('yay');
-}
-
 </script>
