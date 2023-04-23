@@ -36,7 +36,9 @@ const route = useRoute();
 const toast = useToast();
 
 // Prevent for entering this page if it isn't a token and email present.
-if (!(route.query.token && route.query.email)) navigateTo('/forgot-password');
+if (process.client) {
+  if (!(route.query.token && route.query.email)) navigateTo('/forgot-password');
+}
 
 const data = ref({
   email: route.query.email,
