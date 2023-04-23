@@ -4,14 +4,15 @@
       <Card>
         <template #title>Sign in</template>
         <template #content>
-          <Form @submit="submit" :validation-schema="validations">
+          <form @submit="onSubmit" :validation-schema="validations">
             <FormText name="email" label="Email:" type="email" placeholder="example@example.com" icon="pi pi-at"
               v-model="credentials.email" />
             <FormText name="password" label="Password:" type="password" icon="pi pi-lock"
               v-model="credentials.password" />
-            <Button type="submit" class="w-full justify-content-center mb-2" :loading="loading">Submit</Button>
+            <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">Submit</Button>
             <Hr />
-          </Form>
+            <NuxtLink to="/forgot-password" class="nlink">Forgot your password?</NuxtLink>
+          </form>
         </template>
       </Card>
     </div>
@@ -27,7 +28,7 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import Hr from '~/components/Hr.vue';
 import FormText from '~/components/form/FormText.vue';
-import { Form } from "vee-validate";
+import { useForm } from "vee-validate";
 import { object, string } from "yup";
 
 definePageMeta({
@@ -44,16 +45,14 @@ const validations = object({
   password: string().required()
 });
 
-const loading = ref<boolean>(false);
+const {handleSubmit, isSubmitting} = useForm();
 
-async function submit(): Promise<void> {
-  loading.value = true;
+const onSubmit = handleSubmit(async () => {
   const response = await login(credentials.value);
   if (response) {
-    loading.value = false;
     console.log(response.data);
     return;
   }
   navigateTo('/ds');
-}
+})
 </script>
