@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <h4>dasdasd</h4>
+  <TheDSNavbar/>
+  <article>
     <slot></slot>
-  </div>
+  </article>
 </template>
 
 <script setup lang="ts">
-
+import TheDSNavbar from '~/components/TheDSNavbar.vue';
 </script>
