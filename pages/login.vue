@@ -45,12 +45,14 @@ const validations = object({
   password: string().required()
 });
 
-const {handleSubmit, isSubmitting} = useForm();
+const { handleSubmit, isSubmitting, setFieldError } = useForm();
 
 const onSubmit = handleSubmit(async () => {
   const response = await login(credentials.value);
   if (response) {
-    console.log(response.data);
+    if (response.statusCode === 422) {
+      setFieldError('email', response.data.errors.email);
+    }
     return;
   }
   navigateTo('/ds');
