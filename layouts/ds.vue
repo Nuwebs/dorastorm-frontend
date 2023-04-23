@@ -1,7 +1,7 @@
 <template>
-  <TheDSNavbar @sidebarButtonClick="sidebarVisible = !sidebarVisible" />
-  <article class="grid grid-nogutter p-2 min-h-fullscreen">
-    <aside class="layout-sidebar p-2 border-solid" v-if="sidebarVisible && shouldBeSidebar">
+  <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" />
+  <article class="p-3 min-h-fullscreen">
+    <aside :class="sidebarClasses" v-if="shouldBeSidebar">
       <h1>contenido</h1>
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
@@ -19,17 +19,21 @@ import { ref, computed, watch } from "vue";
 import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
 
-
 const windowWidth = useWindowWidth();
 const shouldBeSidebar = ref<boolean>(windowWidth.value >= 992);
 const sidebarVisible = ref<boolean>(shouldBeSidebar.value);
 
+const sidebarClasses = computed<string>(() => {
+  const baseClasses = 'layout-sidebar p-3 shadow-1';
+  return sidebarVisible.value ? baseClasses : baseClasses + ' layout-sidebar-hidden';
+});
+
 const contentClasses = computed<string>(() => {
-  let classes = 'p-2 w-full border-solid';
+  let classes = 'p-3 shadow-1';
   if (shouldBeSidebar.value) classes += ' layout-content';
   if (!sidebarVisible.value) classes += ' ml-0';
   return classes;
-})
+});
 
 watch(windowWidth, () => {
   if (windowWidth.value >= 992) {
@@ -42,14 +46,27 @@ watch(windowWidth, () => {
 })
 </script>
 <style scoped>
+.ds-navbar {
+  position: sticky;
+  top: 0;
+}
 .layout-sidebar {
   position: fixed;
   width: 300px;
   overflow-y: auto;
-  height: calc(88vh - 1rem);
+  height: calc(88vh - 2rem);
+  transition: transform .2s, left .2s;
+  background-color: var(--surface-a);
+}
+
+.layout-sidebar-hidden {
+  left: 0;
+  transform: translate(-100%);
 }
 
 .layout-content {
-  margin-left: calc(300px + 0.5rem);
+  margin-left: calc(300px + 1rem);
+  transition: margin-left .2s;
+  background-color: var(--surface-a);
 }
 </style>

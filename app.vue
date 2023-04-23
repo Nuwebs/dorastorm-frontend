@@ -12,6 +12,7 @@ import Toast from "primevue/toast";
 <style>
 body {
   margin: 0;
+  background-color: var(--surface-ground);
 }
 .nlink {
   text-decoration: none;
