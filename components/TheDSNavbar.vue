@@ -3,10 +3,8 @@
     <template #start>
       <div class="flex align-items-center mr-2">
         <h3 class="my-0 mr-2">Dorastorm</h3>
-        <NavbarSidebarButton/>
+        <NavbarSidebarButton @click="$emit('sidebarButtonClick')"/>
       </div>
-      
-      
     </template>
     <template #end>
       <NavbarSignoutButton />
