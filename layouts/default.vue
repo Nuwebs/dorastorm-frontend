@@ -1,9 +1,18 @@
 <template>
-  <TheNavbar></TheNavbar>
-  <article>
+  <component :is="template">
     <slot></slot>
-  </article>
+  </component>
 </template>
+
 <script setup lang="ts">
-import TheNavbar from '~/components/TheNavbar.vue';
+import { computed, defineAsyncComponent } from 'vue';
+import useAuthStore from '~/stores/authStore';
+
+const authStore = useAuthStore();
+
+const template = computed(() => {
+  const DS = defineAsyncComponent(() => import('./ds.vue'));
+  const Guest = defineAsyncComponent(() => import('./guest.vue'));
+  return authStore.isLoggedIn ? DS : Guest;
+});
 </script>
