@@ -7,12 +7,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
 import useAuthStore from '~/stores/authStore';
+import Guest from "./guest.vue";
 
 const authStore = useAuthStore();
 
 const template = computed(() => {
-  const DS = defineAsyncComponent(() => import('./ds.vue'));
-  const Guest = defineAsyncComponent(() => import('./guest.vue'));
-  return authStore.isLoggedIn ? DS : Guest;
+  return authStore.isLoggedIn ? defineAsyncComponent(() => import('./ds.vue')) : Guest;
 });
 </script>
