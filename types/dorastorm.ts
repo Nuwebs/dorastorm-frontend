@@ -1,3 +1,4 @@
+import { RouteLocationNormalized } from "vue-router";
 export interface Role {
   id: number;
   hierarchy: number;
@@ -18,6 +19,13 @@ export interface User {
 export interface DsLoginCredentials {
   email: string,
   password: string
+}
+
+export interface DsRouteMeta extends RouteLocationNormalized {
+  meta: RouteLocationNormalized["meta"] & {
+    strictPermissions?: boolean;
+    permissions?: string[];
+  };
 }
 
 // Error related
