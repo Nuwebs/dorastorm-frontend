@@ -2,10 +2,10 @@
   <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" />
   <article class="p-3 min-h-fullscreen">
     <aside :class="sidebarClasses" v-if="shouldBeSidebar">
-      <h1>contenido</h1>
+      <PanelMenu :model="sidebarContent"/>
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
-      <h1>test</h1>
+      <PanelMenu :model="sidebarContent"/>
     </OverlaySidebar>
     <main :class="contentClasses">
       <slot></slot>
@@ -18,10 +18,13 @@ import TheDSNavbar from '~/components/TheDSNavbar.vue';
 import { ref, computed, watch } from "vue";
 import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
+import { sidebarMenuItems } from '~/services/permissions';
+import PanelMenu from "primevue/panelmenu";
 
 const windowWidth = useWindowWidth();
 const shouldBeSidebar = ref<boolean>(windowWidth.value >= 992);
 const sidebarVisible = ref<boolean>(shouldBeSidebar.value);
+const sidebarContent = sidebarMenuItems();
 
 const sidebarClasses = computed<string>(() => {
   const baseClasses = 'layout-sidebar p-3 shadow-1';

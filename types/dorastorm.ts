@@ -1,3 +1,4 @@
+import { MenuItem } from "primevue/menuitem";
 import { RouteLocationNormalized } from "vue-router";
 export interface Role {
   id: number;
@@ -26,6 +27,11 @@ export interface DsRouteMeta extends RouteLocationNormalized {
     strictPermissions?: boolean;
     permissions?: string[];
   };
+}
+
+export type DsMenuItem = MenuItem & {
+  permissions?: string | string[],
+  items?: DsMenuItem | undefined
 }
 
 // Error related
