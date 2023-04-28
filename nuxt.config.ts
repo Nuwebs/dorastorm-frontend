@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     "primevue/resources/themes/lara-light-blue/theme.css",
     "primevue/resources/primevue.css",
     "primeflex/primeflex.css",
-    "primeicons/primeicons.css"
+    "primeicons/primeicons.css",
   ],
   build: {
     transpile: ["primevue"],
@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: false,
   },
-  modules: ["@pinia/nuxt",'@vee-validate/nuxt'],
+  modules: ["@pinia/nuxt", "@vee-validate/nuxt", "@nuxtjs/i18n"],
   runtimeConfig: {
     public: {
       backendURL: "http://localhost:8000",
@@ -26,5 +26,25 @@ export default defineNuxtConfig({
         me: "/me",
       },
     },
+  },
+  i18n: {
+    locales: [
+      {
+        code: "en",
+        file: "en.json",
+      },
+      {
+        code: "es",
+        file: "es.json",
+      },
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "ds_i18n",
+      redirectOn: "root",
+    },
+    lazy: true,
+    langDir: "assets/lang",
+    defaultLocale: "en",
   },
 });
