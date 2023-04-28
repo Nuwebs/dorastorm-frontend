@@ -3,12 +3,13 @@
     <div class="col-12 md:col-4 md:col-offset-4">
       <Card>
         <template #title>
-          Forgot password
+          {{ $t('forms.forgot_password') }}
         </template>
         <template #content>
           <form @submit="onSubmit">
-            <FormText name="email" type="email" label="Email:" v-model="data.email" />
-            <Button type="submit" class="w-full justify-content-center" :loading="isSubmitting">Submit</Button>
+            <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email" />
+            <Button type="submit" class="w-full justify-content-center" :loading="isSubmitting">{{ $t('forms.submit')
+            }}</Button>
           </form>
         </template>
       </Card>

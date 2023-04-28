@@ -3,14 +3,15 @@
     <div class="col-12 md:col-4 md:col-offset-4">
       <Card>
         <template #title>
-          Reset password
+          {{ $t('forms.reset_password') }}
         </template>
         <template #content>
           <form @submit="onSubmit">
-            <FormText name="password" type="password" label="Password:" v-model="data.password" />
-            <FormText name="password_confirmation" type="password" label="Confirm password:"
+            <FormText name="password" type="password" :label="$t('forms.password')" v-model="data.password" />
+            <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')"
               v-model="data.password_confirmation" />
-            <Button type="submit" class="w-full justify-content-center" :loading="isSubmitting">Submit</Button>
+            <Button type="submit" class="w-full justify-content-center" :loading="isSubmitting">{{ $t('forms.submit')
+            }}</Button>
           </form>
         </template>
       </Card>

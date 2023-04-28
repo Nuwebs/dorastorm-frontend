@@ -2,16 +2,18 @@
   <section class="grid-nogutter flex flex-column justify-content-center py-8">
     <div class="col-12 md:col-4 md:col-offset-4">
       <Card>
-        <template #title>Sign in</template>
+        <template #title>
+          {{ $t('general.login') }}</template>
         <template #content>
           <form @submit="onSubmit" :validation-schema="validations">
-            <FormText name="email" label="Email:" type="email" placeholder="example@example.com" icon="pi pi-at"
-              v-model="credentials.email" />
-            <FormText name="password" label="Password:" type="password" icon="pi pi-lock"
+            <FormText name="email" :label="$t('forms.email')" type="email" placeholder="example@example.com"
+              icon="pi pi-at" v-model="credentials.email" />
+            <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock"
               v-model="credentials.password" />
-            <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">Submit</Button>
+            <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
+              {{ $t('forms.submit') }}</Button>
             <Hr />
-            <NuxtLink to="/forgot-password" class="nlink">Forgot your password?</NuxtLink>
+            <NuxtLink :to="lp('/forgot-password')" class="nlink">{{ $t('forms.forgot_password') }}</NuxtLink>
           </form>
         </template>
       </Card>
@@ -21,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { definePageMeta, navigateTo } from '#imports';
+import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
 import Card from "primevue/card";
@@ -34,7 +36,7 @@ import { object, string } from "yup";
 definePageMeta({
   middleware: ['guest-guard']
 });
-
+const lp = useLocalePath();
 const credentials = ref<DsLoginCredentials>({
   email: '',
   password: ''

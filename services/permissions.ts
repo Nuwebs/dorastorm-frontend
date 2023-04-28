@@ -1,21 +1,25 @@
 import { DsMenuItem } from "~/types/dorastorm";
 import { MenuItem } from "primevue/menuitem";
 import useAuthStore from "~/stores/authStore";
+import { useLocalePath } from "#imports";
+import { useNuxtApp } from "nuxt/app";
 
+const lp = useLocalePath();
+const t = useNuxtApp().$i18n.t;
 export const PERMISSIONS: DsMenuItem[] = [
   {
-    label: "Users",
+    label: t("modules.users.title"),
     icon: "pi pi-user",
     permissions: ["users-create", "users-read", "users-update", "users-delete"],
     items: [
       {
-        label: "New",
+        label: t("general.new"),
         icon: "pi pi-user-plus",
-        to: "/",
+        to: lp("/"),
         permissions: "users-create"
       },
       {
-        label: "View all users",
+        label: t("modules.users.index"),
         icon: "pi pi-list",
         to: "/",
         permissions: "users-read"
@@ -23,18 +27,18 @@ export const PERMISSIONS: DsMenuItem[] = [
     ],
   },
   {
-    label: "Roles",
+    label: t("modules.roles.title"),
     icon: "pi pi-id-card",
     permissions: ["roles-create", "roles-read", "roles-update", "roles-delete"],
     items: [
       {
-        label: "New",
+        label: t("general.new"),
         icon: "pi pi-plus",
         to: "/",
         permissions: "roles-create"
       },
       {
-        label: "View all roles",
+        label: t("modules.roles.index"),
         icon: "pi pi-list",
         to: "/",
         permissions: "roles-read"
@@ -42,18 +46,18 @@ export const PERMISSIONS: DsMenuItem[] = [
     ],
   },
   {
-    label: "Posts",
+    label: t("modules.posts.title"),
     icon: "pi pi-book",
     permissions: ["posts-create", "posts-read", "posts-update", "posts-delete"],
     items: [
       {
-        label: "New",
+        label: t("general.new"),
         icon: "pi pi-plus",
         to: "/",
         permissions: "posts-create"
       },
       {
-        label: "My posts",
+        label: t("modules.posts.index_mine"),
         icon: "pi pi-briefcase",
         to: "/",
         permissions: "posts-create"
@@ -62,24 +66,24 @@ export const PERMISSIONS: DsMenuItem[] = [
         separator: true,
       },
       {
-        label: "View posts",
+        label: t("modules.posts.index"),
         icon: "pi pi-list",
         to: "/"
       },
       {
-        label: "Staff posts",
+        label: t("modules.posts.index_private"),
         icon: "pi pi-building",
         to: "/"
       },
     ],
   },
   {
-    label: "Quotations",
+    label: t("modules.quotations.title"),
     icon: "pi pi-envelope",
     permissions: ["quotations-read", "quotations-delete"],
     items: [
       {
-        label: "View all quotations",
+        label: t("modules.quotations.index"),
         icon: "pi pi-list",
         to: "/",
       },

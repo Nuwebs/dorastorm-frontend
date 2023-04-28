@@ -1,9 +1,6 @@
 <template>
   <section>
     <h1>Home page for logged users</h1>
-    <NuxtLink to="/">home</NuxtLink>
-    <button @click="signout">Log out</button>
-    <h2>{{ $t('message.remember_me') }}</h2>
   </section>
 </template>
 
