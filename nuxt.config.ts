@@ -1,3 +1,9 @@
+import {
+  getLocatedRouteRules,
+  LOCALES,
+  DEFAULT_LOCALE,
+  STRATEGY,
+} from "./services/i18n";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: [
@@ -10,7 +16,7 @@ export default defineNuxtConfig({
     transpile: ["primevue"],
   },
   routeRules: {
-    "/ds/**": { ssr: false },
+    ...getLocatedRouteRules(),
   },
   imports: {
     autoImport: false,
@@ -28,23 +34,15 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    locales: [
-      {
-        code: "en",
-        file: "en.json",
-      },
-      {
-        code: "es",
-        file: "es.json",
-      },
-    ],
+    lazy: true,
+    langDir: "assets/lang",
+    locales: LOCALES,
+    defaultLocale: DEFAULT_LOCALE,
+    strategy: STRATEGY,
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "ds_i18n",
       redirectOn: "root",
     },
-    lazy: true,
-    langDir: "assets/lang",
-    defaultLocale: "en",
   },
 });
