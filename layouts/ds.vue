@@ -32,7 +32,7 @@ const sidebarClasses = computed<string>(() => {
 });
 
 const contentClasses = computed<string>(() => {
-  let classes = 'p-3 shadow-1';
+  let classes = 'p-3 shadow-1 surface-section';
   if (shouldBeSidebar.value) classes += ' layout-content';
   if (!sidebarVisible.value) classes += ' ml-0';
   return classes;
@@ -70,6 +70,5 @@ watch(windowWidth, () => {
 .layout-content {
   margin-left: calc(300px + 1rem);
   transition: margin-left .2s;
-  background-color: var(--surface-a);
 }
 </style>
