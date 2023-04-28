@@ -1,183 +1,164 @@
 {
-    "lang_info": {
-        "code": "es",
-        "title": "Español"
+  "error": {
+    "403": {
+      "default_message": "¿Qué estás tratando de hacer?",
+      "default_title": "403: No deberías estar aquí"
     },
-    "error": {
-        "fatal": "Algo salió muy mal. Intenta más tarde.",
-        "403": {
-            "default_title": "403: No deberías estar aquí",
-            "default_message": "¿Qué estás intentando hacer?"
-        },
-        "404": {
-            "default_title": "404: Ups!",
-            "default_message": "¿A dónde vas?",
-            "default_resource": "No pudimos encontrar el recurso especificado.",
-            "specific": {
-                "user": "No pudimos encontrar el usuario especificado.",
-                "role": "No pudimos encontrar el rol especificado.",
-                "post": "No pudimos encontrar la publicación especificada."
-            } 
-        },
-        "409": {
-            "default_title": "409: Conflicto",
-            "defalt_message": "",
-            "specific": {
-                "last_admin": "¡Eres el último administrador restante!"
-            }
-        },
-        "validation": {
-            "confirm_password": "Las contraseñas no coinciden."
-        }
-
+    "404": {
+      "default_message": "¿A dónde vas?",
+      "default_resource": "No pudimos encontrar el recurso especificado",
+      "default_title": "404: ¡Whoops!",
+      "specific": {
+        "post": "No pudimos encontrar la publicación especificada.",
+        "role": "No pudimos encontrar el rol especificado.",
+        "user": "No pudimos encontrar el usuario especificado."
+      }
     },
-    "modules": {
-        "app_title": "Título por defecto",
-        "users": {
-            "create": "Crear un usuario",
-            "created": "¡Usuario creado!",
-            "read": "Ver datos del usuario",
-            "update": "Modificar datos del usuario",
-            "delete": "Eliminar usuario",
-            "delete_warning": "¿Estás seguro de querer eliminar este usuario? Esta acción no se puede deshacer.",
-            "deleted": "El usuario ha sido eliminado.",
-            "role": "Rol",
-            "role_select": "Selecciona el rol del usuario:",
-            "role_default": "Selecciona un rol",
-            "name": "Nombre del usuario:",
-            "list": "Lista de usuarios",
-            "user_info": "Información del usuario",
-            "change_password": "Cambia la contraseña",
-            "password_changed": "La contraseña ha sido modificada con éxito."
-        },
-        "roles": {
-            "created": "¡Rol creado!",
-            "others": "Otros",
-            "name": "Nombre del rol:",
-            "description": "Descripción del rol:",
-            "select_permissions": "Selecciona los permisos del rol",
-            "select_hierarchy": "Arrastra la jerarquía del rol (*)",
-            "new_role": "NUEVO ROL",
-            "delete": "Eliminar rol",
-            "delete_warning": "¿Estás seguro de querer eliminar este rol? Esta acción no se puede deshacer.",
-            "deleted": "El rol ha sido eliminado.",
-            "list": "Lista de roles",
-            "role_permissions": "Permisos del rol:",
-            "update": "Modificar datos del rol",
-            "read": "Ver detalles del rol"
-        },
-        "posts": {
-            "create": "Crear publicación",
-            "created": "¡Publicación creada!",
-            "tools": "Opciones del editor:",
-            "update": "Modificar la publicación",
-            "delete": "Eliminar la publicación",
-            "deleted": "La publicación ha sido eliminada.",
-            "delete_warning": "¿Estás seguro de querer eliminar esta publicación? esta acción no se puede deshacer.",
-            "title": "Título de la publicación:",
-            "description": "Breve descripción de la publicación:",
-            "content": "Contenido:",
-            "options": "Opciones de visibilidad:",
-            "visible": "Esta publicación es visible",
-            "private": "Publicación solo para el personal (publicación privada)",
-            "author": "Autor:",
-            "read_more": "LEER MÁS...",
-            "index": "Ver publicaciones",
-            "previous": "Más recientes",
-            "next": "Más antiguas",
-            "first": "Portada",
-            "recent": "Lo último",
-            "banner": "Imagen principal de la publicación",
-            "replace_banner_title": "Reemplazar imagen principal",
-            "replace_banner_message": "¿Estás seguro de querer cambiar la imagen principal de la publicación?",
-            "replace_banner_ok": "Reemplazar",
-            "tag_invisible": "Invisible",
-            "tag_yours": "Tuyo",
-            "tag_private": "Privado",
-            "posts": "Publicaciones",
-            "private_index": "Publicaciones para el personal",
-            "my_posts": "Mis publicaciones",
-            "recommended": "Te recomendamos leer:",
-            "no_recommendations": "No tenemos recomendaciones disponibles",
-            "tags": {
-                "discard": "Descartar búsqueda",
-                "placeholder": "Agrega una etiqueta y oprime enter",
-                "tags": "Etiquetas:",
-                "no_tags": "Esta publicación no tiene ningua etiqueta"
-            },
-            "check_save_title": "Advertencia",
-            "check_save_message": "No has guardado la publicación. ¿Deseas continuar?",
-            "check_save_ok": "Continuar sin guardar"
-        },
-        "quotes": {
-            "index": "Ver cotizaciones",
-            "subject": "Asunto",
-            "name": "Nombre del cliente",
-            "form_name": "Tu nombre",
-            "phone": "Número de contacto",
-            "content": "Tu mensaje",
-            "list": "Lista de cotizaciones",
-            "delete": "Eliminar cotización",
-            "delete_warning": "¿Estás seguro de querer eliminar esta cotización? Esta acción no se puede deshacer.",
-            "deleted": "La cotización ha sido eliminada.",
-            "created": "La cotización ha sido enviada.",
-            "create": "Solicita una cotización",
-            "request": "Solicita este servicio",
-            "big_quote": "COTIZA AHORA"
-        }
+    "409": {
+      "defalt_message": "",
+      "default_title": "409: Conflicto",
+      "specific": {
+        "last_admin": "¡Eres el último superadministrador restante!"
+      }
     },
-    "navbar": {
-        "users": {
-            "users": "Usuarios",
-            "create": "Crear usuarios",
-            "read": "Ver todos los usuarios"
-        },
-        "roles": {
-            "title": "Gestionar roles",
-            "create": "Crear roles",
-            "read": "Ver todos los roles"
-        },
-        "permissions": {
-            "title": "Tests de permisos",
-            "only": "Solo se muestra con permiso",
-            "even": "Se muestra incluso sin permiso",
-            "any": "Aquí no se necesita ningún permiso"
-        },
-        "login": "Iniciar sesión",
-        "logout": "Cerrar sesión"
-    },
-
-    "message": {
-        "email": "Correo electrónico:",
-        "password": "Contraseña:",
-        "remember_me": "Recuérdame",
-        "forgot_password": "¿Olvidaste la contraseña?",
-        "confirm_password": "Confirmación de contraseña:",
-        "reset_password": "Restablecimiento de contraseña",
-        "new_password": "Nueva contraseña:",
-        "current_password": "Contraseña actual",
-        "submit": "Enviar",
-        "delete": "Eliminar",
-        "cancel": "Cancelar",
-        "confirm": "Confirmar",
-        "member_since": "Miembro desde:",
-        "id": "ID",
-        "action": "Acción",
-        "loading": "Cargando...",
-        "data_changed": "Los cambios se realizaron con éxito.",        
-        "name": "Nombre",
-        "default_description": "No hay una descripción disponible.",
-        "created_at": "Creado el:",
-        "updated_at": "Modificado el:",
-        "paginate_first": "Primera página",
-        "paginate_next": "Página siguiente",
-        "paginate_prev": "Página anterior",
-        "search": "Búsqueda...",
-        "upload_document": "Subir un documento",
-        "upload_image": "Subir una imagen",
-        "file_upload": "Selecciona un archivo",
-        "file_uploaded": "¡El archivo ha sido subido con éxito!",
-        "view": "Ver",
-        "message": "Mensaje"
+    "fatal": "Algo salió mal. Inténtalo de nuevo más tarde o contacta al administrador.",
+    "validation": {
+      "confirm_password": "Las contraseñas no coinciden"
     }
+  },
+  "modules": {
+    "users": {
+      "change_password": "Cambiar contraseña",
+      "created": "¡Usuario creado!",
+      "create": "Crear usuario",
+      "delete": "Eliminar usuario",
+      "delete_warning": "¿Estás seguro de que quieres eliminar a este usuario? No se puede deshacer.",
+      "deleted": "El usuario ha sido eliminado.",
+      "index": "Ver todos los usuarios",
+      "list": "Lista de usuarios",
+      "name": "Nombre de usuario:",
+      "password_changed": "Tu contraseña se cambió exitosamente.",
+      "read": "Ver datos del usuario",
+      "role": "Rol",
+      "role_default": "Selecciona un rol",
+      "role_select": "Selecciona el rol del usuario:",
+      "title": "Usuarios",
+      "update": "Actualizar datos del usuario",
+      "user_info": "Información del usuario"
+    },
+    "roles": {
+      "create": "Crear rol",
+      "created": "¡Rol creado!",
+      "delete": "Eliminar rol",
+      "delete_warning": "¿Estás seguro de que quieres eliminar este rol? No se puede deshacer.",
+      "deleted": "El rol ha sido eliminado.",
+      "description": "Descripción del rol:",
+      "index": "Ver todos los roles",
+      "list": "Lista de roles",
+      "name": "Nombre del rol:",
+      "new_role": "NUEVO ROL",
+      "others": "Otros",
+      "read": "Ver detalles del rol",
+      "role_permissions": "Permisos del rol:",
+      "select_hierarchy": "Arrastra la jerarquía de roles (*)",
+      "select_permissions": "Selecciona los permisos del rol",
+      "title": "Roles",
+      "update": "Actualizar datos del rol"
+    },
+    "posts": {
+      "author": "Autor:",
+      "banner": "Banner del post",
+      "check_save_message": "No guardaste el post. ¿Deseas continuar?",
+      "check_save_ok": "Continuar sin guardar",
+      "check_save_title": "Advertencia",
+      "content": "Contenido del post:",
+      "create": "Crear post",
+      "created": "¡El post ha sido creado!",
+      "delete": "Eliminar post",
+      "deleted": "El post ha sido eliminado.",
+      "delete_warning": "¿Estás seguro de que deseas eliminar este post? No se puede deshacer.",
+      "description": "Breve descripción del post:",
+      "first": "Más reciente",
+      "index": "Ver posts",
+      "index_mine": "Mis posts",
+      "index_private": "Posts del personal",
+      "no_recommendations": "No hay recomendaciones disponibles",
+      "options": "Opciones de visibilidad",
+      "post_title": "Título del post:",
+      "previous": "Más antiguo",
+      "private": "Post solo para el personal (post privado)",
+      "read_more": "MODO DE LECTURA...",
+      "recent": "Últimos posts",
+      "recommended": "Deberías leer:",
+      "replace_banner_message": "¿Estás seguro de que deseas reemplazar este banner de post?",
+      "replace_banner_ok": "Reemplazar",
+      "replace_banner_title": "Reemplazar banner",
+      "tag_invisible": "Invisible",
+      "tag_private": "Privado",
+      "tag_yours": "Tuyo",
+      "tags": {
+        "discard": "Descartar búsqueda",
+        "no_tags": "Este post no tiene ninguna etiqueta",
+        "placeholder": "Agregar una etiqueta y presionar enter",
+        "tags": "Etiquetas:"
+      },
+      "title": "Posts",
+      "tools": "Opciones de creación:",
+      "update": "Modificar post",
+      "visible": "Este post es visible"
+    },
+    "quotations": {
+      "big_quote": "COTIZAR AHORA",
+      "content": "Tu mensaje",
+      "create": "Hacer una cotización",
+      "created": "La cotización ha sido enviada",
+      "delete": "Eliminar una cotización",
+      "deleted": "La cotización ha sido eliminada",
+      "delete_warning": "¿Estás seguro de que deseas eliminar esta cotización? No se puede deshacer.",
+      "form_name": "Tu nombre",
+      "index": "Ver todas las cotizaciones",
+      "list": "Lista de cotizaciones",
+      "name": "Nombre del cliente",
+      "phone": "Número de teléfono",
+      "request": "Solicitar este servicio",
+      "subject": "Asunto",
+      "title": "Cotizaciones"
+    }
+  },
+  "forms": {
+    "confirm_password": "Confirmar contraseña:",
+    "current_password": "Contraseña actual:",
+    "email": "Correo electrónico:",
+    "file_upload": "Seleccionar un archivo",
+    "file_uploaded": "¡Archivo cargado exitosamente!",
+    "forgot_password": "Olvidé mi contraseña",
+    "password": "Contraseña:",
+    "reset_password": "Restablecer la contraseña",
+    "submit": "Enviar"
+  },
+  "general": {
+    "action": "Acción",
+    "cancel": "Cancelar",
+    "created_at": "Creado en:",
+    "data_changed": "Los cambios se realizaron correctamente.",
+    "default_description": "No hay descripción disponible.",
+    "delete": "Eliminar",
+    "id": "ID",
+    "loading": "Cargando...",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "member_since": "Miembro desde:",
+    "message": "Mensaje",
+    "name": "Nombre",
+    "new": "Nuevo",
+    "new_password": "Nueva contraseña:",
+    "paginate_first": "Primera página",
+    "paginate_next": "Página siguiente",
+    "paginate_prev": "Página anterior",
+    "search": "Buscar...",
+    "updated_at": "Actualizado en:",
+    "upload_document": "Subir un documento",
+    "upload_image": "Subir una imagen",
+    "view": "Ver"
+  }
 }

@@ -1,182 +1,164 @@
 {
-    "lang_info": {
-        "code": "en",
-        "title": "English"
+  "error": {
+    "403": {
+      "default_message": "What are you trying to do?",
+      "default_title": "403: You shouldn't be here"
     },
-    "error": {
-        "fatal": "Something very wrong happened. Try again later.",
-        "403": {
-            "default_title": "403: You shouldn't be here",
-            "default_message": "What are you trying to do?"
-        },
-        "404": {
-            "default_title": "404: Whoops!",
-            "default_message": "Where are you going?!",
-            "default_resource": "We couldn't find the specified resource",
-            "specific": {
-                "user": "We couldn't find the specified user.",
-                "role": "We couldn't find the specified role.",
-                "post": "We couldn't find the specified post."
-            }
-        },
-        "409": {
-            "default_title": "409: Conflict",
-            "defalt_message": "",
-            "specific": {
-                "last_admin": "You are the last admin left!"
-            }
-        },
-        "validation": {
-            "confirm_password": "The passwords doesn't match"
-        }
+    "404": {
+      "default_message": "Where are you going?!",
+      "default_resource": "We couldn't find the specified resource",
+      "default_title": "404: Whoops!",
+      "specific": {
+        "post": "We couldn't find the specified post.",
+        "role": "We couldn't find the specified role.",
+        "user": "We couldn't find the specified user."
+      }
     },
-    "modules": {
-        "app_title": "Default title",
-        "users": {
-            "create": "Create user",
-            "created": "User created!",
-            "read": "View user data",
-            "update": "Update user data",
-            "delete": "Delete user",
-            "delete_warning": "Are you sure you want to delete this user? It cannot be undone.",
-            "deleted": "The user has been deleted.",
-            "role": "Role",
-            "role_select": "Select the user role:",
-            "role_default": "Select a role",
-            "name": "User name:",
-            "list": "Users list",
-            "user_info": "User information",
-            "change_password": "Change password",
-            "password_changed": "Your password was successfully changed."
-        },
-        "roles": {
-            "created": "Role created!",
-            "others": "Others",
-            "name": "Role name:",
-            "description": "Role description:",
-            "select_permissions": "Select the role permissions",
-            "select_hierarchy": "Drag the role hierarchy (*)",
-            "new_role": "NEW ROLE",
-            "delete": "Delete role",
-            "delete_warning": "Are you sure you want to delete this role? It cannot be undone.",
-            "deleted": "The role has been deleted.",
-            "list": "Roles list",
-            "role_permissions": "Role permissions:",
-            "update": "Update role data",
-            "read": "View role details"
-        },
-        "posts": {
-            "create": "Create posts",
-            "created": "Post created!",
-            "tools": "Creator options:",
-            "update": "Modify post",
-            "delete": "Delete post",
-            "deleted": "The post has been deleted.",
-            "delete_warning": "Are you sure you want to delete this post? It cannot be undone.",
-            "title": "Post title:",
-            "description": "Brief post description:",
-            "content": "Post content:",
-            "options": "Visibility options",
-            "visible": "This post is visible",
-            "private": "Post for staff only (private post)",
-            "author": "Author:",
-            "read_more": "READ MODE...",
-            "index": "View posts",
-            "previous": "Newer",
-            "next": "Older",
-            "first": "Newest",
-            "recent": "Latest posts",
-            "banner": "Post banner",
-            "replace_banner_title": "Replace banner",
-            "replace_banner_message": "Are you sure you want to replace this post banner?",
-            "replace_banner_ok": "Replace",
-            "tag_invisible": "Invisible",
-            "tag_yours": "Yours",
-            "tag_private": "Private",
-            "posts": "Posts",
-            "private_index": "Staff posts",
-            "my_posts": "My posts",
-            "recommended": "You should read:",
-            "no_recommendations": "No recommendations available",
-            "tags": {
-                "discard": "Discard search",
-                "placeholder": "Add a tag and press enter",
-                "tags": "Tags:",
-                "no_tags": "This post doesn't have any tag"
-            },
-            "check_save_title": "Warning",
-            "check_save_message": "You didn't save the post. Do you want to proceed?",
-            "check_save_ok": "Proceed without saving"
-
-        },
-        "quotes": {
-            "index": "View quotes",
-            "subject": "Subject",
-            "name": "Client name",
-            "form_name": "Your name",
-            "phone": "Phone number",
-            "content": "Your message",
-            "list": "Quotes list",
-            "delete": "Delete a quote",
-            "delete_warning": "Are you sure you want to delete this quote? It cannot be undone.",
-            "deleted": "The quote has been deleted",
-            "created": "The quote has been sended",
-            "create": "Make a quotation",
-            "request": "Request this service",
-            "big_quote": "QUOTE NOW"
-        }
+    "409": {
+      "defalt_message": "",
+      "default_title": "409: Conflict",
+      "specific": {
+        "last_admin": "You are the last super-admin left!"
+      }
     },
-    "navbar": {
-        "users": {
-            "users": "Users",
-            "create": "Create users",
-            "read": "View all users"
-        },
-        "roles": {
-            "title": "Manage roles",
-            "create": "Create roles",
-            "read": "View all roles"
-        },
-        "permissions": {
-            "title": "Permissions test",
-            "only": "Showed only if you have permission",
-            "even": "Showed even if you don't have permission",
-            "any": "You don't need permission here"
-        },
-        "login": "Log in",
-        "logout": "Log out"
-    },
-    "message": {
-        "email": "E-mail:",
-        "password": "Password:",
-        "remember_me": "Remember me?",
-        "forgot_password": "Forgot password?",
-        "confirm_password": "Confirm password:",
-        "reset_password": "Reset password",
-        "new_password": "New password:",
-        "current_password": "Current password",
-        "submit": "Submit",
-        "delete": "Delete",
-        "cancel": "Cancel",
-        "confirm": "Confirm",
-        "member_since": "Member since:",
-        "id": "ID",
-        "action": "Action",
-        "loading": "Loading...",
-        "data_changed": "The changes were made successfully.",
-        "name": "Name",
-        "default_description": "No description available.",
-        "created_at": "Created at:",
-        "updated_at": "Updated at:",
-        "paginate_first": "First page",
-        "paginate_next": "Next page",
-        "paginate_prev": "Previous page",
-        "search": "Search...",
-        "upload_document": "Upload a document",
-        "upload_image": "Upload an image",
-        "file_upload": "Select a file",
-        "file_uploaded": "File uploaded successfully!",
-        "view": "View",
-        "message": "Message"
+    "fatal": "Something wrong happened. Try again later or contact the administrator.",
+    "validation": {
+      "confirm_password": "The passwords don't match"
     }
+  },
+  "modules": {
+    "users": {
+      "change_password": "Change password",
+      "created": "User created!",
+      "create": "Create user",
+      "delete": "Delete user",
+      "delete_warning": "Are you sure you want to delete this user? It cannot be undone.",
+      "deleted": "The user has been deleted.",
+      "index": "View all users",
+      "list": "Users list",
+      "name": "User name:",
+      "password_changed": "Your password was successfully changed.",
+      "read": "View user data",
+      "role": "Role",
+      "role_default": "Select a role",
+      "role_select": "Select the user role:",
+      "title": "Users",
+      "update": "Update user data",
+      "user_info": "User information"
+    },
+    "roles": {
+      "create": "Create role",
+      "created": "Role created!",
+      "delete": "Delete role",
+      "delete_warning": "Are you sure you want to delete this role? It cannot be undone.",
+      "deleted": "The role has been deleted.",
+      "description": "Role description:",
+      "index": "View all roles",
+      "list": "Roles list",
+      "name": "Role name:",
+      "new_role": "NEW ROLE",
+      "others": "Others",
+      "read": "View role details",
+      "role_permissions": "Role permissions:",
+      "select_hierarchy": "Drag the role hierarchy (*)",
+      "select_permissions": "Select the role permissions",
+      "title": "Roles",
+      "update": "Update role data"
+    },
+    "posts": {
+      "author": "Author:",
+      "banner": "Post banner",
+      "check_save_message": "You didn't save the post. Do you want to proceed?",
+      "check_save_ok": "Proceed without saving",
+      "check_save_title": "Warning",
+      "content": "Post content:",
+      "create": "Create posts",
+      "created": "Post created!",
+      "delete": "Delete post",
+      "deleted": "The post has been deleted.",
+      "delete_warning": "Are you sure you want to delete this post? It cannot be undone.",
+      "description": "Brief post description:",
+      "first": "Newest",
+      "index": "View posts",
+      "index_mine": "My posts",
+      "index_private": "Staff posts",
+      "no_recommendations": "No recommendations available",
+      "options": "Visibility options",
+      "post_title": "Post title:",
+      "previous": "Newer",
+      "private": "Post for staff only (private post)",
+      "read_more": "READ MODE...",
+      "recent": "Latest posts",
+      "recommended": "You should read:",
+      "replace_banner_message": "Are you sure you want to replace this post banner?",
+      "replace_banner_ok": "Replace",
+      "replace_banner_title": "Replace banner",
+      "tag_invisible": "Invisible",
+      "tag_private": "Private",
+      "tag_yours": "Yours",
+      "tags": {
+        "discard": "Discard search",
+        "no_tags": "This post doesn't have any tag",
+        "placeholder": "Add a tag and press enter",
+        "tags": "Tags:"
+      },
+      "title": "Posts",
+      "tools": "Creator options:",
+      "update": "Modify post",
+      "visible": "This post is visible"
+    },
+    "quotations": {
+      "big_quote": "QUOTE NOW",
+      "content": "Your message",
+      "create": "Make a quotation",
+      "created": "The quote has been sended",
+      "delete": "Delete a quote",
+      "deleted": "The quote has been deleted",
+      "delete_warning": "Are you sure you want to delete this quote? It cannot be undone.",
+      "form_name": "Your name",
+      "index": "View all quotations",
+      "list": "Quotes list",
+      "name": "Client name",
+      "phone": "Phone number",
+      "request": "Request this service",
+      "subject": "Subject",
+      "title": "Quotations"
+    }
+  },
+  "forms": {
+    "confirm_password": "Confirm password:",
+    "current_password": "Current password:",
+    "email": "E-mail:",
+    "file_upload": "Select a file",
+    "file_uploaded": "File uploaded successfully!",
+    "forgot_password": "I forgot my password",
+    "password": "Password:",
+    "reset_password": "Reset password",
+    "submit": "Submit"
+  },
+  "general": {
+    "action": "Action",
+    "cancel": "Cancel",
+    "created_at": "Created at:",
+    "data_changed": "The changes were made successfully.",
+    "default_description": "No description available.",
+    "delete": "Delete",
+    "id": "ID",
+    "loading": "Loading...",
+    "login": "Log in",
+    "logout": "Log out",
+    "member_since": "Member since:",
+    "message": "Message",
+    "name": "Name",
+    "new": "New",
+    "new_password": "New password:",
+    "paginate_first": "First page",
+    "paginate_next": "Next page",
+    "paginate_prev": "Previous page",
+    "search": "Search...",
+    "updated_at": "Updated at:",
+    "upload_document": "Upload a document",
+    "upload_image": "Upload an image",
+    "view": "View"
+  }
 }
