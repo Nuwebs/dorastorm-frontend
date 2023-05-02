@@ -2,7 +2,7 @@
   <section>
     <h1>Home page for logged users</h1>
     <DataTableBase :data="data" :global-filter-fields="['nombre', 'apellido']" v-model:filters="filters" expandable
-      lazy-paginator @filter="test">
+      lazy-paginator @filter="test" :total-records="data.length">
       <template #globalFilter>
         <input type="text" v-model="filters.global.value">
       </template>

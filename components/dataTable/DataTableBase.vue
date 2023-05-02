@@ -23,6 +23,7 @@ import { computed, ref } from "vue";
 
 interface DataTableProps {
   data: any[];
+  totalRecords: number;
   columns?: DataTableColumn[];
   paginator?: boolean;
   paginatorRows?: number;
@@ -62,7 +63,7 @@ const dataTableOptions = computed(() => {
       options["lazy"] = true;
       options["onPage"] = (event:any) => emit("page", event);
       options["onSort"] = (event:any) => emit("sort", event);
-      options["totalRecords"] = props.data.length;
+      options["totalRecords"] = props.totalRecords;
     }
   }
   if (props.filters) {
