@@ -1,3 +1,4 @@
+import { FilterMatchModeOptions } from "primevue/api";
 import { MenuItem } from "primevue/menuitem";
 import { RouteLocationNormalized } from "vue-router";
 export interface Role {
@@ -40,4 +41,17 @@ export interface DsErrorBag {
   errors?: {
     [key: string]: string[];
   };
+}
+
+
+// DataTable
+export type DataTableColumn = {
+  fieldName: string;
+  header: string;
+  sortable?: boolean;
+}
+
+export type Filter = {
+  value: any | null;
+  matchMode: FilterMatchModeOptions
 }
