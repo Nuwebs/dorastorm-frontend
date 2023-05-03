@@ -11,7 +11,7 @@
               header: $t('modules.users.delete'),
               message: $t('modules.users.delete_warning')
             }" @deleted="deleted" v-if="userCan('users-delete')" />
-          <ActionButtonUpdate route="/users/edit/{id}" :model-id="row.data.id" />
+          <ActionButtonUpdate route="/users/edit/{id}" :model-id="row.data.id" v-if="userCan('users-update')" />
         </template>
       </Column>
     </DataTableBase>
