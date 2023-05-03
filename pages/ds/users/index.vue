@@ -5,7 +5,14 @@
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.users.name')" />
       <Column field="email" :header="$t('forms.email')" />
-      <Column header="action"></Column>
+      <Column field="id" :header="$t('general.action')" v-if="hasAnyPermission(['users-delete', 'users-update'])">
+        <template #body="row">
+          <ActionButtonDelete endpoint="/users/{id}" :model-id="row.data.id" :cd-messages="{
+              header: $t('modules.users.delete'),
+              message: $t('modules.users.delete_warning')
+            }" @deleted="deleted" v-if="hasPermission('users-delete')" />
+        </template>
+      </Column>
     </DataTableBase>
   </section>
 </template>
@@ -20,6 +27,8 @@ import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import { useToast } from 'primevue/usetoast';
 import { DataTablePageEvent } from 'primevue/datatable';
 import useLazyPagination from '~/composables/useLazyPagination';
+import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
+import useAuthStore from '~/stores/authStore';
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -27,14 +36,27 @@ definePageMeta({
 });
 
 const toast = useToast();
-const { paginationData, loading, totalResults, toPage, resultsPerPage } = useLazyPagination<User>("/users");
+const { hasAnyPermission, hasPermission } = useAuthStore();
+const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
+  = useLazyPagination<User>("/users");
 
-onMounted(async () => {
-  const res = await toPage(1);
+async function loadData(page: number): Promise<void> {
+  const res = await toPage(page);
   if (res) {
     if (res.statusCode === 403) return toast.add(use403Toast());
     return toast.add(useGeneralErrorToast());
   }
-});
+}
 
+async function deleted(): Promise<void> {
+  let page = currentPage.value;
+  if (paginationData.value.length - 1 <= 0) {
+    page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
+  };
+  await loadData(page);
+}
+
+onMounted(async () => {
+  await loadData(1);
+});
 </script>
