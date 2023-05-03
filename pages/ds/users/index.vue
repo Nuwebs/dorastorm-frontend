@@ -1,10 +1,11 @@
 <template>
   <section>
-    <DataTableBase :data="users" :total-records="totalResults" :paginator-rows="resultsPerPage" :loading="loading"
-      lazy-paginator>
+    <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
+      :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)">
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.users.name')" />
       <Column field="email" :header="$t('forms.email')" />
+      <Column header="action"></Column>
     </DataTableBase>
   </section>
 </template>
@@ -12,49 +13,28 @@
 <script setup lang="ts">
 import DataTableBase from '~/components/dataTable/DataTableBase.vue';
 import Column from 'primevue/column';
-import { ref } from "vue";
-import { definePageMeta, onMounted, use403Toast, useFetch } from '#imports';
-import { PaginationWrapper, User } from "~/types/dorastorm";
-import useAuthOptions from '~/composables/useAuthOptions';
+import { definePageMeta, onMounted } from '#imports';
+import { User } from "~/types/dorastorm";
+import use403Toast from '~/composables/use403Toast';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import { useToast } from 'primevue/usetoast';
+import { DataTablePageEvent } from 'primevue/datatable';
+import useLazyPagination from '~/composables/useLazyPagination';
 
 definePageMeta({
   middleware: ["auth-guard"],
   permissions: ["users-read"]
 });
 
-const users = ref<User[]>([]);
-const endpoint = "/users";
 const toast = useToast();
-
-const loading = ref<boolean>(false);
-const currentPage = ref<number>(1);
-const totalResults = ref<number>(0);
-const resultsPerPage = ref<number>(0);
-
-const fetchUsers = async (page: number = 1): Promise<void> => {
-  loading.value = true;
-  const ep = endpoint + `?page=${page}`;
-  const { data, error } = await useFetch<PaginationWrapper<User>>(ep, useAuthOptions());
-  loading.value = false;
-  if (error.value) {
-    if (error.value?.statusCode === 403) return toast.add(use403Toast());
-    return toast.add(useGeneralErrorToast());
-  }
-  users.value = data.value!.data;
-  currentPage.value = data.value!.meta.current_page;
-  totalResults.value = data.value!.meta.total;
-  resultsPerPage.value = data.value!.meta.per_page;
-}
-
-const toPage = async (page: number): Promise<void> => {
-  await fetchUsers(page);
-}
+const { paginationData, loading, totalResults, toPage, resultsPerPage } = useLazyPagination<User>("/users");
 
 onMounted(async () => {
-  await toPage(currentPage.value);
+  const res = await toPage(1);
+  if (res) {
+    if (res.statusCode === 403) return toast.add(use403Toast());
+    return toast.add(useGeneralErrorToast());
+  }
 });
-
 
 </script>

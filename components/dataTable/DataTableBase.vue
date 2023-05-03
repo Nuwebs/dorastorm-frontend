@@ -16,7 +16,7 @@
 <script setup lang="ts">
 // If you are using lazy mode, you will have to implement the sort, page and filter methods.
 // For the page and sort you will get an event. For the filter is totally up to you.
-import DataTable from "primevue/datatable";
+import DataTable, { DataTablePageEvent, DataTableSortEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import {DataTableColumn, Filter} from "../../types/dorastorm";
 import { computed, ref } from "vue";
@@ -61,8 +61,8 @@ const dataTableOptions = computed(() => {
     options["rows"] = props.paginatorRows;
     if (props.lazyPaginator) {
       options["lazy"] = true;
-      options["onPage"] = (event:any) => emit("page", event);
-      options["onSort"] = (event:any) => emit("sort", event);
+      options["onPage"] = (event:DataTablePageEvent) => emit("page", event);
+      options["onSort"] = (event:DataTableSortEvent) => emit("sort", event);
       options["totalRecords"] = props.totalRecords;
     }
   }
