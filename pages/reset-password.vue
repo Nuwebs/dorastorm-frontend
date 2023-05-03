@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { navigateTo, useRoute } from 'nuxt/app';
-import { definePageMeta, useAPIOptions } from '#imports';
+import { definePageMeta, useAPIOptions, useI18n } from '#imports';
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { object, string, ref as yupRef } from "yup";
@@ -35,6 +35,7 @@ definePageMeta({
 
 const route = useRoute();
 const toast = useToast();
+const {t} = useI18n();
 
 // Prevent for entering this page if it isn't a token and email present.
 if (process.client) {
@@ -52,7 +53,7 @@ const validate = object({
   password: string().required().min(8),
   password_confirmation: string().required().oneOf(
     [yupRef('password')],
-    'Passwords do not match'
+    t("error.validation.confirm_password")
   )
 });
 
