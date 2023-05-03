@@ -11,6 +11,7 @@
               header: $t('modules.users.delete'),
               message: $t('modules.users.delete_warning')
             }" @deleted="deleted" v-if="userCan('users-delete')" />
+          <ActionButtonUpdate route="/users/edit/{id}" :model-id="row.data.id" />
         </template>
       </Column>
     </DataTableBase>
@@ -28,6 +29,7 @@ import { useToast } from 'primevue/usetoast';
 import { DataTablePageEvent } from 'primevue/datatable';
 import useLazyPagination from '~/composables/useLazyPagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
+import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
 import useCachedPermissions from "~/composables/useCachedPermissions";
 
 definePageMeta({
