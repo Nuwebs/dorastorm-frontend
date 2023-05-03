@@ -15,7 +15,7 @@ export const PERMISSIONS: DsMenuItem[] = [
       {
         label: t("general.new"),
         icon: "pi pi-user-plus",
-        to: lp("/ds"),
+        to: lp("/ds/users/create"),
         permissions: "users-create"
       },
       {
