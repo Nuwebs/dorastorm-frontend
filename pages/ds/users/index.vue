@@ -5,12 +5,12 @@
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.users.name')" />
       <Column field="email" :header="$t('forms.email')" />
-      <Column field="id" :header="$t('general.action')" v-if="hasAnyPermission(['users-delete', 'users-update'])">
+      <Column field="id" :header="$t('general.action')" v-if="userIsAllowed">
         <template #body="row">
           <ActionButtonDelete endpoint="/users/{id}" :model-id="row.data.id" :cd-messages="{
               header: $t('modules.users.delete'),
               message: $t('modules.users.delete_warning')
-            }" @deleted="deleted" v-if="hasPermission('users-delete')" />
+            }" @deleted="deleted" v-if="userCan('users-delete')" />
         </template>
       </Column>
     </DataTableBase>
@@ -28,7 +28,7 @@ import { useToast } from 'primevue/usetoast';
 import { DataTablePageEvent } from 'primevue/datatable';
 import useLazyPagination from '~/composables/useLazyPagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
-import useAuthStore from '~/stores/authStore';
+import useCachedPermissions from "~/composables/useCachedPermissions";
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -36,7 +36,7 @@ definePageMeta({
 });
 
 const toast = useToast();
-const { hasAnyPermission, hasPermission } = useAuthStore();
+const { userCan, userIsAllowed } = useCachedPermissions(['users-update', 'users-delete'])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<User>("/users");
 
