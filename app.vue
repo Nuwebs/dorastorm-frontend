@@ -1,12 +1,11 @@
 <template>
-  <DefaultLayout>
+  <NuxtLayout>
     <NuxtPage></NuxtPage>
-    <Toast/>
-  </DefaultLayout>
+    <Toast />
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from "~/layouts/default.vue";
 import Toast from "primevue/toast";
 </script>
 <style>
@@ -14,6 +13,7 @@ body {
   margin: 0;
   background-color: var(--surface-ground);
 }
+
 .nlink {
   text-decoration: none;
   color: var(--text-color);
