@@ -11,6 +11,8 @@
       <slot></slot>
     </main>
   </article>
+  <Toast />    
+  <ConfirmDialog />
 </template>
 
 <script setup lang="ts">
@@ -20,6 +22,8 @@ import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
 import { sidebarMenuItems } from '~/services/permissions';
 import PanelMenu from "primevue/panelmenu";
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const windowWidth = useWindowWidth();
 const shouldBeSidebar = ref<boolean>(windowWidth.value >= 992);
