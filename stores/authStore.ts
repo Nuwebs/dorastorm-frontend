@@ -18,19 +18,19 @@ const useAuthStore = defineStore("auth", () => {
   });
 
   function hasPermission(permission: string): boolean {
-    if (!isLoggedIn) return false;
-    return user.value!.role.permissions.includes(permission);
+    if (!user.value) return false;
+    return user.value.role.permissions.includes(permission);
   }
 
   function hasAnyPermission(permissions: string[]): boolean {
-    if (!isLoggedIn) return false;
-    return user.value!.role.permissions.some((permission) =>
+    if (!user.value) return false;
+    return user.value.role.permissions.some((permission) =>
       permissions.includes(permission)
     );
   }
 
   function hasEveryPermissions(permissions: string[]): boolean {
-    if (!isLoggedIn) return false;
+    if (!user.value) return false;
     for (const permission of permissions) {
       if (!hasPermission(permission)) return false;
     }
