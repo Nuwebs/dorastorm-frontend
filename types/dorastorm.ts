@@ -19,8 +19,8 @@ export interface User {
 }
 
 export interface DsLoginCredentials {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface DsRouteMeta extends RouteLocationNormalized {
@@ -31,9 +31,9 @@ export interface DsRouteMeta extends RouteLocationNormalized {
 }
 
 export type DsMenuItem = MenuItem & {
-  permissions?: string | string[],
-  items?: DsMenuItem | undefined
-}
+  permissions?: string | string[];
+  items?: DsMenuItem | undefined;
+};
 
 // Error related
 export interface DsErrorBag {
@@ -43,15 +43,27 @@ export interface DsErrorBag {
   };
 }
 
-
 // DataTable
 export type DataTableColumn = {
   fieldName: string;
   header: string;
   sortable?: boolean;
-}
+};
 
 export type Filter = {
   value: any | null;
-  matchMode: FilterMatchModeOptions
+  matchMode: FilterMatchModeOptions;
+};
+
+export interface PaginationWrapper<DataT> {
+  data: DataT[];
+  meta: {
+    current_page: 1;
+    from: 1;
+    last_page: 1;
+    path: string;
+    per_page: number;
+    to: number | null;
+    total: number;
+  };
 }

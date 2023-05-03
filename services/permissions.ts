@@ -15,13 +15,13 @@ export const PERMISSIONS: DsMenuItem[] = [
       {
         label: t("general.new"),
         icon: "pi pi-user-plus",
-        to: lp("/"),
+        to: lp("/ds"),
         permissions: "users-create"
       },
       {
         label: t("modules.users.index"),
         icon: "pi pi-list",
-        to: "/",
+        to: lp("/ds/users"),
         permissions: "users-read"
       },
     ],
