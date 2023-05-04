@@ -26,7 +26,6 @@ body {
 
 .p-component-overlay {
   position: relative;
-  background-color: var(--surface-section);
-  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>
