@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <section class="p-container">
+    <h1 class="mt-0">{{ $t("modules.users.list") }}</h1>
     <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
       :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)">
       <Column field="id" :header="$t('general.id')" />

@@ -1,9 +1,9 @@
 <template>
-  <section>
-    <h1>{{ $t("modules.users.create") }}</h1>
+  <section class="p-container">
+    <h1 class="mt-0">{{ $t("modules.users.create") }}</h1>
     <form @submit="submit">
-      <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name" />
-      <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email" />
+      <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name" placeholder="James Douglas"/>
+      <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email" placeholder="example@example.com"/>
       <FormText name="password" type="password" :label="$t('forms.password')" v-model="data.password" />
       <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')"
         v-model="data.password_confirmation" />      
@@ -25,7 +25,6 @@ import FormText from '~/components/form/FormText.vue';
 import { Role } from '~/types/dorastorm';
 import useAuthOptions from "~/composables/useAuthOptions";
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
-import Dropdown from "primevue/dropdown";
 import FormSelect from '~/components/form/FormSelect.vue';
 
 definePageMeta({
