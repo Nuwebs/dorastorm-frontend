@@ -1,6 +1,6 @@
 <template>
   <section class="loading-container">
-    <div class="loading-overlay grid justify-content-center flex-column align-items-center">
+    <div class="loading-overlay grid grid-nogutter justify-content-center flex-column align-items-center">
       <div class="loading-spinner"></div>
       <div class="loading-text mt-2">
         {{ props.loadingText ? props.loadingText : $t("general.loading") }}
@@ -28,7 +28,6 @@ const props = defineProps<{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--surface-a);
   z-index: 999;
 }
 

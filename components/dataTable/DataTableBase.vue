@@ -1,5 +1,8 @@
 <template>
   <DataTable v-bind="dataTableOptions" v-model:expanded-rows="expandedRows" v-model:filters="props.filters">
+    <template #loading>
+      <TheLoadingSpinner />
+    </template>
     <template #header v-if="props.globalFilterFields">
       <slot name="globalFilter" />
     </template>
@@ -18,8 +21,9 @@
 // For the page and sort you will get an event. For the filter is totally up to you.
 import DataTable, { DataTablePageEvent, DataTableSortEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import {DataTableColumn, Filter} from "../../types/dorastorm";
+import { DataTableColumn, Filter } from "../../types/dorastorm";
 import { computed, ref } from "vue";
+import TheLoadingSpinner from "../TheLoadingSpinner.vue";
 
 interface DataTableProps {
   data: any[];
@@ -61,8 +65,8 @@ const dataTableOptions = computed(() => {
     options["rows"] = props.paginatorRows;
     if (props.lazyPaginator) {
       options["lazy"] = true;
-      options["onPage"] = (event:DataTablePageEvent) => emit("page", event);
-      options["onSort"] = (event:DataTableSortEvent) => emit("sort", event);
+      options["onPage"] = (event: DataTablePageEvent) => emit("page", event);
+      options["onSort"] = (event: DataTableSortEvent) => emit("sort", event);
       options["totalRecords"] = props.totalRecords;
     }
   }
@@ -78,3 +82,8 @@ const dataTableOptions = computed(() => {
 });
 
 </script>
+<style scoped>
+.p-component-overlay{
+  background-color: white;
+}
+</style>

@@ -23,4 +23,10 @@ body {
   color: var(--primary-color);
   border-bottom: 2px solid var(--primary-color);
 }
+
+.p-component-overlay {
+  position: relative;
+  background-color: var(--surface-section);
+  opacity: 0.8;
+}
 </style>
