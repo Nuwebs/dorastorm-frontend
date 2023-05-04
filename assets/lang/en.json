@@ -23,7 +23,8 @@
     },
     "fatal": "Something wrong happened. Try again later or contact the administrator.",
     "validation": {
-      "confirm_password": "The passwords don't match"
+      "confirm_password": "The passwords don't match",
+      "current_password": "Incorrect current password"
     }
   },
   "modules": {
@@ -37,7 +38,7 @@
       "index": "View all users",
       "list": "Users list",
       "name": "User name:",
-      "password_changed": "Your password was successfully changed.",
+      "password_changed": "The password was successfully changed.",
       "read": "View user data",
       "role": "Role",
       "role_default": "Select a role",
@@ -157,6 +158,7 @@
     "paginate_next": "Next page",
     "paginate_prev": "Previous page",
     "search": "Search...",
+    "updated": "The changes were made successfully.",
     "updated_at": "Updated at:",
     "upload_document": "Upload a document",
     "upload_image": "Upload an image",

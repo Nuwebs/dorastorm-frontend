@@ -13,6 +13,7 @@
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
     </form>
     <Hr />
+    <UserChangePassword :user-id="Number(route.params.id)"/>
   </section>
 </template>
 
@@ -30,6 +31,7 @@ import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import Hr from '~/components/Hr.vue';
+import UserChangePassword from '~/components/user/UserChangePassword.vue';
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -47,7 +49,6 @@ const toast = useToast();
 
 const loading = ref<boolean>(false);
 const is404 = ref<boolean>(false);
-const toggle = ref<boolean>(false);
 
 const availableRoles = ref<Role[]>([]);
 const data = ref<UpdateUser>({
@@ -103,6 +104,6 @@ const submit = handleSubmit(async () => {
   if (error.value) {
     return toast.add(useGeneralErrorToast());
   }
-  toast.add({ severity: "success", detail: t("modules.users.created"), life: 3000 });
+  toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
 })
 </script>
