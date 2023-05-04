@@ -24,7 +24,9 @@
     "fatal": "Something wrong happened. Try again later or contact the administrator.",
     "validation": {
       "confirm_password": "The passwords don't match",
-      "current_password": "Incorrect current password"
+      "current_password": "Incorrect current password",
+      "email_404": "We regret to inform you that the email address you have provided does not appear to exist in our database.",
+      "reset_password": "We regret to inform you that your password could not be changed, as the time limit for doing so may have expired. We suggest requesting another password recovery email to proceed."
     }
   },
   "modules": {
@@ -35,6 +37,7 @@
       "delete": "Delete user",
       "delete_warning": "Are you sure you want to delete this user? It cannot be undone.",
       "deleted": "The user has been deleted.",
+      "fp_email_send": "Your password recovery email has been sent.",
       "index": "View all users",
       "list": "Users list",
       "name": "User name:",

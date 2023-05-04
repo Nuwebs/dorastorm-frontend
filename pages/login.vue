@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { definePageMeta, navigateTo, useLocalePath } from '#imports';
+import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
 import Card from "primevue/card";
@@ -37,6 +37,7 @@ definePageMeta({
   middleware: ['guest-guard']
 });
 const lp = useLocalePath();
+const { t } = useI18n();
 const credentials = ref<DsLoginCredentials>({
   email: '',
   password: ''
@@ -53,9 +54,9 @@ const onSubmit = handleSubmit(async () => {
   const response = await login(credentials.value);
   if (response) {
     if (response.statusCode === 422) {
-      setFieldError('email', response.data.errors.email);
+      return setFieldError('email', response.data.errors.email);
     }
-    return;
+    return setFieldError("password", t("error.fatal"));
   }
   navigateTo('/ds');
 })

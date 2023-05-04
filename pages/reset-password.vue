@@ -17,6 +17,7 @@
       </Card>
     </div>
   </section>
+  <Toast />
 </template>
 
 <script setup lang="ts">
@@ -28,6 +29,7 @@ import { object, string, ref as yupRef } from "yup";
 import { useToast } from "primevue/usetoast";
 import Button from 'primevue/button';
 import Card from 'primevue/card';
+import Toast from 'primevue/toast';
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -68,14 +70,13 @@ const onSubmit = handleSubmit(async () => {
       method: 'post',
       body: data.value
     });
-    toast.add({ severity: 'success', summary: 'Password changed!', detail: 'Your password have been successfully changed', life: 3000 });
+    toast.add({ severity: 'success', detail: t("modules.users.password_changed"), life: 3000 });
     navigateTo('/login');
   } catch (error: any) {
     if (error.statusCode === 422) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Your password could not be changed.', life: 3000 });
-      return;
+      return toast.add({ severity: 'error', detail: t("error.validation.reset_password"), life: 3000 });
     }
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Unknown error. Please contact the admin.', life: 3000 });
+    toast.add({ severity: 'error', detail: t("error.fatal"), life: 3000 });
   }
 });
 

@@ -15,6 +15,7 @@
       </Card>
     </div>
   </section>
+  <Toast />
 </template>
 
 <script setup lang="ts">
@@ -25,8 +26,9 @@ import { useForm } from "vee-validate";
 import { object, string } from "yup";
 import Button from "primevue/button";
 import useAPIOptions from "~/composables/useAPIOptions";
-import { definePageMeta } from "#imports";
+import { definePageMeta, useI18n } from "#imports";
 import { useToast } from "primevue/usetoast";
+import Toast from "primevue/toast";
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -36,6 +38,7 @@ const data = ref({
   email: ''
 });
 const toast = useToast();
+const { t } = useI18n();
 
 const validate = object({
   email: string().required().email()
@@ -48,16 +51,21 @@ const { handleSubmit, isSubmitting, setFieldError } = useForm({
 // Replace fetch with useFetch implementation when useFetch type bug is fixed
 const onSubmit = handleSubmit(async () => {
   try {
-    await $fetch<void>('/forgot-password', {
+    await $fetch<void>("/forgot-password", {
       ...useAPIOptions(),
-      method: 'post',
+      method: "post",
       body: data.value
     });
-    toast.add({ severity: 'success', summary: 'Email send', detail: 'Check your email for the next steps.', life: 3000 })
+    toast.add({
+      severity: "success",
+      detail: t("modules.users.fp_email_send"),
+      life: 3000
+    })
   } catch (error: any) {
     if (error.statusCode === 422) {
-      setFieldError('email', 'The email you provided does not exists in our database');
+      return setFieldError("email", t("error.validation.email_404"));
     }
+    return setFieldError("password", t("error.fatal"));
   }
 });
 </script>

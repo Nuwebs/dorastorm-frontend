@@ -24,7 +24,9 @@
     "fatal": "Algo salió mal. Inténtalo de nuevo más tarde o contacta al administrador.",
     "validation": {
       "confirm_password": "Las contraseñas no coinciden",
-      "current_password": "La contraseña actual no es correcta."
+      "current_password": "La contraseña actual no es correcta.",
+      "email_404": "Lamentamos informarle que la dirección de correo electrónico que ha proporcionado no parece existir en nuestra base de datos.",
+      "reset_password": "Lamentamos informarle que no se pudo cambiar su contraseña, ya que es posible que haya expirado el límite de tiempo para hacerlo. Sugerimos solicitar otro correo electrónico de recuperación de contraseña para continuar."
     }
   },
   "modules": {
@@ -35,6 +37,7 @@
       "delete": "Eliminar usuario",
       "delete_warning": "¿Estás seguro de que quieres eliminar a este usuario? No se puede deshacer.",
       "deleted": "El usuario ha sido eliminado.",
+      "fp_email_send": "Se ha enviado el correo electrónico de recuperación de contraseña.",
       "index": "Ver todos los usuarios",
       "list": "Lista de usuarios",
       "name": "Nombre de usuario:",
