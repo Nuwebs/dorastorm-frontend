@@ -104,11 +104,12 @@ export const login = async (
 
 export const logout = async (): Promise<void | ErrorBag> => {
   const authStore = useAuthStore();
-  const ep = useRuntimeConfig().public.authEndpoints.logout;
+  const ep = useRuntimeConfig().public.authEndpoints.logout;  
+  // The session will be closed in the frontend no matter what
+  authStore.$reset();
+  cleanSavedKeys();
   try {
     await $fetch(ep, { ...useAuthOptions(), method: "post" });
-    authStore.$reset();
-    cleanSavedKeys();
   } catch (error: any) {
     // Possible no internet connection
     return error as ErrorBag;
