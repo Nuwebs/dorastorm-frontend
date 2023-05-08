@@ -1,7 +1,8 @@
 import { useFetch } from "#imports";
-import { UseFetchOptions, useRuntimeConfig } from "nuxt/app";
+import { UseFetchOptions, navigateTo, useRuntimeConfig } from "nuxt/app";
 import useAuthStore from "~/stores/authStore";
 import { ApiFetch } from "~/types";
+import { logout } from "~/services/auth";
 
 const generateOptions = <ResponseT>(
   auth: boolean,
@@ -24,8 +25,16 @@ const useAPIFetch = async <ResponseT = void>({
   auth = true,
   options = {},
 }: ApiFetch<ResponseT>) => {
-  options = generateOptions<ResponseT>(auth, options);
-  return useFetch<ResponseT>(endpoint, options as object);
+  const cOptions = generateOptions<ResponseT>(auth, options);
+  return useFetch<ResponseT>(endpoint, {
+    ... cOptions as object,
+    async onResponseError({response}) {
+      if (response.status === 401) {
+        await logout(true);
+        navigateTo("/login");
+      }
+    },
+  });
 };
 
 export default useAPIFetch;

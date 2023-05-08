@@ -54,7 +54,6 @@ export const isTokenExpired = (expiresEpoch: number): boolean => {
 };
 
 export const refreshToken = async (): Promise<void> => {
-  console.log("refreshing");
   const authStore = useAuthStore();
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
   const { data, error } = await useAPIFetch<JWTResponse>({
@@ -103,8 +102,15 @@ export const login = async (
   saveExpiresEpoch(authStore.expiresEpoch);
 };
 
-export const logout = async (): Promise<void | ErrorBag> => {
+export const logout = async (
+  fastCall: boolean = false
+): Promise<void | ErrorBag> => {
   const authStore = useAuthStore();
+  if (fastCall) {
+    authStore.$reset();
+    cleanSavedKeys();
+    return;
+  }
   const ep = useRuntimeConfig().public.authEndpoints.logout;
   const { error } = await useAPIFetch<void>({
     endpoint: ep,
