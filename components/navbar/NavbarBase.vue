@@ -25,5 +25,6 @@ defineProps<{
 }
 .navbar {
   height: 12vh;
+  z-index: 10;
 }
 </style>
