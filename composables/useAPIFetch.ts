@@ -11,6 +11,7 @@ const generateOptions = <ResponseT>(
   const config = useRuntimeConfig();
   const baseOptions: UseFetchOptions<ResponseT> = {
     baseURL: config.public.backendURL,
+    watch: false
   };
   if (auth) {
     baseOptions.headers = {
