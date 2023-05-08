@@ -1,11 +1,10 @@
 import useAuthStore from "~/stores/authStore";
 import { DsLoginCredentials, User } from "~/types/dorastorm";
 import { useRuntimeConfig } from "nuxt/app";
-import useAuthOptions from "~/composables/useAuthOptions";
 import ExpiredTokenException from "~/utils/exceptions/ExpiredTokenException";
 import InvalidTokenException from "~/utils/exceptions/InvalidTokenException";
 import { ErrorBag, JWTResponse } from "~/types";
-import useAPIOptions from "~/composables/useAPIOptions";
+import useAPIFetch from "~/composables/useAPIFetch";
 
 const saveToken = (token: string): void => {
   localStorage.setItem("ds-jwt", token);
@@ -55,65 +54,68 @@ export const isTokenExpired = (expiresEpoch: number): boolean => {
 };
 
 export const refreshToken = async (): Promise<void> => {
+  console.log("refreshing");
   const authStore = useAuthStore();
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
-  try {
-    const response = await $fetch<JWTResponse>(ep, useAuthOptions());
-    authStore.token = response.accessToken;
-    authStore.expiresEpoch = calculateExpireEpoch(response.expiresIn);
-    saveToken(authStore.token);
-    saveExpiresEpoch(authStore.expiresEpoch);
-  } catch (error: any) {
+  const { data, error } = await useAPIFetch<JWTResponse>({
+    endpoint: ep,
+  });
+  if (error.value) {
     cleanSavedKeys();
     authStore.$reset();
-    if (error.statusCode && error.statusCode === 409)
+    if (error.value.statusCode && error.value.statusCode === 409)
       throw new ExpiredTokenException("");
     throw new InvalidTokenException("");
   }
+  authStore.token = data.value!.accessToken;
+  authStore.expiresEpoch = calculateExpireEpoch(data.value!.expiresIn);
+  saveToken(authStore.token);
+  saveExpiresEpoch(authStore.expiresEpoch);
 };
 
 export const login = async (
   credentials: DsLoginCredentials
 ): Promise<void | ErrorBag> => {
   const config = useRuntimeConfig();
-  let ep = config.public.authEndpoints.login;
-  try {
-    // Get the access token
-    const response = await $fetch<JWTResponse>(ep, {
-      ...useAPIOptions(),
+  const authStore = useAuthStore();
+  // Get the access token
+  const { data: jwtData, error: jwtError } = await useAPIFetch<JWTResponse>({
+    endpoint: config.public.authEndpoints.login,
+    auth: false,
+    options: {
       method: "post",
       body: credentials,
-    });
-    const authStore = useAuthStore();
-    authStore.token = response.accessToken;
-    ep = config.public.authEndpoints.me;
-    // Get the user info
-    const user = await $fetch<User>(ep, {
-      ...useAuthOptions(),
-    });
-    authStore.user = user;
-    authStore.expiresEpoch = calculateExpireEpoch(response.expiresIn);
-    // Save the user info into storage
-    saveUser(authStore.user);
-    saveToken(authStore.token);
-    saveExpiresEpoch(authStore.expiresEpoch);
-  } catch (error: any) {
-    return error as ErrorBag;
-  }
+    },
+  });
+  if (jwtError.value) return jwtError.value as ErrorBag;
+  authStore.token = jwtData.value!.accessToken;
+
+  // Get the user info
+  const { data: user, error: userError } = await useAPIFetch<User>({
+    endpoint: config.public.authEndpoints.me,
+  });
+  if (userError.value) return userError.value as ErrorBag;
+  authStore.user = user.value!;
+  authStore.expiresEpoch = calculateExpireEpoch(jwtData.value!.expiresIn);
+
+  saveUser(authStore.user);
+  saveToken(authStore.token);
+  saveExpiresEpoch(authStore.expiresEpoch);
 };
 
 export const logout = async (): Promise<void | ErrorBag> => {
   const authStore = useAuthStore();
-  const ep = useRuntimeConfig().public.authEndpoints.logout;  
+  const ep = useRuntimeConfig().public.authEndpoints.logout;
+  const { error } = await useAPIFetch<void>({
+    endpoint: ep,
+    options: {
+      method: "post",
+    },
+  });
   // The session will be closed in the frontend no matter what
   authStore.$reset();
   cleanSavedKeys();
-  try {
-    await $fetch(ep, { ...useAuthOptions(), method: "post" });
-  } catch (error: any) {
-    // Possible no internet connection
-    return error as ErrorBag;
-  }
+  if (error.value) return error.value as ErrorBag;
 };
 
 export const loadUserData = (): void => {

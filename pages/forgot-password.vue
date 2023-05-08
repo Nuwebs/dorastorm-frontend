@@ -15,7 +15,6 @@
       </Card>
     </div>
   </section>
-  <Toast />
 </template>
 
 <script setup lang="ts">
@@ -25,10 +24,10 @@ import FormText from "~/components/form/FormText.vue";
 import { useForm } from "vee-validate";
 import { object, string } from "yup";
 import Button from "primevue/button";
-import useAPIOptions from "~/composables/useAPIOptions";
 import { definePageMeta, useI18n } from "#imports";
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
+import useAPIFetch from "~/composables/useAPIFetch";
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -50,22 +49,24 @@ const { handleSubmit, isSubmitting, setFieldError } = useForm({
 
 // Replace fetch with useFetch implementation when useFetch type bug is fixed
 const onSubmit = handleSubmit(async () => {
-  try {
-    await $fetch<void>("/forgot-password", {
-      ...useAPIOptions(),
+  const { error } = await useAPIFetch<void>({
+    endpoint: "forgot-password",
+    auth: false,
+    options: {
       method: "post",
       body: data.value
-    });
-    toast.add({
-      severity: "success",
-      detail: t("modules.users.fp_email_send"),
-      life: 3000
-    })
-  } catch (error: any) {
-    if (error.statusCode === 422) {
+    }
+  });
+  if (error.value) {
+    if (error.value.statusCode === 422) {
       return setFieldError("email", t("error.validation.email_404"));
     }
     return setFieldError("password", t("error.fatal"));
   }
+  toast.add({
+    severity: "success",
+    detail: t("modules.users.fp_email_send"),
+    life: 3000
+  });
 });
 </script>

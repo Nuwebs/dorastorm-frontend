@@ -2,20 +2,22 @@
   <section class="p-container">
     <h1 class="mt-0">{{ $t("modules.users.create") }}</h1>
     <form @submit="submit">
-      <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name" placeholder="James Douglas"/>
-      <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email" placeholder="example@example.com"/>
+      <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name"
+        placeholder="James Douglas" />
+      <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email"
+        placeholder="example@example.com" />
       <FormText name="password" type="password" :label="$t('forms.password')" v-model="data.password" />
       <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')"
-        v-model="data.password_confirmation" />      
+        v-model="data.password_confirmation" />
       <FormSelect name="role_id" :label="$t('modules.users.role_select')" :options="availableRoles" option-label="name"
-        option-value="id" :loading="loading" :placeholder="$t('modules.users.role_default')" v-model="data.role_id"/>
+        option-value="id" :loading="loading" :placeholder="$t('modules.users.role_default')" v-model="data.role_id" />
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
     </form>
   </section>
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useFetch, useI18n } from '#imports';
+import { definePageMeta, useI18n } from '#imports';
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from "vue";
@@ -23,9 +25,9 @@ import { object, string, number, ref as yupRef } from "yup";
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import { Role } from '~/types/dorastorm';
-import useAuthOptions from "~/composables/useAuthOptions";
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
+import useAPIFetch from "~/composables/useAPIFetch";
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -69,7 +71,9 @@ const { handleSubmit, resetForm, isSubmitting } = useForm({
 
 onMounted(async () => {
   loading.value = true;
-  const { data, error } = await useFetch<Role[]>("/users/rolesbelow", useAuthOptions());
+  const { data, error } = await useAPIFetch<Role[]>({
+    endpoint: "/users/rolesbelow"
+  });
   if (error.value) {
     return toast.add(useGeneralErrorToast());
   }
@@ -78,10 +82,12 @@ onMounted(async () => {
 });
 
 const submit = handleSubmit(async () => {
-  const { error } = await useFetch("/users", {
-    ...useAuthOptions(),
-    method: 'post',
-    body: data.value
+  const { error } = await useAPIFetch({
+    endpoint: "/users",
+    options: {
+      method: "post",
+      body: data.value
+    }
   });
   if (error.value) {
     return toast.add(useGeneralErrorToast());

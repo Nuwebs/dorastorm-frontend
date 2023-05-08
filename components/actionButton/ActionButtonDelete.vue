@@ -4,15 +4,15 @@
 </template>
 
 <script setup lang="ts">
-import useAuthOptions from '~/composables/useAuthOptions';
 import Button from 'primevue/button';
 import { ref } from "vue";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from 'primevue/usetoast';
-import { onMounted, useFetch, useI18n } from '#imports';
+import { useFetch, useI18n } from '#imports';
 import use404Toast from "~/composables/use404Toast";
 import use403Toast from "~/composables/use403Toast";
 import useGeneralErrorToast from "~/composables/useGeneralErrorToast";
+import useAPIFetch from "~/composables/useAPIFetch";
 
 interface Props {
   endpoint: string;
@@ -41,20 +41,6 @@ const confirm = useConfirm();
 const toast = useToast();
 const loading = ref<boolean>(false);
 const { t } = useI18n();
-const options = ref<object>({});
-
-onMounted(() => {
-  // This can not be done with the defaults because Pinia
-  // is not initialized yet.
-  if (!props.options) {
-    options.value = {
-      ...useAuthOptions(),
-      method: "delete"
-    };
-  } else {
-    options.value = props.options;
-  }
-})
 
 function confirmDialog(): void {
   confirm.require({
@@ -72,7 +58,12 @@ function confirmDialog(): void {
 async function deleteModel(): Promise<void> {
   loading.value = true;
   const ep = props.endpoint.replace(props.modelIdReplace, String(props.modelId));
-  const { error } = await useFetch(ep, options.value);
+  const { error } = await useAPIFetch({
+    endpoint: ep,
+    options: !props.options ? {
+      method: "delete"
+    } : props.options
+  });
   loading.value = false;
   if (!error.value) {
     return emit("deleted", props.modelId);

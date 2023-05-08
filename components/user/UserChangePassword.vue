@@ -20,11 +20,11 @@ import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref } from "vue";
 import { object, string, ref as yupRef } from "yup";
-import useAuthOptions from "~/composables/useAuthOptions";
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
-import { useFetch, useI18n } from '#imports';
+import { useI18n } from '#imports';
+import useAPIFetch from "~/composables/useAPIFetch";
 
 interface NewPassword {
   current_password: string;
@@ -58,10 +58,12 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
 });
 
 const submit = handleSubmit(async () => {
-  const { error } = await useFetch(`/users/${props.userId}/password`, {
-    ...useAuthOptions(),
-    method: "PATCH",
-    body: data.value
+  const { error } = await useAPIFetch({
+    endpoint: `/users/${props.userId}/password`,
+    options: {
+      method: "PATCH",
+      body: data.value
+    }
   });
   if (error.value) {
     if (error.value.statusCode === 422) {

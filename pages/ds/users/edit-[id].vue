@@ -13,12 +13,12 @@
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
     </form>
     <Hr />
-    <UserChangePassword :user-id="Number(route.params.id)"/>
+    <UserChangePassword :user-id="Number(route.params.id)" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useFetch, useI18n, useRoute } from '#imports';
+import { definePageMeta, useI18n, useRoute } from '#imports';
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from "vue";
@@ -26,12 +26,12 @@ import { object, string, number } from "yup";
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
 import { Role, User } from '~/types/dorastorm';
-import useAuthOptions from "~/composables/useAuthOptions";
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import Hr from '~/components/Hr.vue';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
+import useAPIFetch from "~/composables/useAPIFetch";
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -68,7 +68,9 @@ const { handleSubmit, isSubmitting } = useForm({
 });
 
 async function fetchUser() {
-  const { data: user, error } = await useFetch<User>("/users/" + route.params.id, useAuthOptions());
+  const { data: user, error } = await useAPIFetch<User>({
+    endpoint: "/users/" + route.params.id
+  });
   if (error.value) {
     return error.value;
   }
@@ -80,7 +82,9 @@ async function fetchUser() {
 }
 
 async function fetchRoles() {
-  const { data, error } = await useFetch<Role[]>("/users/rolesbelow", useAuthOptions());
+  const { data, error } = await useAPIFetch<Role[]>({
+    endpoint: "/users/rolesbelow"
+  });
   if (error.value) {
     return toast.add(useGeneralErrorToast());
   }
@@ -96,10 +100,12 @@ onMounted(async () => {
 });
 
 const submit = handleSubmit(async () => {
-  const { error } = await useFetch("/users/" + route.params.id, {
-    ...useAuthOptions(),
-    method: 'PATCH',
-    body: data.value
+  const { error } = await useAPIFetch({
+    endpoint: "/users/" + route.params.id,
+    options: {
+      method: "PATCH",
+      body: data.value
+    }
   });
   if (error.value) {
     return toast.add(useGeneralErrorToast());

@@ -10,8 +10,7 @@
     <main :class="contentClasses">
       <slot></slot>
     </main>
-  </article>
-  <Toast />    
+  </article> 
   <ConfirmDialog />
 </template>
 
@@ -22,7 +21,6 @@ import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
 import { sidebarMenuItems } from '~/services/permissions';
 import PanelMenu from "primevue/panelmenu";
-import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 
 const windowWidth = useWindowWidth();

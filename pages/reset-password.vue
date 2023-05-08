@@ -17,12 +17,11 @@
       </Card>
     </div>
   </section>
-  <Toast />
 </template>
 
 <script setup lang="ts">
 import { navigateTo, useRoute } from 'nuxt/app';
-import { definePageMeta, useAPIOptions, useI18n } from '#imports';
+import { definePageMeta, useI18n } from '#imports';
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { object, string, ref as yupRef } from "yup";
@@ -30,6 +29,7 @@ import { useToast } from "primevue/usetoast";
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Toast from 'primevue/toast';
+import useAPIFetch from "~/composables/useAPIFetch";
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -64,20 +64,22 @@ const { handleSubmit, isSubmitting } = useForm({
 });
 
 const onSubmit = handleSubmit(async () => {
-  try {
-    await $fetch('/reset-password', {
-      ...useAPIOptions(),
-      method: 'post',
+  const { error } = await useAPIFetch<void>({
+    endpoint: "/reset-password",
+    auth: false,
+    options: {
+      method: "post",
       body: data.value
-    });
-    toast.add({ severity: 'success', detail: t("modules.users.password_changed"), life: 3000 });
-    navigateTo('/login');
-  } catch (error: any) {
-    if (error.statusCode === 422) {
+    }
+  });
+  if (error.value) {
+    if (error.value.statusCode === 422) {
       return toast.add({ severity: 'error', detail: t("error.validation.reset_password"), life: 3000 });
     }
-    toast.add({ severity: 'error', detail: t("error.fatal"), life: 3000 });
+    return toast.add({ severity: 'error', detail: t("error.fatal"), life: 3000 });
   }
+  toast.add({ severity: 'success', detail: t("modules.users.password_changed"), life: 3000 });
+  navigateTo('/login');
 });
 
 </script>

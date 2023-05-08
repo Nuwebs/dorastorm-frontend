@@ -32,6 +32,7 @@ import Hr from '~/components/Hr.vue';
 import FormText from '~/components/form/FormText.vue';
 import { useForm } from "vee-validate";
 import { object, string } from "yup";
+import Toast from "primevue/toast";
 
 definePageMeta({
   middleware: ['guest-guard']
