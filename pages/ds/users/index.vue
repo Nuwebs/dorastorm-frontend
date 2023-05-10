@@ -11,8 +11,8 @@
           <ActionButtonDelete endpoint="/users/{id}" :model-id="row.data.id" :cd-messages="{
               header: $t('modules.users.delete'),
               message: $t('modules.users.delete_warning')
-            }" @deleted="deleted" v-if="userCan('users-delete')" />
-          <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan('users-update')" />
+            }" @deleted="deleted" v-if="userCan(PERMISSIONS.USERS_DELETE)" />
+          <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan(PERMISSIONS.USERS_UPDATE)" />
         </template>
       </Column>
     </DataTableBase>
@@ -32,14 +32,15 @@ import useLazyPagination from '~/composables/useLazyPagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
 import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
 import useCachedPermissions from "~/composables/useCachedPermissions";
+import { PERMISSIONS } from '~/services/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: ["users-read"]
+  permissions: [PERMISSIONS.USERS_READ]
 });
 
 const toast = useToast();
-const { userCan, userIsAllowed } = useCachedPermissions(['users-update', 'users-delete'])
+const { userCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.USERS_UPDATE, PERMISSIONS.USERS_DELETE])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<User>("/users");
 

@@ -14,7 +14,7 @@
           <ActionButtonDelete endpoint="/roles/{id}" :model-id="row.data.id" :cd-messages="{
               header: $t('modules.roles.delete'),
               message: $t('modules.roles.delete_warning')
-            }" @deleted="deleted" v-if="userCan('roles-delete')" />
+            }" @deleted="deleted" v-if="userCan(PERMISSIONS.ROLES_DELETE)" />
           <!-- <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan('users-update')" /> -->
         </template>
       </Column>
@@ -33,14 +33,15 @@ import DataTableBase from '~/components/dataTable/DataTableBase.vue';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import RoleData from '~/components/role/RoleData.vue';
+import { PERMISSIONS } from '~/services/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: ["roles-read"]
+  permissions: [PERMISSIONS.ROLES_READ]
 });
 
 const toast = useToast();
-const { userCan, userIsAllowed } = useCachedPermissions(["roles-update", "roles-delete"])
+const { userCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.ROLES_UPDATE, PERMISSIONS.ROLES_DELETE])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<Role>("/roles");
 

@@ -28,10 +28,11 @@ import { Role } from '~/types/dorastorm';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
+import { PERMISSIONS } from '~/services/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: ["users-create"]
+  permissions: [PERMISSIONS.USERS_CREATE]
 });
 
 interface NewUser {
