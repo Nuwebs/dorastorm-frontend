@@ -33,7 +33,7 @@ import DataTableBase from '~/components/dataTable/DataTableBase.vue';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import RoleData from '~/components/role/RoleData.vue';
-import { PERMISSIONS } from '~/services/permissions';
+import PERMISSIONS from '~/utils/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],

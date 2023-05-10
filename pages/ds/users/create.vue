@@ -28,7 +28,7 @@ import { Role } from '~/types/dorastorm';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
-import { PERMISSIONS } from '~/services/permissions';
+import PERMISSIONS from '~/utils/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],

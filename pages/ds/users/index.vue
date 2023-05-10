@@ -32,7 +32,7 @@ import useLazyPagination from '~/composables/useLazyPagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
 import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
 import useCachedPermissions from "~/composables/useCachedPermissions";
-import { PERMISSIONS } from '~/services/permissions';
+import PERMISSIONS from '~/utils/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],

@@ -32,7 +32,7 @@ import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import Hr from '~/components/Hr.vue';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
-import { PERMISSIONS } from '~/services/permissions';
+import PERMISSIONS from '~/utils/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],
