@@ -1,14 +1,11 @@
+import { useLocalePath, useNuxtApp } from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
-import { MenuItem } from "primevue/menuitem";
-import useAuthStore from "~/stores/authStore";
-import { useLocalePath } from "#imports";
-import { useNuxtApp } from "nuxt/app";
 import PERMISSIONS from "~/utils/permissions";
 
 const lp = useLocalePath();
 const t = useNuxtApp().$i18n.t;
 
-export const SIDEBAR: DsMenuItem[] = [
+const SIDEBAR: DsMenuItem[] = [
   {
     label: t("modules.users.title"),
     icon: "pi pi-user",
@@ -108,28 +105,4 @@ export const SIDEBAR: DsMenuItem[] = [
   },
 ];
 
-const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
-  const authStore = useAuthStore();
-  let processedMenuItems: MenuItem[] = [];
-  for (let menuItem of dsMenuItems) {
-    if (!menuItem.permissions) {
-      processedMenuItems.push(menuItem);
-      continue;
-    }
-    const isPermissionsArray = menuItem.permissions instanceof Array;
-    const checker = isPermissionsArray
-      ? authStore.hasAnyPermission
-      : authStore.hasPermission;
-    if (!checker(menuItem.permissions as string & string[])) continue;
-
-    if (menuItem.items) {
-      menuItem.items = getMenuItems(menuItem.items);
-    }
-
-    const { permissions, ...pMenuItem } = menuItem;
-    processedMenuItems.push(pMenuItem);
-  }
-  return processedMenuItems;
-};
-
-export const sidebarMenuItems = () => getMenuItems(SIDEBAR);
+export default SIDEBAR;

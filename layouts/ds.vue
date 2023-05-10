@@ -19,7 +19,7 @@ import TheDSNavbar from '~/components/TheDSNavbar.vue';
 import { ref, computed, watch } from "vue";
 import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
-import { sidebarMenuItems } from '~/services/permissions';
+import { sidebarMenuItems } from '~/services/menus';
 import PanelMenu from "primevue/panelmenu";
 import ConfirmDialog from 'primevue/confirmdialog';
 
