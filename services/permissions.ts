@@ -34,13 +34,13 @@ export const PERMISSIONS: DsMenuItem[] = [
       {
         label: t("general.new"),
         icon: "pi pi-plus",
-        to: "/",
+        to: lp("/ds/roles"),
         permissions: "roles-create"
       },
       {
         label: t("modules.roles.index"),
         icon: "pi pi-list",
-        to: "/",
+        to: lp("/ds/roles"),
         permissions: "roles-read"
       },
     ],
