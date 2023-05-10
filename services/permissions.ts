@@ -6,61 +6,100 @@ import { useNuxtApp } from "nuxt/app";
 
 const lp = useLocalePath();
 const t = useNuxtApp().$i18n.t;
-export const PERMISSIONS: DsMenuItem[] = [
+
+export const PERMISSIONS = {
+  USERS_CREATE: "users-create",
+  USERS_READ: "users-read",
+  USERS_UPDATE: "users-update",
+  USERS_DELETE: "users-delete",
+
+  POSTS_CREATE: "posts-create",
+  POSTS_READ: "posts-read",
+  POSTS_UPDATE: "posts-update",
+  POSTS_DELETE: "posts-delete",
+
+  ROLES_CREATE: "roles-create",
+  ROLES_READ: "roles-read",
+  ROLES_UPDATE: "roles-update",
+  ROLES_DELETE: "roles-delete",
+
+  QUOTATIONS_READ: "quotations-read",
+  QUOTATIONS_DELETE: "quotations-delete",
+
+  PROFILE_READ: "profile-read",
+  PROFILE_UPDATE: "profile-update",
+};
+
+export const SIDEBAR: DsMenuItem[] = [
   {
     label: t("modules.users.title"),
     icon: "pi pi-user",
-    permissions: ["users-create", "users-read", "users-update", "users-delete"],
+    permissions: [
+      PERMISSIONS.USERS_CREATE,
+      PERMISSIONS.USERS_READ,
+      PERMISSIONS.USERS_UPDATE,
+      PERMISSIONS.USERS_DELETE,
+    ],
     items: [
       {
         label: t("general.new"),
         icon: "pi pi-user-plus",
         to: lp("/ds/users/create"),
-        permissions: "users-create"
+        permissions: PERMISSIONS.USERS_CREATE,
       },
       {
         label: t("modules.users.index"),
         icon: "pi pi-list",
         to: lp("/ds/users"),
-        permissions: "users-read"
+        permissions: PERMISSIONS.USERS_READ,
       },
     ],
   },
   {
     label: t("modules.roles.title"),
     icon: "pi pi-id-card",
-    permissions: ["roles-create", "roles-read", "roles-update", "roles-delete"],
+    permissions: [
+      PERMISSIONS.ROLES_CREATE,
+      PERMISSIONS.ROLES_READ,
+      PERMISSIONS.ROLES_UPDATE,
+      PERMISSIONS.ROLES_DELETE,
+    ],
     items: [
       {
         label: t("general.new"),
         icon: "pi pi-plus",
         to: lp("/ds/roles"),
-        permissions: "roles-create"
+        permissions: PERMISSIONS.ROLES_CREATE,
       },
       {
         label: t("modules.roles.index"),
         icon: "pi pi-list",
         to: lp("/ds/roles"),
-        permissions: "roles-read"
+        permissions: PERMISSIONS.ROLES_READ,
       },
     ],
   },
   {
     label: t("modules.posts.title"),
     icon: "pi pi-book",
-    permissions: ["posts-create", "posts-read", "posts-update", "posts-delete"],
+    permissions: [
+      PERMISSIONS.POSTS_CREATE,
+      PERMISSIONS.POSTS_READ,
+      PERMISSIONS.POSTS_UPDATE,
+      PERMISSIONS.POSTS_DELETE,
+    ],
     items: [
       {
         label: t("general.new"),
         icon: "pi pi-plus",
         to: "/",
-        permissions: "posts-create"
+        permissions: PERMISSIONS.POSTS_CREATE,
       },
       {
         label: t("modules.posts.index_mine"),
         icon: "pi pi-briefcase",
         to: "/",
-        permissions: "posts-create"
+        permissions: PERMISSIONS.POSTS_CREATE,
       },
       {
         separator: true,
@@ -68,19 +107,19 @@ export const PERMISSIONS: DsMenuItem[] = [
       {
         label: t("modules.posts.index"),
         icon: "pi pi-list",
-        to: "/"
+        to: "/",
       },
       {
         label: t("modules.posts.index_private"),
         icon: "pi pi-building",
-        to: "/"
+        to: "/",
       },
     ],
   },
   {
     label: t("modules.quotations.title"),
     icon: "pi pi-envelope",
-    permissions: ["quotations-read", "quotations-delete"],
+    permissions: [PERMISSIONS.QUOTATIONS_READ, PERMISSIONS.QUOTATIONS_DELETE],
     items: [
       {
         label: t("modules.quotations.index"),
@@ -100,7 +139,6 @@ const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
       continue;
     }
     const isPermissionsArray = menuItem.permissions instanceof Array;
-
     const checker = isPermissionsArray
       ? authStore.hasAnyPermission
       : authStore.hasPermission;
@@ -116,4 +154,4 @@ const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
   return processedMenuItems;
 };
 
-export const sidebarMenuItems = () => getMenuItems(PERMISSIONS);
+export const sidebarMenuItems = () => getMenuItems(SIDEBAR);
