@@ -43,7 +43,7 @@ const SIDEBAR: DsMenuItem[] = [
       {
         label: t("general.new"),
         icon: "pi pi-plus",
-        to: lp("/ds/roles"),
+        to: lp("/ds/roles/create"),
         permissions: PERMISSIONS.ROLES_CREATE,
       },
       {
