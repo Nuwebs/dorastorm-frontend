@@ -16,37 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { Role } from '~/types/dorastorm';
+import { Role, RolePermissionGroup } from '~/types/dorastorm';
 import { ref, onMounted } from 'vue';
+import { getPermissionsGroups } from '~/utils/permissions';
 
 interface Props {
   role: Role
 }
 
-interface RolePermission {
-  module: string;
-  permissions: string[];
-}
-
 const props = defineProps<Props>();
-const rolePermissions = ref<RolePermission[]>([]);
+const rolePermissions = ref<RolePermissionGroup[]>([]);
 
 onMounted(() => {
-  const processed = props.role.permissions.reduce((acc: RolePermission[], permission: string) => {
-    const module = permission.split("-")[0];
-    const existingModule = acc.find((m: RolePermission) => m.module === module);
-
-    if (existingModule) {
-      existingModule.permissions.push(permission);
-    } else {
-      acc.push({
-        module,
-        permissions: [permission],
-      });
-    }
-    return acc;
-  }, []);
-  rolePermissions.value = processed.sort((a: RolePermission, b: RolePermission) => {
+  const processed = getPermissionsGroups(props.role.permissions);
+  rolePermissions.value = processed.sort((a: RolePermissionGroup, b: RolePermissionGroup) => {
     if (a.module < b.module){
       return -1;
     } else if (a.module > b.module) {

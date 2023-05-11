@@ -1,3 +1,5 @@
+import { RolePermissionGroup } from "~/types/dorastorm";
+
 const PERMISSIONS = {
   USERS_CREATE: "users-create",
   USERS_READ: "users-read",
@@ -20,5 +22,22 @@ const PERMISSIONS = {
   PROFILE_READ: "profile-read",
   PROFILE_UPDATE: "profile-update",
 };
+
+export function getPermissionsGroups(permissions: string[]) {
+  return permissions.reduce((acc: RolePermissionGroup[], permission: string) => {
+    const module = permission.split("-")[0];
+    const existingModule = acc.find((m: RolePermissionGroup) => m.module === module);
+
+    if (existingModule) {
+      existingModule.permissions.push(permission);
+    } else {
+      acc.push({
+        module,
+        permissions: [permission],
+      });
+    }
+    return acc;
+  }, []);
+}
 
 export default PERMISSIONS;

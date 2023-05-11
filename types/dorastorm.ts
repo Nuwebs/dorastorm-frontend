@@ -10,6 +10,14 @@ export interface Role {
   created: string;
   modified: string;
 }
+
+export type NewRole = Omit<Role, "id" | "created" | "modified">;
+
+export interface RolePermissionGroup {
+  module: string;
+  permissions: string[];
+}
+
 export interface User {
   id: number;
   name: string;
