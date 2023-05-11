@@ -28,6 +28,8 @@ import RoleFormPermissions from './RoleFormPermissions.vue';
 import RoleFormHierarchy from './RoleFormHierarchy.vue';
 import { object, string } from "yup";
 import { useForm } from 'vee-validate';
+import { useAPIFetch, useGeneralErrorToast, useI18n } from '#imports';
+import { useToast } from 'primevue/usetoast';
 
 interface Props {
   modelValue: Role | NewRole;
@@ -36,18 +38,34 @@ interface Props {
 
 const props = defineProps<Props>();
 const role = ref<Role | NewRole>(props.modelValue);
+const toast = useToast();
+const { t } = useI18n();
 
 const validate = object({
   name: string().required().min(3),
   description: string()
 });
 
-const { isSubmitting, handleSubmit, resetForm } = useForm({
+const { isSubmitting, handleSubmit } = useForm({
   validationSchema: validate
 });
 
 const submit = handleSubmit(async () => {
-
+  const { error } = await useAPIFetch<void>({
+    endpoint: "/roles",
+    options: {
+      method: "POST",
+      body: role.value
+    }
+  });
+  if (error.value) {
+    return toast.add(useGeneralErrorToast());
+  }
+  toast.add({
+    severity: "success",
+    summary: t("modules.roles.created"),
+    life: 3000
+  });
 });
 
 </script>
