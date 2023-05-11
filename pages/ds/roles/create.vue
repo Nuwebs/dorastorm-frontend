@@ -1,5 +1,6 @@
 <template>
   <section class="p-container">
+    <h3 class="mb-2 mt-0">{{ $t("modules.roles.create") }}</h3>    
     <RoleFormContainer v-model="newRole"/>
   </section>
 </template>

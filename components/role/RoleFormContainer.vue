@@ -9,7 +9,8 @@
           <RoleFormPermissions v-model="role.permissions" />
         </div>
         <div class="col-12 md:col-4">
-          a
+          <h3 class="mb-2 mt-0">{{ $t("modules.roles.select_hierarchy") }}</h3>
+          <RoleFormHierarchy v-model="role.hierarchy" :updating="!!props.updating" />
         </div>
       </div>
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
@@ -24,6 +25,7 @@ import FormText from '../form/FormText.vue';
 import FormTextArea from '../form/FormTextArea.vue';
 import Button from 'primevue/button';
 import RoleFormPermissions from './RoleFormPermissions.vue';
+import RoleFormHierarchy from './RoleFormHierarchy.vue';
 import { object, string } from "yup";
 import { useForm } from 'vee-validate';
 
