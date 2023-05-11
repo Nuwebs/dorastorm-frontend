@@ -1,10 +1,14 @@
 <template>
   <div v-if="!loading">
-    <ul class="slist">
-      <li v-for="(role, index) in availableRoles" :key="role.id" :draggable="role.id === selected"
-        @dragstart="dragStart(index)"
-        :class="[{ 'hint': dragging && iDragging !== index && role.hierarchy > userHierarchy, 'active': dragging && iEnter === role.id && role.hierarchy > userHierarchy }]"
-        @dragend="dragging = false" @dragenter="iEnter = role.id" @dragover.prevent @drop.prevent="drop(index)">
+    <ul class="slist p-1 border-1 border-round">
+      <li class="p-2 m-2 text-center border-round border-1" v-for="(role, index) in availableRoles"
+        :key="role.id" :draggable="role.id === selected" @dragstart="dragStart(index)" @dragend="dragging = false"
+        @dragenter="iEnter = role.id" @dragover.prevent @drop.prevent="drop(index)" :class="[{
+          'draggable': role.id === selected,
+          'border-dashed border-green-900': dragging && role.id !== selected && role.hierarchy > userHierarchy,
+          'bg-green-100': dragging && iDragging !== index && role.hierarchy > userHierarchy,
+          'bg-green-300': dragging && iEnter === role.id && role.hierarchy > userHierarchy
+        }]">
         {{ role.id === selected ? role.name + "*" : role.name }}
       </li>
     </ul>
@@ -97,25 +101,18 @@ onMounted(async () => {
 /* (A) LIST STYLES */
 .slist {
   list-style: none;
-  padding: 0;
+  border-color: #ced4da;
   margin: 0;
 }
 
 .slist li {
-  margin: 10px;
-  padding: 15px;
-  border: 1px solid #dfdfdf;
-  background: #f5f5f5;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-ground);
 }
 
-/* (B) DRAG-AND-DROP HINT */
-.slist li.hint {
-  border: 1px solid #ffc49a;
-  background: #feffb4;
-}
-
-.slist li.active {
-  border: 1px solid #ffa5a5;
-  background: #ffe7e7;
+.draggable {
+  cursor: pointer;
+  background-color: var(--primary-color) !important;
+  color: var(--primary-color-text);
 }
 </style>
