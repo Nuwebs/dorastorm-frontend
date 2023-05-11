@@ -3,8 +3,9 @@ import { MenuItem } from "primevue/menuitem";
 import useAuthStore from "~/stores/authStore";
 import SIDEBAR from "./sidebar";
 
-const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
-  const authStore = useAuthStore();
+const authStore = useAuthStore();
+
+const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
   let processedMenuItems: MenuItem[] = [];
   for (let menuItem of dsMenuItems) {
     if (!menuItem.permissions) {
@@ -16,15 +17,21 @@ const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
       ? authStore.hasAnyPermission
       : authStore.hasPermission;
     if (!checker(menuItem.permissions as string & string[])) continue;
-
     if (menuItem.items) {
-      menuItem.items = getMenuItems(menuItem.items);
+      menuItem.items = processMenuItems(menuItem.items);
     }
-
-    const { permissions, ...pMenuItem } = menuItem;
-    processedMenuItems.push(pMenuItem);
+    processedMenuItems.push(menuItem);
   }
   return processedMenuItems;
 };
 
-export const sidebarMenuItems = () => getMenuItems(SIDEBAR);
+const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
+  let menu = JSON.parse(JSON.stringify(dsMenuItems)) as DsMenuItem[];
+  // Write here any operation that should be done
+  // before the menu processing.
+  return processMenuItems(menu);
+};
+
+export const sidebarMenuItems = () => {
+  return getMenuItems(SIDEBAR);
+};
