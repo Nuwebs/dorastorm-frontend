@@ -60,8 +60,7 @@ function drop(droppedPosition: number): void {
   const roleToInsert = availableRoles.value[iDragging.value];
   availableRoles.value.splice(iDragging.value, 1);
   availableRoles.value.splice(droppedPosition, 0, roleToInsert);
-  const prevRole = availableRoles.value[droppedPosition - 1];
-  emit("update:modelValue", prevRole.hierarchy + 1);
+  emit("update:modelValue", droppedPosition);
 }
 
 onMounted(async () => {
