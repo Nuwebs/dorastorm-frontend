@@ -63,7 +63,7 @@ const submit = handleSubmit(async () => {
   }
   toast.add({
     severity: "success",
-    summary: t("modules.roles.created"),
+    detail: t("modules.roles.created"),
     life: 3000
   });
 });

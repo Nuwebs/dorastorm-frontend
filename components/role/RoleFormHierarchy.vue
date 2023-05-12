@@ -93,6 +93,7 @@ onMounted(async () => {
       hierarchy: maxHierarchy
     });
     selected.value = -1;
+    emit("update:modelValue", maxHierarchy);
   }
   availableRoles.value = roles;
 });
