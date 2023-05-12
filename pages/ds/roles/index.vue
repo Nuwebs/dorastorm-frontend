@@ -4,7 +4,7 @@
     <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
       :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)" expandable>
       <template #expansion="slotProps">
-        <RoleData :role="slotProps.data"/>
+        <RoleData :role="slotProps.data" />
       </template>
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.roles.name')" />
@@ -12,10 +12,11 @@
       <Column field="id" :header="$t('general.action')" v-if="userIsAllowed">
         <template #body="row">
           <ActionButtonDelete endpoint="/roles/{id}" :model-id="row.data.id" :cd-messages="{
-              header: $t('modules.roles.delete'),
-              message: $t('modules.roles.delete_warning')
-            }" @deleted="deleted" v-if="userCan(PERMISSIONS.ROLES_DELETE) && roleCan(row.data.hierarchy)" />
-          <!-- <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan('users-update')" /> -->
+            header: $t('modules.roles.delete'),
+            message: $t('modules.roles.delete_warning')
+          }" @deleted="deleted" v-if="userCan(PERMISSIONS.ROLES_DELETE) && roleCan(row.data.hierarchy)" />
+          <ActionButtonUpdate route="/ds/roles/edit-{id}" :model-id="row.data.id"
+            v-if="userCan(PERMISSIONS.ROLES_UPDATE) && roleCan(row.data.hierarchy)" />
         </template>
       </Column>
     </DataTableBase>
@@ -60,7 +61,6 @@ async function deleted(): Promise<void> {
   };
   await loadData(page);
 }
-
 
 onMounted(async () => {
   await loadData(1);
