@@ -1,8 +1,8 @@
 <template>
   <div v-if="!loading">
     <ul class="slist p-1 border-1 border-round">
-      <li class="p-2 m-2 text-center border-round border-1" v-for="(role, index) in availableRoles"
-        :key="role.id" :draggable="role.id === selected" @dragstart="dragStart(index)" @dragend="dragging = false"
+      <li class="p-2 m-2 text-center border-round border-1" v-for="(role, index) in availableRoles" :key="role.id"
+        :draggable="role.id === selected" @dragstart="dragStart(index)" @dragend="dragging = false"
         @dragenter="iEnter = role.id" @dragover.prevent @drop.prevent="drop(index)" :class="[{
           'draggable': role.id === selected,
           'border-dashed border-green-900': dragging && role.id !== selected && role.hierarchy > userHierarchy,
@@ -44,7 +44,7 @@ const authStore = useAuthStore();
 const loading = ref<boolean>(false);
 const availableRoles = ref<RoleHierarchy[]>([]);
 const userRole = authStore.user!.role;
-const selected = ref<number>(userRole.id);
+const selected = ref<number>(-1);
 const userHierarchy = ref<number>(userRole.hierarchy);
 const dragging = ref<boolean>(false);
 const iDragging = ref<number>(0);
@@ -69,7 +69,6 @@ onMounted(async () => {
   const { error, data } = await useAPIFetch<Role[]>({
     endpoint: "/users/rolesbelow"
   });
-  loading.value = false;
   if (error.value) {
     return toast.add(useGeneralErrorToast());
   }
@@ -94,8 +93,11 @@ onMounted(async () => {
     });
     selected.value = -1;
     emit("update:modelValue", maxHierarchy);
+  } else {
+    selected.value = roles.find((role: RoleHierarchy) => role.hierarchy === props.modelValue)!.id
   }
   availableRoles.value = roles;
+  loading.value = false;
 });
 </script>
 <style scoped>
