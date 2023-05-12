@@ -14,7 +14,7 @@
           <ActionButtonDelete endpoint="/roles/{id}" :model-id="row.data.id" :cd-messages="{
               header: $t('modules.roles.delete'),
               message: $t('modules.roles.delete_warning')
-            }" @deleted="deleted" v-if="userCan(PERMISSIONS.ROLES_DELETE)" />
+            }" @deleted="deleted" v-if="userCan(PERMISSIONS.ROLES_DELETE) && roleCan(row.data.hierarchy)" />
           <!-- <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan('users-update')" /> -->
         </template>
       </Column>
@@ -41,7 +41,7 @@ definePageMeta({
 });
 
 const toast = useToast();
-const { userCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.ROLES_UPDATE, PERMISSIONS.ROLES_DELETE])
+const { userCan, userIsAllowed, roleCan } = useCachedPermissions([PERMISSIONS.ROLES_UPDATE, PERMISSIONS.ROLES_DELETE])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<Role>("/roles");
 

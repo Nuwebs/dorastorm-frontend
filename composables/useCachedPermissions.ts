@@ -9,8 +9,12 @@ const useCachedPermissions = (
   permissions: string[],
   strict: boolean = false
 ) => {
-  const { hasAnyPermission, hasEveryPermissions, hasPermission } =
-    useAuthStore();
+  const {
+    hasAnyPermission,
+    hasEveryPermissions,
+    hasPermission,
+    getUserRoleHierarchy,
+  } = useAuthStore();
 
   const cached: CachedPermissions = {};
 
@@ -24,6 +28,13 @@ const useCachedPermissions = (
     return cached[permission];
   }
 
+  function roleCan(hierarchyNeeded: number, selfIncluded: boolean = false) {
+    if (getUserRoleHierarchy === null) return false;
+    return selfIncluded
+      ? getUserRoleHierarchy <= hierarchyNeeded
+      : getUserRoleHierarchy < hierarchyNeeded;
+  }
+
   const userIsAllowed = computed<boolean>(() => {
     return strict
       ? hasEveryPermissions(permissions)
@@ -32,6 +43,7 @@ const useCachedPermissions = (
 
   return {
     userCan,
+    roleCan,
     userIsAllowed,
   };
 };

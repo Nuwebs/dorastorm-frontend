@@ -9,10 +9,11 @@
       <Column field="id" :header="$t('general.action')" v-if="userIsAllowed">
         <template #body="row">
           <ActionButtonDelete endpoint="/users/{id}" :model-id="row.data.id" :cd-messages="{
-              header: $t('modules.users.delete'),
-              message: $t('modules.users.delete_warning')
-            }" @deleted="deleted" v-if="userCan(PERMISSIONS.USERS_DELETE)" />
-          <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id" v-if="userCan(PERMISSIONS.USERS_UPDATE)" />
+            header: $t('modules.users.delete'),
+            message: $t('modules.users.delete_warning')
+          }" @deleted="deleted" v-if="userCan(PERMISSIONS.USERS_DELETE) && roleCan(row.data.role.hierarchy, true)" />
+          <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id"
+            v-if="userCan(PERMISSIONS.USERS_UPDATE) && roleCan(row.data.role.hierarchy, true)" />
         </template>
       </Column>
     </DataTableBase>
@@ -40,7 +41,7 @@ definePageMeta({
 });
 
 const toast = useToast();
-const { userCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.USERS_UPDATE, PERMISSIONS.USERS_DELETE])
+const { userCan, roleCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.USERS_UPDATE, PERMISSIONS.USERS_DELETE])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<User>("/users");
 

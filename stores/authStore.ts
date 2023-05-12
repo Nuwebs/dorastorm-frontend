@@ -17,6 +17,11 @@ const useAuthStore = defineStore("auth", () => {
     return user.value.role.permissions;
   });
 
+  const getUserRoleHierarchy = computed<number | null>(() => {
+    if (!user.value) return null;
+    return user.value.role.hierarchy;
+  });
+
   function hasPermission(permission: string): boolean {
     if (!user.value) return false;
     return user.value.role.permissions.includes(permission);
@@ -50,6 +55,7 @@ const useAuthStore = defineStore("auth", () => {
     appBooted,
     isLoggedIn,
     getPermissions,
+    getUserRoleHierarchy,
     hasPermission,
     hasAnyPermission,
     hasEveryPermissions,
