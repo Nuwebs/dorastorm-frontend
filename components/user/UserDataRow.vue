@@ -9,13 +9,15 @@
       <strong>{{ props.user.name }}</strong>
       <p>
         <strong>{{ $t("forms.email") }}</strong> {{ props.user.email }} <br>
-        <strong>{{ $t("modules.users.role") }}</strong> {{ props.user.role.name }}
+        <strong>{{ $t("modules.users.role") }}</strong> {{ props.user.role.name }} <br>
+        <strong>{{ $t("general.member_since") }}</strong> {{ fromNow() }}
       </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import useRelativeTime from '~/composables/useRelativeTime';
 import { User } from '~/types/dorastorm';
 
 interface Props {
@@ -23,6 +25,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const {fromNow} = useRelativeTime(props.user.created_at);
 </script>
 <style scoped>
 .profile-img-colors {
