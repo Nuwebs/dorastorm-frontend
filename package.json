@@ -20,6 +20,7 @@
     "@pinia/nuxt": "^0.4.8",
     "@vee-validate/nuxt": "^4.8.6",
     "@vee-validate/yup": "^4.8.6",
+    "dayjs": "^1.11.7",
     "pinia": "^2.0.34",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
