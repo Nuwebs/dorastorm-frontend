@@ -26,6 +26,19 @@ export interface User {
   role: Role;
 }
 
+export interface Quotation {
+  id: number;
+  subject: string;
+  phone: string;
+  name: string;
+  email: string;
+  content: string;
+  created_at: string;
+  modified_at: string;
+}
+
+export type NewQuotation = Omit<Quotation, "id" | "created" | "modified">;
+
 export interface DsLoginCredentials {
   email: string;
   password: string;

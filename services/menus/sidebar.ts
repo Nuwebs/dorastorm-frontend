@@ -99,7 +99,7 @@ const SIDEBAR: DsMenuItem[] = [
       {
         label: t("modules.quotations.index"),
         icon: "pi pi-list",
-        to: "/",
+        to: lp("/ds/quotations"),
       },
     ],
   },

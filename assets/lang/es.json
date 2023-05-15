@@ -123,7 +123,7 @@
       "index": "Ver todas las cotizaciones",
       "list": "Lista de cotizaciones",
       "name": "Nombre del cliente",
-      "phone": "Número de teléfono",
+      "phone": "Número de teléfono:",
       "request": "Solicitar este servicio",
       "subject": "Asunto",
       "title": "Cotizaciones"

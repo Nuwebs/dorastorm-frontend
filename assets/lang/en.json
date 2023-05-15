@@ -121,9 +121,9 @@
       "delete_warning": "Are you sure you want to delete this quote? It cannot be undone.",
       "form_name": "Your name",
       "index": "View all quotations",
-      "list": "Quotes list",
+      "list": "Quotations list",
       "name": "Client name",
-      "phone": "Phone number",
+      "phone": "Phone number:",
       "request": "Request this service",
       "subject": "Subject",
       "title": "Quotations"
