@@ -9,7 +9,11 @@
       <Column field="id" :header="$t('general.id')" />
       <Column field="subject" :header="$t('modules.quotations.subject')" />
       <Column field="name" :header="$t('modules.quotations.name')" />
-      <Column field="created_at" :header="$t('general.created_at')" />
+      <Column field="created_at" :header="$t('general.created_at')">
+        <template #body="slotProps">
+          {{ dateFormat(slotProps.data.created_at) }}
+        </template>
+      </Column>
       <Column field="id" :header="$t('general.action')" v-if="userCan(PERMISSIONS.QUOTATIONS_DELETE)">
         <template #body="row">
           <ActionButtonDelete endpoint="/quotations/{id}" :model-id="row.data.id" :cd-messages="{
@@ -23,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta } from '#imports';
+import { definePageMeta, useDateFormat, useRelativeTime } from '#imports';
 import useCachedPermissions from "~/composables/useCachedPermissions";
 import useLazyPagination from "~/composables/useLazyPagination";
 import { onMounted } from "vue";
@@ -42,7 +46,7 @@ definePageMeta({
 const { userCan } = useCachedPermissions([PERMISSIONS.QUOTATIONS_DELETE]);
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<Quotation>("/quotations");
-
+const dateFormat = useDateFormat();
 
 async function deleted(): Promise<void> {
   let page = currentPage.value;
