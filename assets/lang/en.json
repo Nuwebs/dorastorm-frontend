@@ -43,7 +43,7 @@
       "name": "User name:",
       "password_changed": "The password was successfully changed.",
       "read": "View user data",
-      "role": "Role",
+      "role": "Role:",
       "role_default": "Select a role",
       "role_select": "Select the user role:",
       "title": "Users",

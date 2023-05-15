@@ -2,7 +2,10 @@
   <section class="p-container">
     <h1 class="mt-0">{{ $t("modules.users.list") }}</h1>
     <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
-      :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)">
+      :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)" expandable>
+      <template #expansion="slotProps">
+        <UserDataRow :user="slotProps.data" />
+      </template>
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.users.name')" />
       <Column field="email" :header="$t('forms.email')" />
@@ -32,6 +35,7 @@ import { DataTablePageEvent } from 'primevue/datatable';
 import useLazyPagination from '~/composables/useLazyPagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
 import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
+import UserDataRow from '~/components/user/UserDataRow.vue';
 import useCachedPermissions from "~/composables/useCachedPermissions";
 import PERMISSIONS from '~/utils/permissions';
 
