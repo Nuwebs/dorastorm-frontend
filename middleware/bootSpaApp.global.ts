@@ -1,6 +1,7 @@
-import { defineNuxtRouteMiddleware, navigateTo } from "nuxt/app";
+import { defineNuxtRouteMiddleware } from "#imports";
 import { isTokenExpired, loadUserData, refreshToken } from "~/services/auth";
 import useAuthStore from "~/stores/authStore";
+import useComposablesToastStore from "~/stores/composablesToastStore";
 import ExpiredTokenException from "~/utils/exceptions/ExpiredTokenException";
 import InvalidTokenException from "~/utils/exceptions/InvalidTokenException";
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -12,12 +13,20 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     // Here something should be triggered to let the user know the app is loading.
     await refreshToken();
   } catch (error: any) {
-    // This error handling needs to be changed when the UI is implemented
+    const composablesToastStore = useComposablesToastStore();
     if (error instanceof ExpiredTokenException) {
-      console.log("Token expirado");
+      composablesToastStore.addToast({
+        severity: "error",
+        detail: "error.409.session_expired",
+        life: 6000
+      });
     }
     if (error instanceof InvalidTokenException) {
-      console.log("Token inválido");
+      composablesToastStore.addToast({
+        severity: "error",
+        detail: "error.invalid_token",
+        life: 6000
+      });
     }
   }
 });

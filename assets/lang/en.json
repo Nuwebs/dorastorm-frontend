@@ -17,10 +17,12 @@
     "409": {
       "defalt_message": "",
       "default_title": "409: Conflict",
+      "session_expired": "The session expired, please log in again.",
       "specific": {
         "last_admin": "You are the last super-admin left!"
       }
     },
+    "invalid_token": "Login failed. Please try again.",
     "fatal": "Something wrong happened. Try again later or contact the administrator.",
     "validation": {
       "confirm_password": "The passwords don't match",

@@ -17,10 +17,12 @@
     "409": {
       "defalt_message": "",
       "default_title": "409: Conflicto",
+      "session_expired": "La sesión expiró, por favor inicie sesión nuevamente.",
       "specific": {
         "last_admin": "¡Eres el último superadministrador restante!"
       }
     },
+    "invalid_token": "No se pudo iniciar sesión. Por favor, intente nuevamente.",
     "fatal": "Algo salió mal. Inténtalo de nuevo más tarde o contacta al administrador.",
     "validation": {
       "confirm_password": "Las contraseñas no coinciden",

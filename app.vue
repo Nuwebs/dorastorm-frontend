@@ -7,6 +7,26 @@
 
 <script setup lang="ts">
 import Toast from "primevue/toast";
+import { onMounted, watch } from "vue";
+import useComposablesToastStore from "./stores/composablesToastStore";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "#imports";
+
+const toastStore = useComposablesToastStore();
+const toast = useToast();
+const { t } = useI18n();
+
+function renderComposablesToast() {
+  toastStore.processToasts(toast.add, t);
+}
+
+onMounted(() => {
+  renderComposablesToast();
+});
+
+watch(toastStore._toasts, () => {
+  renderComposablesToast();
+});
 </script>
 <style>
 body {
