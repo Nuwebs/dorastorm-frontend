@@ -7,7 +7,7 @@
         <template #content>
           <form @submit="onSubmit">
             <FormText name="email" :label="$t('forms.email')" type="email" placeholder="example@example.com"
-              icon="pi pi-at" v-model="credentials.email"/>
+              icon="pi pi-at" v-model="credentials.email" />
             <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock"
               v-model="credentials.password" />
             <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
+import { definePageMeta, navigateTo, useI18n, useLocalePath, useValidationLocales } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
 import Card from "primevue/card";
@@ -43,6 +43,7 @@ const credentials = ref<DsLoginCredentials>({
   password: ''
 });
 
+useValidationLocales();
 const validations = object({
   email: string().required().email(),
   password: string().required()
