@@ -2,6 +2,8 @@ import { DsMenuItem } from "~/types/dorastorm";
 import { MenuItem } from "primevue/menuitem";
 import useAuthStore from "~/stores/authStore";
 import SIDEBAR from "./sidebar";
+import COMMON_MENU_OPTIONS from "./commonOptions";
+import cloneDeep from "lodash-es/cloneDeep";
 
 const authStore = useAuthStore();
 
@@ -26,7 +28,7 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
 };
 
 const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
-  let menu = JSON.parse(JSON.stringify(dsMenuItems)) as DsMenuItem[];
+  let menu = cloneDeep<DsMenuItem[]>(dsMenuItems);
   // Write here any operation that should be done
   // before the menu processing.
   return processMenuItems(menu);
@@ -34,4 +36,8 @@ const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
 
 export const sidebarMenuItems = () => {
   return getMenuItems(SIDEBAR);
+};
+
+export const commonMenuOptions = () => {
+  return getMenuItems(COMMON_MENU_OPTIONS);
 };
