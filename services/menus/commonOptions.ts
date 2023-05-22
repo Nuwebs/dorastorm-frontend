@@ -1,10 +1,8 @@
-import { navigateTo, useNuxtApp, useSwitchLocalePath } from "#imports";
+import { navigateTo, useMenuLocalesSwitch, useNuxtApp } from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
 import { logout } from "../auth";
-import { LOCALES } from "~/services/i18n";
 import { computed } from "vue";
 
-const sw = useSwitchLocalePath();
 const t = useNuxtApp().$i18n.t;
 
 const signOut = async (): Promise<void> => {
@@ -12,21 +10,12 @@ const signOut = async (): Promise<void> => {
   navigateTo("/");
 };
 
-const generateLocalesSwitches = (): DsMenuItem[] => {
-  return LOCALES.map((locale): DsMenuItem => {
-    return {
-      label: locale.name,
-      command: async () => await navigateTo(sw(locale.code)),
-    };
-  });
-};
-
 const COMMON_MENU_OPTIONS = computed<DsMenuItem[]>(() => {
   return [
     {
       label: t("general.locales"),
       icon: "pi pi-globe",
-      items: generateLocalesSwitches(),
+      items: useMenuLocalesSwitch(),
     },
     {
       separator: true,

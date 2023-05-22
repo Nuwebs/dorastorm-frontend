@@ -2,15 +2,22 @@
   <Button 
     text
     plain
-    icon="pi pi-home"
+    :icon="props.icon"
     rounded
-    aria-label="Home"
     class="m-center"
+    :aria-label="props.aLabel"
   />
 </template>
 
 <script setup lang="ts">
 import Button from "primevue/button";
+
+interface Props {
+  icon: string;
+  aLabel: string;
+}
+
+const props = defineProps<Props>();
 </script>
 <style scoped>
 .m-center {

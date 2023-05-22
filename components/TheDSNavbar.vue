@@ -3,23 +3,24 @@
     <template #start>
       <div class="flex align-items-center mr-2">
         <h3 class="my-0 mr-2">Dorastorm</h3>
-        <NavbarSidebarButton @click="$emit('sidebarButtonClick')" />
-        <NavbarHomeButton @click="router.push('/ds')" />
+        <NavbarButtonSidebar @click="$emit('sidebarButtonClick')" />
+        <NavbarButtonHome @click="router.push(lp('/ds'))" />
       </div>
     </template>
     <template #end>
-      <NavbarCommonOptions />
+      <NavbarButtonOptions :options="commonMenuOptions()" />
     </template>
   </NavbarBase>
 </template>
 
 <script setup lang="ts">
 import NavbarBase from "./navbar/NavbarBase.vue";
-import NavbarSidebarButton from "./navbar/NavbarSidebarButton.vue";
-import NavbarHomeButton from "./navbar/NavbarHomeButton.vue";
-import NavbarCommonOptions from "./navbar/NavbarCommonOptions.vue";
-import { useRouter } from "#imports";
-
+import NavbarButtonSidebar from "./navbar/buttons/NavbarButtonSidebar.vue";
+import NavbarButtonHome from "./navbar/buttons/NavbarButtonHome.vue";
+import NavbarButtonOptions from "./navbar/buttons/NavbarButtonOptions.vue";
+import { useRouter, useLocalePath } from "#imports";
+import { commonMenuOptions } from "~/services/menus";
 
 const router = useRouter();
+const lp = useLocalePath();
 </script>

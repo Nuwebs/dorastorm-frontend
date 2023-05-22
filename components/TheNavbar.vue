@@ -4,9 +4,7 @@
       <h3 class="my-0 mr-4">Dorastorm</h3>
     </template>
     <template #end>
-      <NuxtLink :to="lp('/login')" class="nlink">
-        {{ $t("general.login") }}
-      </NuxtLink>
+      <NavbarButtonOptions :options="guestMenuOptions()" />
     </template>
   </NavbarBase>
 </template>
@@ -14,14 +12,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import NavbarBase from "./navbar/NavbarBase.vue";
-import { useI18n, useLocalePath } from "#imports";
+import NavbarButtonOptions from "./navbar/buttons/NavbarButtonOptions.vue";
+import { useI18n } from "#imports";
+import { guestMenuOptions } from "~/services/menus";
 
-const lp = useLocalePath();
-const {t} = useI18n();
+const { t } = useI18n();
 
 const items = ref([{
   label: t('general.home'),
   icon: 'pi pi-home',
   to: '/'
-}])
+}]);
 </script>
