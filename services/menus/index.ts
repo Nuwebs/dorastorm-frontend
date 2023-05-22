@@ -4,6 +4,7 @@ import useAuthStore from "~/stores/authStore";
 import SIDEBAR from "./sidebar";
 import COMMON_MENU_OPTIONS from "./commonOptions";
 import cloneDeep from "lodash-es/cloneDeep";
+import { ComputedRef } from "vue";
 
 const authStore = useAuthStore();
 
@@ -27,8 +28,10 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
   return processedMenuItems;
 };
 
-const getMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
-  let menu = cloneDeep<DsMenuItem[]>(dsMenuItems);
+// This function receives the computed property of the DsMenuItem array. 
+// This is meant to properly update the lang if it is switched
+const getMenuItems = (dsMenuItems: ComputedRef<DsMenuItem[]>): MenuItem[] => {
+  let menu = cloneDeep<DsMenuItem[]>(dsMenuItems.value);
   // Write here any operation that should be done
   // before the menu processing.
   return processMenuItems(menu);

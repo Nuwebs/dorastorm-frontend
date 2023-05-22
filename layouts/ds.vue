@@ -2,10 +2,10 @@
   <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" />
   <article class="p-3 min-h-fullscreen">
     <aside :class="sidebarClasses" v-if="shouldBeSidebar">
-      <PanelMenu :model="sidebarContent"/>
+      <PanelMenu :model="sidebarMenuItems()"/>
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
-      <PanelMenu :model="sidebarContent"/>
+      <PanelMenu :model="sidebarMenuItems()"/>
     </OverlaySidebar>
     <main :class="contentClasses">
       <slot></slot>
@@ -26,7 +26,6 @@ import ConfirmDialog from 'primevue/confirmdialog';
 const windowWidth = useWindowWidth();
 const shouldBeSidebar = ref<boolean>(windowWidth.value >= 992);
 const sidebarVisible = ref<boolean>(shouldBeSidebar.value);
-const sidebarContent = sidebarMenuItems();
 
 const sidebarClasses = computed<string>(() => {
   const baseClasses = 'layout-sidebar p-3 shadow-1';
