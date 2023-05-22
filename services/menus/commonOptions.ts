@@ -1,13 +1,14 @@
-import { navigateTo, useMenuLocalesSwitch, useNuxtApp } from "#imports";
+import { navigateTo, useLocalePath, useMenuLocalesSwitch, useNuxtApp } from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
 import { logout } from "../auth";
 import { computed } from "vue";
 
 const t = useNuxtApp().$i18n.t;
+const lp = useLocalePath();
 
 const signOut = async (): Promise<void> => {
   await logout();
-  navigateTo("/");
+  navigateTo(lp("/"));
 };
 
 const COMMON_MENU_OPTIONS = computed<DsMenuItem[]>(() => {
