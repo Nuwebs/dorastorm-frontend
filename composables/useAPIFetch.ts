@@ -1,4 +1,4 @@
-import { useFetch } from "#imports";
+import { useFetch, useNuxtApp } from "#imports";
 import { UseFetchOptions, navigateTo, useRuntimeConfig } from "nuxt/app";
 import useAuthStore from "~/stores/authStore";
 import { ApiFetch } from "~/types";
@@ -15,8 +15,13 @@ const generateOptions = <ResponseT>(
   };
   if (auth) {
     baseOptions.headers = {
-      Authorization: `Bearer ${useAuthStore().token}`,
+      Authorization: `Bearer ${useAuthStore().token}`
     };
+  }
+  const locale = useNuxtApp().$i18n.locale;
+  baseOptions.headers = {
+    ... baseOptions.headers,
+    "Accept-Language": locale
   }
   return Object.assign({}, baseOptions, options);
 };
