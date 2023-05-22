@@ -5,9 +5,9 @@
         <template #title>
           {{ $t('general.login') }}</template>
         <template #content>
-          <form @submit="onSubmit" :validation-schema="validations">
+          <form @submit="onSubmit">
             <FormText name="email" :label="$t('forms.email')" type="email" placeholder="example@example.com"
-              icon="pi pi-at" v-model="credentials.email" />
+              icon="pi pi-at" v-model="credentials.email"/>
             <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock"
               v-model="credentials.password" />
             <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
@@ -48,7 +48,9 @@ const validations = object({
   password: string().required()
 });
 
-const { handleSubmit, isSubmitting, setFieldError } = useForm();
+const { handleSubmit, isSubmitting, setFieldError } = useForm({
+  validationSchema: validations
+});
 
 const onSubmit = handleSubmit(async () => {
   const response = await login(credentials.value);
