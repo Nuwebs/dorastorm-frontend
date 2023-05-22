@@ -26,12 +26,12 @@ export const LOCALES: locale[] = [
   {
     code: "en",
     file: "en.json",
-    name: "Español",
+    name: "English",
   },
   {
     code: "es",
     file: "es.json",
-    name: "English",
+    name: "Español",
   },
 ];
 
