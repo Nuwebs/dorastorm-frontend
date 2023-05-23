@@ -57,43 +57,43 @@ const useSidebar = (): ComputedRef<DsMenuItem[]> => {
           },
         ],
       },
-      {
-        label: t("modules.posts.title"),
-        icon: "pi pi-book",
-        permissions: [
-          PERMISSIONS.POSTS_CREATE,
-          PERMISSIONS.POSTS_READ,
-          PERMISSIONS.POSTS_UPDATE,
-          PERMISSIONS.POSTS_DELETE,
-        ],
-        items: [
-          {
-            label: t("general.new"),
-            icon: "pi pi-plus",
-            to: "/",
-            permissions: PERMISSIONS.POSTS_CREATE,
-          },
-          {
-            label: t("modules.posts.index_mine"),
-            icon: "pi pi-briefcase",
-            to: "/",
-            permissions: PERMISSIONS.POSTS_CREATE,
-          },
-          {
-            separator: true,
-          },
-          {
-            label: t("modules.posts.index"),
-            icon: "pi pi-list",
-            to: "/",
-          },
-          {
-            label: t("modules.posts.index_private"),
-            icon: "pi pi-building",
-            to: "/",
-          },
-        ],
-      },
+      // {
+      //   label: t("modules.posts.title"),
+      //   icon: "pi pi-book",
+      //   permissions: [
+      //     PERMISSIONS.POSTS_CREATE,
+      //     PERMISSIONS.POSTS_READ,
+      //     PERMISSIONS.POSTS_UPDATE,
+      //     PERMISSIONS.POSTS_DELETE,
+      //   ],
+      //   items: [
+      //     {
+      //       label: t("general.new"),
+      //       icon: "pi pi-plus",
+      //       to: "/",
+      //       permissions: PERMISSIONS.POSTS_CREATE,
+      //     },
+      //     {
+      //       label: t("modules.posts.index_mine"),
+      //       icon: "pi pi-briefcase",
+      //       to: "/",
+      //       permissions: PERMISSIONS.POSTS_CREATE,
+      //     },
+      //     {
+      //       separator: true,
+      //     },
+      //     {
+      //       label: t("modules.posts.index"),
+      //       icon: "pi pi-list",
+      //       to: "/",
+      //     },
+      //     {
+      //       label: t("modules.posts.index_private"),
+      //       icon: "pi pi-building",
+      //       to: "/",
+      //     },
+      //   ],
+      // },
       {
         label: t("modules.quotations.title"),
         icon: "pi pi-envelope",
