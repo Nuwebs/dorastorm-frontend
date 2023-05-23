@@ -59,12 +59,12 @@ const data = ref<UpdateUser>({
 });
 
 const validate = object({
-  name: string().required().min(4),
-  email: string().required().email(),
-  role_id: number().required()
+  name: string().required().min(4).label(t("modules.users.name")),
+  email: string().required().email().label(t("forms.email")),
+  role_id: number().required().label(t("modules.users.role"))
 });
 
-const { handleSubmit, isSubmitting } = useForm({
+const { handleSubmit, isSubmitting, setFieldError } = useForm({
   validationSchema: validate
 });
 
@@ -109,6 +109,12 @@ const submit = handleSubmit(async () => {
     }
   });
   if (error.value) {
+    if (error.value.statusCode === 422) {
+      return setFieldError("email", error.value.data.errors.email);
+    }
+    if (error.value.statusCode === 409) {
+      return setFieldError("role_id", error.value.data.message);
+    }
     return toast.add(useGeneralErrorToast());
   }
   toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
