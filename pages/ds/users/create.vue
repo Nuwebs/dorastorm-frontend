@@ -2,15 +2,12 @@
   <section class="p-container">
     <h1 class="mt-0">{{ $t("modules.users.create") }}</h1>
     <form @submit="submit">
-      <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name"
-        placeholder="James Douglas" />
-      <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email"
-        placeholder="example@example.com" />
-      <FormText name="password" type="password" :label="$t('forms.password')" v-model="data.password" />
-      <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')"
-        v-model="data.password_confirmation" />
+      <FormText name="name" type="text" :label="$t('modules.users.name')" placeholder="James Douglas" />
+      <FormText name="email" type="email" :label="$t('forms.email')" placeholder="example@example.com" />
+      <FormText name="password" type="password" :label="$t('forms.password')" />
+      <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')" />
       <FormSelect name="role_id" :label="$t('modules.users.role_select')" :options="availableRoles" option-label="name"
-        option-value="id" :loading="loading" :placeholder="$t('modules.users.role_default')" v-model="data.role_id" />
+        option-value="id" :loading="loading" :placeholder="$t('modules.users.role_default')" />
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
     </form>
   </section>
@@ -47,27 +44,27 @@ const toast = useToast();
 const { t } = useI18n();
 const loading = ref<boolean>(false);
 const availableRoles = ref<Role[]>([]);
-const data = ref<NewUser>({
-  name: "",
-  email: "",
-  password: "",
-  password_confirmation: "",
-  role_id: -1
-});
 
 const validate = object({
-  name: string().required().min(4),
-  email: string().required().email(),
-  password: string().required().min(8),
+  name: string().required().min(4).label(t("modules.users.name")),
+  email: string().required().email().label(t("forms.email")),
+  password: string().required().min(8).label(t("forms.password")),
   password_confirmation: string().required().oneOf(
     [yupRef('password')],
     t("error.validation.confirm_password")
-  ),
-  role_id: number().required()
+  ).label(t("forms.confirm_password")),
+  role_id: number().required().label(t("modules.users.role"))
 })
 
-const { handleSubmit, resetForm, isSubmitting } = useForm({
-  validationSchema: validate
+const { handleSubmit, resetForm, isSubmitting, setFieldError } = useForm<NewUser>({
+  validationSchema: validate,
+  initialValues: {
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    role_id: undefined
+  }
 });
 
 onMounted(async () => {
@@ -82,15 +79,18 @@ onMounted(async () => {
   availableRoles.value = data.value!;
 });
 
-const submit = handleSubmit(async () => {
+const submit = handleSubmit(async (payload) => {
   const { error } = await useAPIFetch({
     endpoint: "/users",
     options: {
       method: "post",
-      body: data.value
+      body: payload
     }
   });
   if (error.value) {
+    if (error.value.statusCode === 422) {
+      return setFieldError("email", error.value.data.errors.email);
+    }
     return toast.add(useGeneralErrorToast());
   }
   toast.add({ severity: "success", detail: t("modules.users.created"), life: 3000 });
