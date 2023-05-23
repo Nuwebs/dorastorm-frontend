@@ -1,11 +1,11 @@
 import { DsMenuItem } from "~/types/dorastorm";
 import { MenuItem } from "primevue/menuitem";
 import useAuthStore from "~/stores/authStore";
-import SIDEBAR from "./sidebar";
-import COMMON_MENU_OPTIONS from "./commonOptions";
+import useSidebar from "./sidebar";
+import useCommonOptions from "./commonOptions";
 import cloneDeep from "lodash-es/cloneDeep";
 import { ComputedRef } from "vue";
-import GUEST_OPTIONS from "./guestOptions";
+import useGuestOptions from "./guestOptions";
 
 const authStore = useAuthStore();
 
@@ -39,13 +39,13 @@ const getMenuItems = (dsMenuItems: ComputedRef<DsMenuItem[]>): MenuItem[] => {
 };
 
 export const sidebarMenuItems = () => {
-  return getMenuItems(SIDEBAR);
+  return getMenuItems(useSidebar());
 };
 
 export const commonMenuOptions = () => {
-  return getMenuItems(COMMON_MENU_OPTIONS);
+  return getMenuItems(useCommonOptions());
 };
 
 export const guestMenuOptions = () => {
-  return getMenuItems(GUEST_OPTIONS);
+  return getMenuItems(useGuestOptions());
 };
