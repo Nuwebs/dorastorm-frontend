@@ -14,7 +14,7 @@ export default function useMenuLocalesSwitch() {
     return LOCALES.map((locale): DsMenuItem => {
       return {
         label: locale.name,
-        command: async () => switchLocale(locale.code),
+        command: async () => await switchLocale(locale.code),
       };
     });
   };
