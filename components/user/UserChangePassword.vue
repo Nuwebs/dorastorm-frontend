@@ -3,11 +3,9 @@
     <Button class="mb-2" @click="toggle = !toggle" severity="warning" v-if="!toggle">{{
       $t("modules.users.change_password") }}</Button>
     <form @submit="submit" v-show="toggle">
-      <FormText name="current_password" type="password" :label="$t('forms.current_password')"
-        v-model="data.current_password" />
-      <FormText name="password" type="password" :label="$t('forms.password')" v-model="data.password" />
-      <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')"
-        v-model="data.password_confirmation" />
+      <FormText name="current_password" type="password" :label="$t('forms.current_password')" />
+      <FormText name="password" type="password" :label="$t('forms.password')" />
+      <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')" />
       <Button class="mr-2" :loading="isSubmitting" severity="secondary" @click="toggle = !toggle">{{ $t("general.cancel")
       }}</Button>
       <Button :loading="isSubmitting" type="submit">{{ $t("modules.users.change_password") }}</Button>
@@ -39,30 +37,30 @@ const props = defineProps<{
 const toast = useToast();
 const { t } = useI18n();
 const toggle = ref<boolean>(false);
-const data = ref<NewPassword>({
-  current_password: "",
-  password: "",
-  password_confirmation: ""
-});
 const validate = object({
-  current_password: string().required().min(8),
-  password: string().required().min(8),
+  current_password: string().required().min(8).label(t("forms.current_password")),
+  password: string().required().min(8).label(t("forms.password")),
   password_confirmation: string().required().oneOf(
     [yupRef('password')],
     t("error.validation.confirm_password")
-  )
+  ).label(t("forms.confirm_password"))
 })
 
-const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
-  validationSchema: validate
+const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm<NewPassword>({
+  validationSchema: validate,
+  initialValues: {
+    current_password: "",
+    password: "",
+    password_confirmation: ""
+  }
 });
 
-const submit = handleSubmit(async () => {
+const submit = handleSubmit(async (payload) => {
   const { error } = await useAPIFetch({
     endpoint: `/users/${props.userId}/password`,
     options: {
       method: "PATCH",
-      body: data.value
+      body: payload
     }
   });
   if (error.value) {
