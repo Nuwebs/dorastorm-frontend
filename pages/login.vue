@@ -7,9 +7,8 @@
         <template #content>
           <form @submit="onSubmit">
             <FormText name="email" :label="$t('forms.email')" type="email" placeholder="example@example.com"
-              icon="pi pi-at" v-model="credentials.email" />
-            <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock"
-              v-model="credentials.password" />
+              icon="pi pi-at" />
+            <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock" />
             <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
               {{ $t('forms.submit') }}</Button>
             <Hr />
@@ -22,8 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { definePageMeta, navigateTo, useI18n, useLocalePath, useValidationLocales } from '#imports';
+import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
 import Card from "primevue/card";
@@ -38,23 +36,18 @@ definePageMeta({
 });
 const lp = useLocalePath();
 const { t } = useI18n();
-const credentials = ref<DsLoginCredentials>({
-  email: '',
-  password: ''
-});
 
-useValidationLocales();
 const validations = object({
-  email: string().required().email(),
-  password: string().required()
+  email: string().required().email().label(t("forms.email")),
+  password: string().required().label(t("forms.password"))
 });
 
-const { handleSubmit, isSubmitting, setFieldError } = useForm({
+const { handleSubmit, isSubmitting, setFieldError } = useForm<DsLoginCredentials>({
   validationSchema: validations
 });
 
-const onSubmit = handleSubmit(async () => {
-  const response = await login(credentials.value);
+const onSubmit = handleSubmit(async (payload) => {
+  const response = await login(payload);
   if (response) {
     if (response.statusCode === 422) {
       return setFieldError('email', response.data.errors.email);

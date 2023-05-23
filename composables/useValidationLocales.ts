@@ -1,4 +1,3 @@
-import { useI18n } from "#imports";
 import { setLocale, LocaleObject, defaultLocale } from "yup";
 // Lang modules. These can't be async imported, so use it carefully.
 import { es } from "yup-locales";
@@ -13,12 +12,11 @@ const SUPPORTED_LOCALES: SupportedLocales = {
   en: DEFAULT,
 };
 
-export default function useValidationLocales() {
-  const { locale } = useI18n();
-  const check = locale.value in SUPPORTED_LOCALES;
+export default function useValidationLocales(locale: string) {
+  const check = locale in SUPPORTED_LOCALES;
   if (!check) {
     console.error("Yup locales composable does not support this locale");
     return;
   }
-  setLocale(SUPPORTED_LOCALES[locale.value]);
+  setLocale(SUPPORTED_LOCALES[locale]);
 }
