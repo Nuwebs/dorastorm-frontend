@@ -1,4 +1,3 @@
-import { useToast } from "primevue/usetoast";
 import { useNuxtApp } from "#imports";
 import { ToastMessageOptions } from "primevue/toast";
 

@@ -12,11 +12,13 @@ const SUPPORTED_LOCALES: SupportedLocales = {
   en: DEFAULT,
 };
 
-export default function useValidationLocales(locale: string) {
+const useValidationLocales = (locale: string) => {
   const check = locale in SUPPORTED_LOCALES;
   if (!check) {
     console.error("Yup locales composable does not support this locale");
     return;
   }
   setLocale(SUPPORTED_LOCALES[locale]);
-}
+};
+
+export default useValidationLocales;

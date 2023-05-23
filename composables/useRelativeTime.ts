@@ -16,7 +16,7 @@ const SUPPORTED_LOCALES: SupportedLocales = {
   es: es,
 };
 
-export default function useRelativeTime(baseDate?: string) {
+const useRelativeTime = (baseDate?: string) => {
   const { locale } = useI18n();
   const check = locale.value in SUPPORTED_LOCALES;
   if (!check) {
@@ -26,7 +26,7 @@ export default function useRelativeTime(baseDate?: string) {
   dayjs.locale(
     check ? SUPPORTED_LOCALES[locale.value] : SUPPORTED_LOCALES[DEFAULT_LOCALE]
   );
-  const main = baseDate? dayjs(baseDate) : dayjs();
+  const main = baseDate ? dayjs(baseDate) : dayjs();
 
   function fromNow(withoutSuffix: boolean = false) {
     return main.fromNow(withoutSuffix);
@@ -50,4 +50,6 @@ export default function useRelativeTime(baseDate?: string) {
     from,
     to,
   };
-}
+};
+
+export default useRelativeTime;

@@ -1,11 +1,15 @@
-import { navigateTo, useSwitchLocalePath, useValidationLocales } from "#imports";
+import {
+  navigateTo,
+  useSwitchLocalePath,
+  useValidationLocales,
+} from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
 import { LOCALES } from "~/services/i18n";
 
-export default function useMenuLocalesSwitch() {
+const useMenuLocalesSwitch = () => {
   const sw = useSwitchLocalePath();
 
-  async function switchLocale(localeCode: string): Promise<void> {    
+  async function switchLocale(localeCode: string): Promise<void> {
     useValidationLocales(localeCode);
     await navigateTo(sw(localeCode));
   }
@@ -17,7 +21,9 @@ export default function useMenuLocalesSwitch() {
         command: async () => await switchLocale(locale.code),
       };
     });
-  };
+  }
 
   return generateLocalesSwitches();
-}
+};
+
+export default useMenuLocalesSwitch;

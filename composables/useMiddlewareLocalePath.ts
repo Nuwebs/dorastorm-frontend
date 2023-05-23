@@ -1,6 +1,8 @@
 import { DEFAULT_LOCALE } from "~/services/i18n";
-export default function useMiddlwareLocalePath(routeName: string, nameDelimiter: string = "___") {
-
+const useMiddlwareLocalePath = (
+  routeName: string,
+  nameDelimiter: string = "___"
+) => {
   function actualLocale(): string {
     const words = routeName.split(nameDelimiter);
     const locale = words.pop();
@@ -9,11 +11,13 @@ export default function useMiddlwareLocalePath(routeName: string, nameDelimiter:
   }
 
   function getPath(route: string) {
-    route = route[0] === '/' ? route : '/' + route;
+    route = route[0] === "/" ? route : "/" + route;
     const locale = actualLocale();
     const check = locale === DEFAULT_LOCALE || locale === "default";
     return check ? route : "/" + locale + route;
   }
-  
+
   return getPath;
-}
+};
+
+export default useMiddlwareLocalePath;
