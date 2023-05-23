@@ -28,6 +28,7 @@ import RoleFormPermissions from './RoleFormPermissions.vue';
 import RoleFormHierarchy from './RoleFormHierarchy.vue';
 import { object, string } from "yup";
 import { useForm } from 'vee-validate';
+import { useI18n } from '#imports';
 
 interface Props {
   modelValue: Role | NewRole;
@@ -37,9 +38,10 @@ interface Props {
 
 const props = defineProps<Props>();
 const role = ref<Role | NewRole>(props.modelValue);
+const {t} = useI18n();
 
 const validate = object({
-  name: string().required().min(3),
+  name: string().required().min(3).label(t("modules.roles.name")),
   description: string()
 });
 

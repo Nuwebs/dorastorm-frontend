@@ -22,6 +22,11 @@
         "last_admin": "¡Eres el último superadministrador restante!"
       }
     },
+    "422": {
+      "specific": {
+        "role_permissions": "El rol debe de tener, al menos, un permiso."
+      }
+    },
     "invalid_token": "No se pudo iniciar sesión. Por favor, intente nuevamente.",
     "fatal": "Algo salió mal. Inténtalo de nuevo más tarde o contacta al administrador.",
     "validation": {

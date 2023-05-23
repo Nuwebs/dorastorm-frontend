@@ -36,6 +36,13 @@ async function handler() {
     }
   });
   if (error.value) {
+    if (error.value.statusCode === 422 && error.value.data.errors && error.value.data.errors.permissions) {
+      return toast.add({
+        severity: "error",
+        detail: t("error.422.specific.role_permissions"),
+        life: 3000,
+      })
+    }
     return toast.add(useGeneralErrorToast());
   }
   toast.add({

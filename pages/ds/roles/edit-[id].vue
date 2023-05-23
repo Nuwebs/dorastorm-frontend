@@ -2,8 +2,8 @@
   <TheLoadingSpinner v-if="loading" />
   <TheDS404 v-else-if="is404" />
   <section class="p-container" v-if="!loading && role !== null">
-    <h3 class="mb-2 mt-0">{{ $t("modules.roles.update") }}</h3>    
-    <RoleFormContainer v-model="role" updating :submit-handler="submitHandler"/>
+    <h3 class="mb-2 mt-0">{{ $t("modules.roles.update") }}</h3>
+    <RoleFormContainer v-model="role" updating :submit-handler="submitHandler" />
   </section>
 </template>
 
@@ -27,11 +27,11 @@ const loading = ref<boolean>(false);
 const is404 = ref<boolean>(false);
 const route = useRoute();
 const toast = useToast();
-const {t} = useI18n();
+const { t } = useI18n();
 
 onMounted(async () => {
   loading.value = true;
-  const {data, error} = await useAPIFetch<Role>({
+  const { data, error } = await useAPIFetch<Role>({
     endpoint: `/roles/${route.params.id}`
   });
   if (error.value) is404.value = true;
@@ -48,6 +48,13 @@ async function submitHandler() {
     }
   });
   if (error.value) {
+    if (error.value.statusCode === 422 && error.value.data.errors && error.value.data.errors.permissions) {
+      return toast.add({
+        severity: "error",
+        detail: t("error.422.specific.role_permissions"),
+        life: 3000,
+      })
+    }
     return toast.add(useGeneralErrorToast());
   }
   toast.add({

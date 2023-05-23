@@ -22,6 +22,11 @@
         "last_admin": "You are the last super-admin left!"
       }
     },
+    "422": {
+      "specific": {
+        "role_permissions": "The role must have, at least, one permission."
+      }
+    },
     "invalid_token": "Login failed. Please try again.",
     "fatal": "Something wrong happened. Try again later or contact the administrator.",
     "validation": {
