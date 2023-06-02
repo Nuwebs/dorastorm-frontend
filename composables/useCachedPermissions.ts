@@ -24,11 +24,11 @@ const useCachedPermissions = (
     });
   }
 
-  function userCan(permission: string) {
-    return cached[permission];
+  function userCan(permission: string): boolean {
+    return cached[permission].value;
   }
 
-  function roleCan(hierarchyNeeded: number, selfIncluded: boolean = false) {
+  function roleCan(hierarchyNeeded: number, selfIncluded: boolean = false): boolean {
     if (getUserRoleHierarchy === null) return false;
     return selfIncluded
       ? getUserRoleHierarchy <= hierarchyNeeded
