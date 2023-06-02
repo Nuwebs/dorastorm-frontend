@@ -1,13 +1,25 @@
-import { defineNuxtRouteMiddleware, navigateTo, setPageLayout, useMiddlewareLocalePath } from "#imports";
+import {
+  defineNuxtRouteMiddleware,
+  navigateTo,
+  setPageLayout,
+  useMiddlewareLocalePath,
+} from "#imports";
 import useAuthStore from "~/stores/authStore";
 import { DsRouteMeta } from "~/types/dorastorm";
 export default defineNuxtRouteMiddleware(
-  (to: DsRouteMeta, from: DsRouteMeta) => {    
+  (to: DsRouteMeta, from: DsRouteMeta) => {
     const authStore = useAuthStore();
-    const lp = useMiddlewareLocalePath(to.name? to.name as string : "");
+    const lp = useMiddlewareLocalePath(to.name ? (to.name as string) : "");
     if (!authStore.isLoggedIn) return navigateTo(lp("/login"));
     if (!to.meta.layout) setPageLayout("ds");
     if (!to.meta.permissions) return;
+    if (
+      to.meta.bailSelf &&
+      authStore.user &&
+      authStore.user.id === Number(to.params.id)
+    ) {
+      return;
+    }
     const checker = to.meta.strictPermissions
       ? authStore.hasEveryPermissions
       : authStore.hasAnyPermission;

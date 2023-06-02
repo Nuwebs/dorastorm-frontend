@@ -72,6 +72,18 @@ export const refreshToken = async (): Promise<void> => {
   saveExpiresEpoch(authStore.expiresEpoch);
 };
 
+export const getUserInfo = async (): Promise<void | ErrorBag> => {
+  const config = useRuntimeConfig();
+  const authStore = useAuthStore();
+  const { data: user, error: userError } = await useAPIFetch<User>({
+    endpoint: config.public.authEndpoints.me,
+  });
+  if (userError.value) return userError.value as ErrorBag;
+
+  authStore.user = user.value!;
+  saveUser(authStore.user);
+}
+
 export const login = async (
   credentials: DsLoginCredentials
 ): Promise<void | ErrorBag> => {
@@ -90,14 +102,11 @@ export const login = async (
   authStore.token = jwtData.value!.accessToken;
 
   // Get the user info
-  const { data: user, error: userError } = await useAPIFetch<User>({
-    endpoint: config.public.authEndpoints.me,
-  });
-  if (userError.value) return userError.value as ErrorBag;
-  authStore.user = user.value!;
-  authStore.expiresEpoch = calculateExpireEpoch(jwtData.value!.expiresIn);
+  const failed = await getUserInfo();
+  if (failed) return failed as ErrorBag;
 
-  saveUser(authStore.user);
+  // Final settings
+  authStore.expiresEpoch = calculateExpireEpoch(jwtData.value!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
 };

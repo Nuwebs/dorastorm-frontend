@@ -8,8 +8,9 @@
         placeholder="James Douglas" />
       <FormText name="email" type="email" :label="$t('forms.email')" v-model="data.email"
         placeholder="example@example.com" />
-      <FormSelect name="role_id" :label="$t('modules.users.role_select')" :options="availableRoles" option-label="name"
-        option-value="id" :placeholder="$t('modules.users.role_default')" v-model="data.role_id" />
+      <FormSelect v-if="shouldIncludeRole" name="role_id" :label="$t('modules.users.role_select')"
+        :options="availableRoles" option-label="name" option-value="id" :placeholder="$t('modules.users.role_default')"
+        v-model="data.role_id" />
       <Button :loading="isSubmitting" type="submit">{{ $t("forms.submit") }}</Button>
     </form>
     <Hr />
@@ -18,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useI18n, useRoute } from '#imports';
+import { definePageMeta, useCachedPermissions, useI18n, useRoute } from '#imports';
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from "vue";
@@ -33,10 +34,13 @@ import Hr from '~/components/Hr.vue';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
 import PERMISSIONS from '~/utils/permissions';
+import useAuthStore from '~/stores/authStore';
+import { getUserInfo } from '~/services/auth';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: [PERMISSIONS.USERS_UPDATE, PERMISSIONS.USERS_READ]
+  permissions: [PERMISSIONS.USERS_UPDATE],
+  bailSelf: true
 });
 
 interface UpdateUser {
@@ -47,6 +51,8 @@ interface UpdateUser {
 const { t } = useI18n();
 const route = useRoute();
 const toast = useToast();
+const { userCan } = useCachedPermissions([PERMISSIONS.USERS_UPDATE]);
+const authStore = useAuthStore();
 
 const loading = ref<boolean>(false);
 const is404 = ref<boolean>(false);
@@ -58,10 +64,14 @@ const data = ref<UpdateUser>({
   role_id: -1
 });
 
+const roleIdValidation = { role_id: number().required().label(t("modules.users.role")) };
+const updatingSelf: boolean = Number(route.params.id) === authStore.user!.id;
+const shouldIncludeRole = ref<boolean>(!updatingSelf || userCan(PERMISSIONS.USERS_UPDATE));
+
 const validate = object({
   name: string().required().min(4).label(t("modules.users.name")),
   email: string().required().email().label(t("forms.email")),
-  role_id: number().required().label(t("modules.users.role"))
+  ... (shouldIncludeRole.value && roleIdValidation)
 });
 
 const { handleSubmit, isSubmitting, setFieldError } = useForm({
@@ -96,7 +106,7 @@ onMounted(async () => {
   loading.value = true;
   const eu = await fetchUser();
   if (eu) return is404.value = true;
-  await fetchRoles();
+  if (shouldIncludeRole.value) await fetchRoles();
   loading.value = false;
 });
 
@@ -116,6 +126,10 @@ const submit = handleSubmit(async () => {
       return setFieldError("role_id", error.value.data.message);
     }
     return toast.add(useGeneralErrorToast());
+  }
+
+  if (updatingSelf) {
+    await getUserInfo();
   }
   toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
 })
