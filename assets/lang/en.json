@@ -55,6 +55,7 @@
       "role_select": "Select the user role:",
       "title": "Users",
       "update": "Update user data",
+      "update_self": "Update profile",
       "user_info": "User information"
     },
     "roles": {

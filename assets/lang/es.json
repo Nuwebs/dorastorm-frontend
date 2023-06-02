@@ -55,6 +55,7 @@
       "role_select": "Selecciona el rol del usuario:",
       "title": "Usuarios",
       "update": "Actualizar datos del usuario",
+      "update_self": "Actualizar perfil",
       "user_info": "Información del usuario"
     },
     "roles": {
