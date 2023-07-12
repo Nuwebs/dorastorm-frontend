@@ -1,5 +1,6 @@
 <template>
   <div class="roles-permissions-container p-1 border-1 border-round">
+    <ErrorMessage :name="props.name" class="p-error" />
     <div class="grid grid-nogutter">
       <div class="col-12 md:col-6" v-for="column in slices">
         <div v-for="permissionModule in column" :key="permissionModule.module"
@@ -20,13 +21,20 @@ import useAuthStore from '~/stores/authStore';
 import { RolePermissionGroup } from '~/types/dorastorm';
 import { getPermissionsGroups } from '~/utils/permissions';
 import FormCheckboxValue from '../form/FormCheckboxValue.vue';
+import { useField } from 'vee-validate';
 
 interface Props {
+  name: string;
   modelValue: string[]
 }
 
 const props = defineProps<Props>();
-const rolePermissions = ref<string[]>(props.modelValue);
+
+const { value } = useField<string[]>(() => props.name, undefined, {
+  syncVModel: true
+});
+
+const rolePermissions = ref<string[]>(value.value);
 const userPermissions = ref<RolePermissionGroup[]>(getPermissionsGroups(useAuthStore().user!.role.permissions));
 const emit = defineEmits(["update:modelValue"]);
 const slices = computed(() => {

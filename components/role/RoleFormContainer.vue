@@ -6,7 +6,7 @@
       <div class="grid">
         <div class="col-12 md:col-8">
           <h3 class="mb-2 mt-0">{{ $t("modules.roles.select_permissions") }}</h3>
-          <RoleFormPermissions v-model="role.permissions" />
+          <RoleFormPermissions name="permissions" v-model="role.permissions" />
         </div>
         <div class="col-12 md:col-4">
           <h3 class="mb-2 mt-0">{{ $t("modules.roles.select_hierarchy") }}</h3>
@@ -26,7 +26,7 @@ import FormTextArea from '../form/FormTextArea.vue';
 import Button from 'primevue/button';
 import RoleFormPermissions from './RoleFormPermissions.vue';
 import RoleFormHierarchy from './RoleFormHierarchy.vue';
-import { object, string } from "yup";
+import { object, string, array } from "yup";
 import { useForm } from 'vee-validate';
 import { useI18n } from '#imports';
 
@@ -38,11 +38,13 @@ interface Props {
 
 const props = defineProps<Props>();
 const role = ref<Role | NewRole>(props.modelValue);
-const {t} = useI18n();
+const { t } = useI18n();
 
 const validate = object({
   name: string().required().min(3).label(t("modules.roles.name")),
-  description: string()
+  description: string(),
+  permissions: array().min(1, t("error.422.specific.role_permissions"))
+    .label(t("modules.roles.select_permissions"))
 });
 
 const { isSubmitting, handleSubmit } = useForm({
