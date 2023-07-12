@@ -22,5 +22,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { errorMessage, value } = useField<string[]>(toRef(props, 'name'));
+const { errorMessage, value } = useField<string[]>(toRef(props, 'name'), undefined, {
+  syncVModel: true
+});
 </script>

@@ -23,5 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   autoResize: false
 });
 
-const { errorMessage, value } = useField<string>(toRef(props, 'name'));
+const { errorMessage, value } = useField<string>(toRef(props, 'name'), undefined, {
+  syncVModel: true
+});
 </script>

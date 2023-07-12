@@ -24,5 +24,7 @@ const props = defineProps<{
   modelValue?: number
 }>();
 
-const { errorMessage, value } = useField<number>(toRef(props, 'name'));
+const { errorMessage, value } = useField<number>(toRef(props, 'name'), undefined, {
+  syncVModel: true
+});
 </script>
