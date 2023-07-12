@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useCachedPermissions, useI18n, useRoute } from '#imports';
+import { definePageMeta, useCachedPermissions, useI18n, useRoute, useSubmitHandler } from '#imports';
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from "vue";
@@ -110,27 +110,28 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const submit = handleSubmit(async () => {
-  const { error } = await useAPIFetch({
+const submit = handleSubmit(async () => await useSubmitHandler(
+  {
     endpoint: "/users/" + route.params.id,
     options: {
       method: "PATCH",
       body: data.value
     }
-  });
-  if (error.value) {
-    if (error.value.statusCode === 422) {
-      return setFieldError("email", error.value.data.errors.email);
+  },
+  async () => {
+    if (updatingSelf) {
+      await getUserInfo();
     }
-    if (error.value.statusCode === 409) {
-      return setFieldError("role_id", error.value.data.message);
+    toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
+  },
+  (error) => {
+    if (error.statusCode === 422) {
+      return setFieldError("email", error.data.errors.email);
     }
-    return toast.add(useGeneralErrorToast());
+    if (error.statusCode === 409) {
+      return setFieldError("role_id", error.data.message);
+    }
+    toast.add(useGeneralErrorToast());
   }
-
-  if (updatingSelf) {
-    await getUserInfo();
-  }
-  toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
-})
+))
 </script>

@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n } from '#imports';
+import { definePageMeta, useGeneralErrorToast, useI18n, useSubmitHandler } from '#imports';
 import PERMISSIONS from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import { ref } from 'vue';
@@ -27,28 +27,28 @@ const newRole = ref<NewRole>({
 });
 const { t } = useI18n();
 
-async function handler() {
-  const { error } = await useAPIFetch<void>({
+const handler = async () => await useSubmitHandler(
+  {
     endpoint: "/roles",
     options: {
       method: "POST",
       body: newRole.value
     }
-  });
-  if (error.value) {
-    if (error.value.statusCode === 422 && error.value.data.errors && error.value.data.errors.permissions) {
-      return toast.add({
+  },
+  () => toast.add({
+    severity: "success",
+    detail: t("modules.roles.created"),
+    life: 3000
+  }),
+  (error) => {
+    if (error.statusCode === 422 && error.data.errors && error.data.errors.permissions) {
+      toast.add({
         severity: "error",
         detail: t("error.422.specific.role_permissions"),
         life: 3000,
       })
     }
-    return toast.add(useGeneralErrorToast());
+    toast.add(useGeneralErrorToast());
   }
-  toast.add({
-    severity: "success",
-    detail: t("modules.roles.created"),
-    life: 3000
-  });
-}
+);
 </script>

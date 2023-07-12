@@ -3,12 +3,12 @@
   <TheDS404 v-else-if="is404" />
   <section class="p-container" v-if="!loading && role !== null">
     <h3 class="mb-2 mt-0">{{ $t("modules.roles.update") }}</h3>
-    <RoleFormContainer v-model="role" updating :submit-handler="submitHandler" />
+    <RoleFormContainer v-model="role" updating :submit-handler="submit" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n, useRoute } from '#imports';
+import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n, useRoute, useSubmitHandler } from '#imports';
 import PERMISSIONS from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import { ref, onMounted } from 'vue';
@@ -39,28 +39,30 @@ onMounted(async () => {
   loading.value = false;
 });
 
-async function submitHandler() {
-  const { error } = await useAPIFetch<void>({
+const submit = async () => await useSubmitHandler(
+  {
     endpoint: "/roles/" + route.params.id,
     options: {
       method: "PATCH",
       body: role.value
     }
-  });
-  if (error.value) {
-    if (error.value.statusCode === 422 && error.value.data.errors && error.value.data.errors.permissions) {
+  },
+  () => {
+    toast.add({
+      severity: "success",
+      detail: t("general.updated"),
+      life: 3000
+    });
+  },
+  (error) => {
+    if (error.statusCode === 422 && error.data.errors && error.data.errors.permissions) {
       return toast.add({
         severity: "error",
         detail: t("error.422.specific.role_permissions"),
         life: 3000,
       })
     }
-    return toast.add(useGeneralErrorToast());
+    toast.add(useGeneralErrorToast());
   }
-  toast.add({
-    severity: "success",
-    detail: t("general.updated"),
-    life: 3000
-  });
-}
+);
 </script>

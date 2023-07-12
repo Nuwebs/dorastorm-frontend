@@ -32,7 +32,7 @@ import { useI18n } from '#imports';
 
 interface Props {
   modelValue: Role | NewRole;
-  submitHandler(): void
+  submitHandler(): Promise<boolean>
   updating?: boolean
 }
 

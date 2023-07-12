@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useI18n } from '#imports';
+import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from "vue";
@@ -80,21 +80,24 @@ onMounted(async () => {
 });
 
 const submit = handleSubmit(async (payload) => {
-  const { error } = await useAPIFetch({
-    endpoint: "/users",
-    options: {
-      method: "post",
-      body: payload
+  await useSubmitHandler(
+    {
+      endpoint: "/users",
+      options: {
+        method: "post",
+        body: payload
+      }
+    },
+    () => {
+      toast.add({ severity: "success", detail: t("modules.users.created"), life: 3000 });
+      resetForm();
+    },
+    (error) => {
+      if (error.statusCode === 422) {
+        return setFieldError("email", error.data.errors.email);
+      }
+      return toast.add(useGeneralErrorToast());
     }
-  });
-  if (error.value) {
-    if (error.value.statusCode === 422) {
-      return setFieldError("email", error.value.data.errors.email);
-    }
-    return toast.add(useGeneralErrorToast());
-  }
-  toast.add({ severity: "success", detail: t("modules.users.created"), life: 3000 });
-  resetForm();
+  );
 });
-
 </script>
