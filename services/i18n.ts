@@ -20,7 +20,11 @@ const SPA_ROUTES: string[] = ["/ds/**"];
 
 export const DEFAULT_LOCALE: string = "en";
 
-export let STRATEGY: Strategy = "prefix_and_default";
+// Currently using 'prefix' instead of 'prefix_and_default' because the later have too many bugs
+// https://github.com/nuxt-modules/i18n/issues/1977
+// https://github.com/nuxt-modules/i18n/issues/2131
+// Own bug: Does not change the locale in the index guest page
+export let STRATEGY: Strategy = "prefix";
 
 export const LOCALES: locale[] = [
   {
