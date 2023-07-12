@@ -2,7 +2,10 @@
   <nav class="shadow-1 navbar">
     <Menubar class="py-3 px-6 h-full" :model="content">
       <template #start>
-        <slot name="start"></slot>
+        <div class="flex align-items-center">
+          <h3 class="my-0 mr-4">Dorastorm</h3>
+          <slot name="start"></slot>
+        </div>
       </template>
       <template #end>
         <slot name="end"></slot>
@@ -23,6 +26,7 @@ defineProps<{
 .p-menubar {
   border: 0;
 }
+
 .navbar {
   height: 12vh;
   z-index: 10;

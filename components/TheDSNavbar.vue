@@ -2,7 +2,6 @@
   <NavbarBase>
     <template #start>
       <div class="flex align-items-center mr-2">
-        <h3 class="my-0 mr-2">Dorastorm</h3>
         <NavbarButtonSidebar @click="$emit('sidebarButtonClick')" />
         <NavbarButtonHome @click="router.push(lp('/ds'))" />
       </div>

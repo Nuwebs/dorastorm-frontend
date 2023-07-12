@@ -6,6 +6,7 @@ import useCommonOptions from "./commonOptions";
 import cloneDeep from "lodash-es/cloneDeep";
 import { ComputedRef } from "vue";
 import useGuestOptions from "./guestOptions";
+import useGuestNavbar from "./guestNavbar";
 
 const authStore = useAuthStore();
 
@@ -48,4 +49,8 @@ export const commonMenuOptions = () => {
 
 export const guestMenuOptions = () => {
   return getMenuItems(useGuestOptions());
+};
+
+export const guestNavbar = () => {
+  return getMenuItems(useGuestNavbar());
 };
