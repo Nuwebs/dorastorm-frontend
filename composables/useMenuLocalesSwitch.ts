@@ -1,13 +1,13 @@
 import {
   navigateTo,
-  useSwitchLocalePath,
+  useNuxtApp,
   useValidationLocales,
 } from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
 import { LOCALES } from "~/services/i18n";
 
 const useMenuLocalesSwitch = () => {
-  const sw = useSwitchLocalePath();
+  const sw = useNuxtApp().$switchLocalePath;
 
   async function switchLocale(localeCode: string): Promise<void> {
     useValidationLocales(localeCode);

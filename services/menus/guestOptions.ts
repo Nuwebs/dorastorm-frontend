@@ -1,15 +1,15 @@
 import {
   navigateTo,
   useMenuLocalesSwitch,
-  useLocalePath,
   useI18n,
+  useNuxtApp,
 } from "#imports";
 import { DsMenuItem } from "~/types/dorastorm";
 import { computed, ComputedRef } from "vue";
 
 const useGuestOptions = (): ComputedRef<DsMenuItem[]> => {
   const { t } = useI18n();
-  const lp = useLocalePath();
+  const lp = useNuxtApp().$localePath;
 
   const menu = computed<DsMenuItem[]>(() => {
     return [

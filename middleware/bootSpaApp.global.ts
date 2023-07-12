@@ -1,4 +1,8 @@
-import { defineNuxtRouteMiddleware, useNuxtApp, useValidationLocales } from "#imports";
+import {
+  defineNuxtRouteMiddleware,
+  useNuxtApp,
+  useValidationLocales,
+} from "#imports";
 import { isTokenExpired, loadUserData, refreshToken } from "~/services/auth";
 import useAuthStore from "~/stores/authStore";
 import useComposablesToastStore from "~/stores/composablesToastStore";
@@ -22,14 +26,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       composablesToastStore.addToast({
         severity: "error",
         detail: "error.409.session_expired",
-        life: 6000
+        life: 6000,
       });
     }
     if (error instanceof InvalidTokenException) {
       composablesToastStore.addToast({
         severity: "error",
         detail: "error.invalid_token",
-        life: 6000
+        life: 6000,
       });
     }
   }
