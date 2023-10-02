@@ -1,5 +1,5 @@
 <template>
-  <section class="p-container">
+  <section class="container">
     <h1 class="mt-0">{{ $t("modules.quotations.list") }}</h1>
     <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
       :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)" expandable>

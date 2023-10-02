@@ -1,7 +1,7 @@
 <template>
   <TheLoadingSpinner v-if="loading" />
   <TheDS404 v-else-if="is404" />
-  <section class="p-container" v-if="!loading && role !== null">
+  <section class="container" v-if="!loading && role !== null">
     <h3 class="mb-2 mt-0">{{ $t("modules.roles.update") }}</h3>
     <RoleFormContainer v-model="role" updating :submit-handler="submit" />
   </section>

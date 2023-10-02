@@ -1,5 +1,5 @@
 <template>
-  <section class="p-container py-8 grid grid-nogutter">
+  <section class="container py-8 grid grid-nogutter">
     <div class="col-4 flex justify-content-end">
       <i class="pi pi-map text-8xl mr-4"></i>
     </div>

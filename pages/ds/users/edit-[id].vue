@@ -1,7 +1,7 @@
 <template>
   <TheLoadingSpinner v-if="loading" />
   <TheDS404 v-else-if="is404" :subtitle="$t('error.404.specific.user')" />
-  <section v-else class="p-container">
+  <section v-else class="container">
     <h1 class="mt-0">{{ $t("modules.users.user_info") }}</h1>
     <form @submit="submit" class="mb-3">
       <FormText name="name" type="text" :label="$t('modules.users.name')" v-model="data.name"

@@ -1,5 +1,5 @@
 <template>
-  <section class="p-container">
+  <section class="container">
     <h3 class="mb-2 mt-0">{{ $t("modules.roles.create") }}</h3>
     <RoleFormContainer v-model="newRole" :submit-handler="handler" />
   </section>

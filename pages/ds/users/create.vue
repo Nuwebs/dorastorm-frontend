@@ -1,5 +1,5 @@
 <template>
-  <section class="p-container">
+  <section class="container">
     <h1 class="mt-0">{{ $t("modules.users.create") }}</h1>
     <form @submit="submit">
       <FormText name="name" type="text" :label="$t('modules.users.name')" placeholder="James Douglas" />

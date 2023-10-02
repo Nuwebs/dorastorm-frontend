@@ -1,6 +1,6 @@
 <template>
   <TheLoadingSpinner v-if="loading" />
-  <section class="p-container" v-if="!loading">
+  <section class="container" v-if="!loading">
     <div class="mt-4 grid border-1 border-round surface-border surface-section">
       <div class="col-3 flex justify-content-center">
         <i class="pi pi-check-circle text-8xl mr-4 text-green-500" v-if="worked"></i>

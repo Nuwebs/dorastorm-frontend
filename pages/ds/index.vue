@@ -1,5 +1,5 @@
 <template>
-  <section class="p-container">
+  <section class="container">
     <Card class="shadow-1 mb-3" v-if="authStore.user">
       <template #title>
         {{ $t("general.welcome") }}
