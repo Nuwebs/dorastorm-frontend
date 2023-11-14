@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = number">
 import { toRef } from 'vue';
 import { useField } from 'vee-validate';
 import Dropdown from 'primevue/dropdown';
@@ -21,10 +21,10 @@ const props = defineProps<{
   optionValue: string,
   placeholder?: string,
   loading?: boolean
-  modelValue?: number
+  modelValue?: T
 }>();
 
-const { errorMessage, value } = useField<number>(toRef(props, 'name'), undefined, {
+const { errorMessage, value } = useField<T>(toRef(props, 'name'), undefined, {
   syncVModel: true
 });
 </script>
