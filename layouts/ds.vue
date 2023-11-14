@@ -1,16 +1,16 @@
 <template>
-  <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" />
+  <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" :full="shouldBeSidebar"/>
   <article class="p-3 min-h-fullscreen">
     <aside :class="sidebarClasses" v-if="shouldBeSidebar">
-      <PanelMenu :model="sidebarMenuItems()"/>
+      <PanelMenu :model="sidebarMenuItems()" />
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
-      <PanelMenu :model="sidebarMenuItems()"/>
+      <PanelMenu :model="overlayMenu" />
     </OverlaySidebar>
     <main :class="contentClasses">
       <slot></slot>
     </main>
-  </article> 
+  </article>
   <ConfirmDialog />
 </template>
 
@@ -19,11 +19,17 @@ import TheDSNavbar from '~/components/TheDSNavbar.vue';
 import { ref, computed, watch } from "vue";
 import useWindowWidth from '~/composables/useWindowWidth';
 import OverlaySidebar from "primevue/sidebar";
-import { sidebarMenuItems } from '~/services/menus';
+import { sidebarMenuItems, commonMenuOptions } from '~/services/menus';
 import PanelMenu from "primevue/panelmenu";
 import ConfirmDialog from 'primevue/confirmdialog';
+import { useLocalePath, useRouter } from '#imports';
+import { MenuItem } from 'primevue/menuitem';
 
 const windowWidth = useWindowWidth();
+const router = useRouter();
+const currentRoute = router.currentRoute;
+const lp = useLocalePath();
+
 const shouldBeSidebar = ref<boolean>(windowWidth.value >= 992);
 const sidebarVisible = ref<boolean>(shouldBeSidebar.value);
 
@@ -39,6 +45,18 @@ const contentClasses = computed<string>(() => {
   return classes;
 });
 
+const overlayMenu = computed<MenuItem[]>(() => {
+  return [
+    {
+      label: "Inicio",
+      icon: "pi pi-home",
+      to: lp("/ds")
+    },
+    ...sidebarMenuItems(),
+    ...commonMenuOptions(),
+  ];
+})
+
 watch(windowWidth, () => {
   if (windowWidth.value >= 992) {
     shouldBeSidebar.value = true;
@@ -47,6 +65,10 @@ watch(windowWidth, () => {
     shouldBeSidebar.value = false;
     sidebarVisible.value = false;
   };
+});
+
+watch(currentRoute, () => {
+  if (!shouldBeSidebar.value && sidebarVisible.value) sidebarVisible.value = false;
 })
 </script>
 <style scoped>
@@ -54,6 +76,7 @@ watch(windowWidth, () => {
   position: sticky;
   top: 0;
 }
+
 .layout-sidebar {
   position: fixed;
   width: 300px;

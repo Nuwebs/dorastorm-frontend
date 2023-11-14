@@ -32,9 +32,6 @@ const useCommonOptions = (): ComputedRef<DsMenuItem[]> => {
         command: () => navigateTo(lp(`/ds/users/edit-${authStore.user!.id}`))
       },
       {
-        separator: true,
-      },
-      {
         label: t("general.logout"),
         icon: "pi pi-sign-out",
         command: async () => await signOut(),
