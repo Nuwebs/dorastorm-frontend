@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     "primevue/resources/primevue.css",
     "primeflex/primeflex.css",
     "primeicons/primeicons.css",
-    "/assets/styles/containers.css"
+    "/assets/styles/containers.css",
   ],
   build: {
     transpile: ["primevue"],
@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt", "@vee-validate/nuxt", "@nuxtjs/i18n"],
   runtimeConfig: {
     public: {
-      backendURL: "http://localhost:8000",
+      backendURL: process.env.backendURL || "http://localhost:8000",
       authEndpoints: {
         login: "/login",
         refresh: "/token",
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieKey: "ds_i18n",
       redirectOn: "root",
-      alwaysRedirect: true
+      alwaysRedirect: true,
     },
   },
 });
