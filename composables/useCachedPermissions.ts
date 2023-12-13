@@ -1,12 +1,11 @@
 import { computed, ComputedRef } from "vue";
 import useAuthStore from "~/stores/authStore";
+import Permission from "~/utils/permissions";
 
-interface CachedPermissions {
-  [key: string]: ComputedRef<boolean>;
-}
+type CachedPermissions = Partial<Record<Permission, ComputedRef<boolean>>>;
 
 const useCachedPermissions = (
-  permissions: string[],
+  permissions: Permission[],
   strict: boolean = false
 ) => {
   const {
@@ -24,11 +23,21 @@ const useCachedPermissions = (
     });
   }
 
-  function userCan(permission: string): boolean {
-    return cached[permission].value;
+  function userCan(permission: Permission): boolean {
+    const cPermission = cached[permission];
+    if (cPermission !== undefined) {
+      return cPermission.value;
+    }
+    console.error(
+      `The permission ${permission} isn't cached. Make sure you are passing the right permission as parameter or you cached the correct permisisons.`
+    );
+    return false;
   }
 
-  function roleCan(hierarchyNeeded: number, selfIncluded: boolean = false): boolean {
+  function roleCan(
+    hierarchyNeeded: number,
+    selfIncluded: boolean = false
+  ): boolean {
     if (getUserRoleHierarchy === null) return false;
     return selfIncluded
       ? getUserRoleHierarchy <= hierarchyNeeded
