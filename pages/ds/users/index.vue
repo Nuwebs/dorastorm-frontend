@@ -14,9 +14,9 @@
           <ActionButtonDelete endpoint="/users/{id}" :model-id="row.data.id" :cd-messages="{
             header: $t('modules.users.delete'),
             message: $t('modules.users.delete_warning')
-          }" @deleted="deleted" v-if="userCan(PERMISSIONS.USERS_DELETE) && roleCan(row.data.role.hierarchy, true)" />
+          }" @deleted="deleted" v-if="userCan(Permission.USERS_DELETE) && roleCan(row.data.role.hierarchy, true)" />
           <ActionButtonUpdate route="/ds/users/edit-{id}" :model-id="row.data.id"
-            v-if="userCan(PERMISSIONS.USERS_UPDATE) && roleCan(row.data.role.hierarchy, true)" />
+            v-if="userCan(Permission.USERS_UPDATE) && roleCan(row.data.role.hierarchy, true)" />
         </template>
       </Column>
     </DataTableBase>
@@ -37,15 +37,15 @@ import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue
 import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
 import UserDataRow from '~/components/user/UserDataRow.vue';
 import useCachedPermissions from "~/composables/useCachedPermissions";
-import PERMISSIONS from '~/utils/permissions';
+import Permission from '~/utils/permissions';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: [PERMISSIONS.USERS_READ]
+  permissions: [Permission.USERS_READ]
 });
 
 const toast = useToast();
-const { userCan, roleCan, userIsAllowed } = useCachedPermissions([PERMISSIONS.USERS_UPDATE, PERMISSIONS.USERS_DELETE])
+const { userCan, roleCan, userIsAllowed } = useCachedPermissions([Permission.USERS_UPDATE, Permission.USERS_DELETE])
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<User>("/users");
 

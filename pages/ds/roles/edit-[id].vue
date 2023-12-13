@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n, useRoute, useSubmitHandler } from '#imports';
-import PERMISSIONS from '~/utils/permissions';
+import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import { ref, onMounted } from 'vue';
 import { Role } from '~/types/dorastorm';
@@ -19,7 +19,7 @@ import { useToast } from 'primevue/usetoast';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: [PERMISSIONS.ROLES_UPDATE]
+  permissions: [Permission.ROLES_UPDATE]
 });
 
 const role = ref<Role | null>(null);

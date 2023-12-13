@@ -1,21 +1,24 @@
 import { FilterMatchModeOptions } from "primevue/api";
 import { MenuItem } from "primevue/menuitem";
 import { RouteLocationNormalized } from "vue-router";
-export interface Role {
-  id: number;
+import Permission from "~/utils/permissions";
+
+export interface NewRole {
   hierarchy: number;
   name: string;
   description: string;
-  permissions: string[];
-  created: string;
-  modified: string;
+  permissions: Permission[];
 }
 
-export type NewRole = Omit<Role, "id" | "created" | "modified">;
+export interface Role extends NewRole{
+  id: number;
+  created_at: string;
+  modified_at: string;
+}
 
 export interface RolePermissionGroup {
   module: string;
-  permissions: string[];
+  permissions: Permission[];
 }
 
 export interface User {
@@ -26,18 +29,19 @@ export interface User {
   role: Role;
 }
 
-export interface Quotation {
-  id: number;
+export interface NewQuotation {
   subject: string;
   phone: string;
   name: string;
   email: string;
   content: string;
+}
+
+export interface Quotation extends NewQuotation{
+  id: number;
   created_at: string;
   modified_at: string;
 }
-
-export type NewQuotation = Omit<Quotation, "id" | "created" | "modified">;
 
 export interface DsLoginCredentials {
   email: string;
@@ -57,11 +61,9 @@ export type DsMenuItem = MenuItem & {
 };
 
 // Error related
-export interface DsErrorBag {
-  message?: string;
-  errors?: {
-    [key: string]: string[];
-  };
+export interface DsValidationErrorBag<T> {
+  message: string;
+  errors: Partial<Record<keyof T, string[]>>;
 }
 
 // DataTable
@@ -71,17 +73,21 @@ export type DataTableColumn = {
   sortable?: boolean;
 };
 
-export type Filter = {
-  value: any | null;
-  matchMode: FilterMatchModeOptions;
+export type Filter<T> = {
+  value: T[keyof T] | null;
+  matchMode: FilterMatchModeOptions[keyof FilterMatchModeOptions];
+};
+
+export type DataTableFilter<T = any> = {
+  [key: string]: Filter<T>;
 };
 
 export interface PaginationWrapper<DataT> {
   data: DataT[];
   meta: {
-    current_page: 1;
-    from: 1;
-    last_page: 1;
+    current_page: number;
+    from: number | null;
+    last_page: number;
     path: string;
     per_page: number;
     to: number | null;

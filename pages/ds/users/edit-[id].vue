@@ -33,13 +33,13 @@ import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import Hr from '~/components/Hr.vue';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
-import PERMISSIONS from '~/utils/permissions';
+import Permission from '~/utils/permissions';
 import useAuthStore from '~/stores/authStore';
 import { getUserInfo } from '~/services/auth';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: [PERMISSIONS.USERS_UPDATE],
+  permissions: [Permission.USERS_UPDATE],
   bailSelf: true
 });
 
@@ -51,7 +51,7 @@ interface UpdateUser {
 const { t } = useI18n();
 const route = useRoute();
 const toast = useToast();
-const { userCan } = useCachedPermissions([PERMISSIONS.USERS_UPDATE]);
+const { userCan } = useCachedPermissions([Permission.USERS_UPDATE]);
 const authStore = useAuthStore();
 
 const loading = ref<boolean>(false);
@@ -66,7 +66,7 @@ const data = ref<UpdateUser>({
 
 const roleIdValidation = { role_id: number().required().label(t("modules.users.role")) };
 const updatingSelf: boolean = Number(route.params.id) === authStore.user!.id;
-const shouldIncludeRole = ref<boolean>(!updatingSelf || userCan(PERMISSIONS.USERS_UPDATE));
+const shouldIncludeRole = ref<boolean>(!updatingSelf || userCan(Permission.USERS_UPDATE));
 
 const validate = object({
   name: string().required().min(4).label(t("modules.users.name")),

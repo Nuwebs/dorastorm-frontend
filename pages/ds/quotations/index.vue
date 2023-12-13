@@ -4,7 +4,7 @@
     <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
       :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)" expandable>
       <template #expansion="slotProps">
-        <QuotationDataRow :quotaiton="slotProps.data" />
+        <QuotationDataRow :quotation="slotProps.data" />
       </template>
       <Column field="id" :header="$t('general.id')" />
       <Column field="subject" :header="$t('modules.quotations.subject')" />
@@ -14,12 +14,12 @@
           {{ dateFormat(slotProps.data.created_at) }}
         </template>
       </Column>
-      <Column field="id" :header="$t('general.action')" v-if="userCan(PERMISSIONS.QUOTATIONS_DELETE)">
+      <Column field="id" :header="$t('general.action')" v-if="userCan(Permission.QUOTATIONS_DELETE)">
         <template #body="row">
           <ActionButtonDelete endpoint="/quotations/{id}" :model-id="row.data.id" :cd-messages="{
             header: $t('modules.quotations.delete'),
             message: $t('modules.quotations.delete_warning')
-          }" @deleted="deleted" v-if="userCan(PERMISSIONS.QUOTATIONS_DELETE)" />
+          }" @deleted="deleted" v-if="userCan(Permission.QUOTATIONS_DELETE)" />
         </template>
       </Column>
     </DataTableBase>
@@ -34,16 +34,16 @@ import { onMounted } from "vue";
 import DataTableBase from '~/components/dataTable/DataTableBase.vue';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import PERMISSIONS from '~/utils/permissions';
+import Permission from '~/utils/permissions';
 import { Quotation } from '~/types/dorastorm';
 import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
 
 definePageMeta({
   middleware: ["auth-guard"],
-  permissions: [PERMISSIONS.QUOTATIONS_READ]
+  permissions: [Permission.QUOTATIONS_READ]
 });
 
-const { userCan } = useCachedPermissions([PERMISSIONS.QUOTATIONS_DELETE]);
+const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<Quotation>("/quotations");
 const dateFormat = useDateFormat();
