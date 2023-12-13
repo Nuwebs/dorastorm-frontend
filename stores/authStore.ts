@@ -1,12 +1,16 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { User } from "~/types/dorastorm";
+import Permission from "~/utils/permissions";
+import { getUserInfo } from "~/services/auth";
 
 const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
   const token = ref<string | null>(null);
   const expiresEpoch = ref<number>(-1);
   const appBooted = ref<boolean>(false);
+  const updating = ref<boolean>(false);
+  const userRefreshed = ref<boolean>(false);
 
   const isLoggedIn = computed<boolean>(() => {
     return user.value === null ? false : true;
@@ -22,24 +26,32 @@ const useAuthStore = defineStore("auth", () => {
     return user.value.role.hierarchy;
   });
 
-  function hasPermission(permission: string): boolean {
+  function hasPermission(permission: Permission): boolean {
     if (!user.value) return false;
     return user.value.role.permissions.includes(permission);
   }
 
-  function hasAnyPermission(permissions: string[]): boolean {
+  function hasAnyPermission(permissions: Permission[]): boolean {
     if (!user.value) return false;
     return user.value.role.permissions.some((permission) =>
       permissions.includes(permission)
     );
   }
 
-  function hasEveryPermissions(permissions: string[]): boolean {
+  function hasEveryPermissions(permissions: Permission[]): boolean {
     if (!user.value) return false;
     for (const permission of permissions) {
       if (!hasPermission(permission)) return false;
     }
     return true;
+  }
+
+  async function refreshUserData(): Promise<void> {
+    if (updating.value) return;
+    updating.value = true;
+    userRefreshed.value = true;
+    await getUserInfo();
+    updating.value = false;
   }
 
   function $reset(): void {
@@ -59,6 +71,8 @@ const useAuthStore = defineStore("auth", () => {
     hasPermission,
     hasAnyPermission,
     hasEveryPermissions,
+    userRefreshed,
+    refreshUserData,
     $reset,
   };
 });
