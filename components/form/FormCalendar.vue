@@ -3,7 +3,7 @@
     <label class="block" :for="name">{{ props.label }}</label>
     <Calendar class="w-full" :model-value="value" @update:model-value="handler" :inline="props.inline"
       :show-icon="props.showIcon" :min-date="props.minDate" :max-date="props.maxDate" :date-format="props.dateFormat"
-      :class="{ 'p-invalid': errorMessage }" @date-select="handler" />
+      :class="{ 'p-invalid': errorMessage }" @date-select="handler" :time-only="!!props.timeOnly" hour-format="12" />
     <ErrorMessage :name="name" class="p-error" />
   </div>
 </template>
@@ -24,6 +24,7 @@ interface Props {
   inline?: boolean;
   minDate?: Date;
   maxDate?: Date;
+  timeOnly?: boolean;
 }
 
 const props = defineProps<Props>();

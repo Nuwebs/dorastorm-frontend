@@ -1,27 +1,30 @@
 <template>
   <div class="mb-2">
     <label :for="name">{{ label }}</label>
-    <Textarea class="w-full block" :name="name" v-model="value" :class="{ 'p-invalid': errorMessage }"
-      :rows="props.rows" />
+    <div class="p-inputgroup flex-1">
+      <span class="p-inputgroup-addon" v-if="icon"><i :class="icon"></i></span>
+      <InputMask :name="name" v-model="value" :mask="format" :placeholder="placeholder" :class="{ 'p-invalid': errorMessage }" />
+    </div>
     <ErrorMessage :name="name" class="p-error" />
   </div>
 </template>
 
 <script setup lang="ts">
-import Textarea from "primevue/textarea";
 import { toRef } from 'vue';
 import { useField } from 'vee-validate';
+import InputMask from 'primevue/inputmask';
 
 interface Props {
   name: string,
   label: string,
-  rows?: number,
-  autoResize?: boolean
-  modelValue?: string
+  icon?: string,
+  modelValue?: string | null;
+  format?: string;
+  placeholder?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  rows: 5,
-  autoResize: false
+  format: '9999999999',
+  placeholder: '3184301032'
 });
 
 const { errorMessage, value } = useField<string>(toRef(props, 'name'), undefined, {

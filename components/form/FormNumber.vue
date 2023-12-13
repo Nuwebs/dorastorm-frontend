@@ -23,6 +23,7 @@ const props = defineProps<{
     max?: number;
     useGrouping?: boolean;
     locale?: string;
+    minFractionDigits?: number;
   }
   modelValue?: number
 }>();
