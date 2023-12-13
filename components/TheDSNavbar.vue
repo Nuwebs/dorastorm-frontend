@@ -3,7 +3,7 @@
     <template #start v-if="props.full">
       <div class="flex align-items-center mr-2">
         <NavbarButtonSidebar @click="$emit('sidebarButtonClick')" />
-        <NavbarButtonHome @click="router.push(lp('/ds'))" />
+        <NavbarButtonHome @click="navigateTo(lp('/ds'))" />
       </div>
     </template>
     <template #end v-if="props.full">
@@ -20,13 +20,12 @@ import NavbarBase from "./navbar/NavbarBase.vue";
 import NavbarButtonSidebar from "./navbar/buttons/NavbarButtonSidebar.vue";
 import NavbarButtonHome from "./navbar/buttons/NavbarButtonHome.vue";
 import NavbarButtonOptions from "./navbar/buttons/NavbarButtonOptions.vue";
-import { useRouter, useLocalePath } from "#imports";
+import { useLocalePath, navigateTo } from "#imports";
 import { commonMenuOptions } from "~/services/menus";
 
 const props = defineProps<{
   full: boolean;
 }>();
 
-const router = useRouter();
 const lp = useLocalePath();
 </script>

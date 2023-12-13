@@ -1,8 +1,8 @@
 <template>
   <TheNavbar></TheNavbar>
-  <article>
+  <main>
     <slot></slot>
-  </article>
+  </main>
 </template>
 <script setup lang="ts">
 import TheNavbar from '~/components/TheNavbar.vue';

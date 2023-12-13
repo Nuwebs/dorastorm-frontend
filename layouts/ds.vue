@@ -1,16 +1,16 @@
 <template>
   <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" :full="shouldBeSidebar"/>
-  <article class="p-3 min-h-fullscreen">
+  <main class="p-3 min-h-fullscreen">
     <aside :class="sidebarClasses" v-if="shouldBeSidebar">
       <PanelMenu :model="sidebarMenuItems()" />
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
       <PanelMenu :model="overlayMenu" />
     </OverlaySidebar>
-    <main :class="contentClasses">
+    <article :class="contentClasses">
       <slot></slot>
-    </main>
-  </article>
+    </article>
+  </main>
   <ConfirmDialog />
 </template>
 
