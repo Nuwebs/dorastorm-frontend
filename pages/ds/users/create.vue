@@ -21,7 +21,7 @@ import { ref, onMounted } from "vue";
 import { object, string, number, ref as yupRef } from "yup";
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
-import { Role } from '~/types/dorastorm';
+import { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
 import useAPIFetch from "~/composables/useAPIFetch";
@@ -80,7 +80,7 @@ onMounted(async () => {
 });
 
 const submit = handleSubmit(async (payload) => {
-  await useSubmitHandler(
+  await useSubmitHandler<DsValidationErrorBag<NewUser>>(
     {
       endpoint: "/users",
       options: {
@@ -93,7 +93,7 @@ const submit = handleSubmit(async (payload) => {
       resetForm();
     },
     (error) => {
-      if (error.statusCode === 422) {
+      if (error.statusCode === 422 && error.data) {
         return setFieldError("email", error.data.errors.email);
       }
       return toast.add(useGeneralErrorToast());

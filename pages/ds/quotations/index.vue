@@ -26,7 +26,7 @@
       <Column field="name" :header="$t('modules.quotations.name')" />
       <Column field="created_at" :header="$t('general.created_at')">
         <template #body="slotProps">
-          {{ dateFormat(slotProps.data.created_at) }}
+          {{ useDateFormat(slotProps.data.created_at) }}
         </template>
       </Column>
       <Column field="id" :header="$t('general.action')" v-if="userCan(Permission.QUOTATIONS_DELETE)">
@@ -64,7 +64,6 @@ definePageMeta({
 const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
 const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
   = useLazyPagination<Quotation>("/quotations");
-const dateFormat = useDateFormat();
 
 const expanded = ref<Quotation[]>([]);
 const filters = ref<DataTableFilter<Quotation>>({

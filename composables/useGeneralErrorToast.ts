@@ -6,7 +6,7 @@ const useGeneralErrorToast = (): ToastMessageOptions => {
   return {
     severity: "error",
     detail: t("error.fatal"),
-    life: 3000,
+    life: 5000,
   };
 };
 

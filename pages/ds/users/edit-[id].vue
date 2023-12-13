@@ -26,7 +26,7 @@ import { ref, onMounted } from "vue";
 import { object, string, number } from "yup";
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
-import { Role, User } from '~/types/dorastorm';
+import { DsValidationErrorBag, Role, User } from '~/types/dorastorm';
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
@@ -110,7 +110,7 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const submit = handleSubmit(async () => await useSubmitHandler(
+const submit = handleSubmit(async () => await useSubmitHandler<DsValidationErrorBag<User>>(
   {
     endpoint: "/users/" + route.params.id,
     options: {
@@ -125,10 +125,10 @@ const submit = handleSubmit(async () => await useSubmitHandler(
     toast.add({ severity: "success", detail: t("general.updated"), life: 3000 });
   },
   (error) => {
-    if (error.statusCode === 422) {
+    if (error.data && error.statusCode === 422) {
       return setFieldError("email", error.data.errors.email);
     }
-    if (error.statusCode === 409) {
+    if (error.data && error.statusCode === 409) {
       return setFieldError("role_id", error.data.message);
     }
     toast.add(useGeneralErrorToast());

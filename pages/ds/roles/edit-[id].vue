@@ -12,7 +12,7 @@ import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n, useRoute, u
 import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import { ref, onMounted } from 'vue';
-import { Role } from '~/types/dorastorm';
+import { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
 import { useToast } from 'primevue/usetoast';
@@ -39,7 +39,7 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const submit = async () => await useSubmitHandler(
+const submit = async () => await useSubmitHandler<DsValidationErrorBag<Role>>(
   {
     endpoint: "/roles/" + route.params.id,
     options: {
@@ -55,7 +55,7 @@ const submit = async () => await useSubmitHandler(
     });
   },
   (error) => {
-    if (error.statusCode === 422 && error.data.errors && error.data.errors.permissions) {
+    if (error.statusCode === 422 && error.data?.errors && error.data.errors.permissions) {
       return toast.add({
         severity: "error",
         detail: t("error.422.specific.role_permissions"),

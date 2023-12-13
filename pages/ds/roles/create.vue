@@ -10,7 +10,7 @@ import { definePageMeta, useGeneralErrorToast, useI18n, useSubmitHandler } from 
 import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import { ref } from 'vue';
-import { NewRole } from '~/types/dorastorm';
+import { DsValidationErrorBag, NewRole } from '~/types/dorastorm';
 import { useToast } from 'primevue/usetoast';
 
 definePageMeta({
@@ -27,7 +27,7 @@ const newRole = ref<NewRole>({
 });
 const { t } = useI18n();
 
-const handler = async () => await useSubmitHandler(
+const handler = async () => await useSubmitHandler<DsValidationErrorBag<NewRole>>(
   {
     endpoint: "/roles",
     options: {
@@ -41,7 +41,7 @@ const handler = async () => await useSubmitHandler(
     life: 3000
   }),
   (error) => {
-    if (error.statusCode === 422 && error.data.errors && error.data.errors.permissions) {
+    if (error.statusCode === 422 && error.data?.errors && error.data.errors.permissions) {
       toast.add({
         severity: "error",
         detail: t("error.422.specific.role_permissions"),
