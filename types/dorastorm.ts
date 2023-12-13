@@ -51,12 +51,12 @@ export interface DsLoginCredentials {
 export interface DsRouteMeta extends RouteLocationNormalized {
   meta: RouteLocationNormalized["meta"] & {
     strictPermissions?: boolean;
-    permissions?: string[];
+    permissions?: Permission[];
   };
 }
 
 export type DsMenuItem = MenuItem & {
-  permissions?: string | string[];
+  permissions?: Permission | Permission[];
   items?: DsMenuItem | undefined;
 };
 

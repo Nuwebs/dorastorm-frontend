@@ -7,6 +7,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import { ComputedRef } from "vue";
 import useGuestOptions from "./guestOptions";
 import useGuestNavbar from "./guestNavbar";
+import Permission from "~/utils/permissions";
 
 const authStore = useAuthStore();
 
@@ -21,7 +22,7 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
     const checker = isPermissionsArray
       ? authStore.hasAnyPermission
       : authStore.hasPermission;
-    if (!checker(menuItem.permissions as string & string[])) continue;
+    if (!checker(menuItem.permissions as Permission & Permission[])) continue;
     if (menuItem.items) {
       menuItem.items = processMenuItems(menuItem.items);
     }
