@@ -14,9 +14,10 @@ const useLazyPagination = <DataT>(
   const totalResults = ref<number>(0);
   const resultsPerPage = ref<number>(0);
 
-  async function toPage(page: number = 1) {
+  async function toPage(page: number = 1, params: string = '') {
     loading.value = true;
-    const ep = endpoint + `?page=${page}`;
+    let ep = endpoint + `?page=${page}`;
+    ep = params !== "" ? ep + `&${params}` : ep;
     const { data, error } = await useAPIFetch<PaginationWrapper<DataT>>({
       endpoint: ep,
       options,

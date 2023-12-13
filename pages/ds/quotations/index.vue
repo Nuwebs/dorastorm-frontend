@@ -1,11 +1,26 @@
 <template>
   <section class="container">
     <h1 class="mt-0">{{ $t("modules.quotations.list") }}</h1>
-    <DataTableBase :data="paginationData" :total-records="totalResults" :paginator-rows="resultsPerPage"
-      :loading="loading" lazy-paginator @page="(e: DataTablePageEvent) => toPage(e.page + 1)" expandable>
+    <DataTable :loading="loading" lazy :value="paginationData" paginator :total-records="totalResults"
+      :rows="resultsPerPage" data-key="id" v-model:expanded-rows="expanded" v-model:filters="filters"
+      @page="(e: DataTablePageEvent) => toPage(e.page + 1)">
+      <template #header>
+        <div class="flex justify-content-between">
+          <Button icon="pi pi-refresh" class="mr-2" @click="search(currentPage)" />
+          <div>
+            <div class="flex alig-items-center">
+              <InputText v-model="(filters['global'].value as string)" class="max-w-10rem md:max-w-full"
+                @keyup.enter="search()" />
+              <Button icon="pi pi-search" @click="search()" />
+            </div>
+          </div>
+        </div>
+      </template>
       <template #expansion="slotProps">
         <QuotationDataRow :quotation="slotProps.data" />
       </template>
+
+      <Column expander />
       <Column field="id" :header="$t('general.id')" />
       <Column field="subject" :header="$t('modules.quotations.subject')" />
       <Column field="name" :header="$t('modules.quotations.name')" />
@@ -22,21 +37,24 @@
           }" @deleted="deleted" v-if="userCan(Permission.QUOTATIONS_DELETE)" />
         </template>
       </Column>
-    </DataTableBase>
+    </DataTable>
   </section>
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useDateFormat, useRelativeTime } from '#imports';
+import { definePageMeta, useDateFormat } from '#imports';
 import useCachedPermissions from "~/composables/useCachedPermissions";
 import useLazyPagination from "~/composables/useLazyPagination";
-import { onMounted } from "vue";
-import DataTableBase from '~/components/dataTable/DataTableBase.vue';
+import { onMounted, ref } from "vue";
 import { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Permission from '~/utils/permissions';
-import { Quotation } from '~/types/dorastorm';
+import { DataTableFilter, Quotation } from '~/types/dorastorm';
 import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
+import DataTable from 'primevue/datatable';
+import { FilterMatchMode } from 'primevue/api';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 
 definePageMeta({
   middleware: ["auth-guard"],
@@ -48,12 +66,21 @@ const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPa
   = useLazyPagination<Quotation>("/quotations");
 const dateFormat = useDateFormat();
 
+const expanded = ref<Quotation[]>([]);
+const filters = ref<DataTableFilter<Quotation>>({
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
+});
+
 async function deleted(): Promise<void> {
   let page = currentPage.value;
   if (paginationData.value.length - 1 <= 0) {
     page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
   };
   await toPage(page);
+}
+
+async function search(page: number = 1) {
+  await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 
 onMounted(async () => {
