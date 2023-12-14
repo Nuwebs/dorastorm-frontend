@@ -1,5 +1,5 @@
 <template>
-  <NavbarButtonBase icon="pi pi-home" a-label="home"/>
+  <NavbarButtonBase icon="pi pi-home" a-label="home" />
 </template>
 
 <script setup lang="ts">

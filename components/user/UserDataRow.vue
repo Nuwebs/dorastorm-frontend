@@ -25,7 +25,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const {fromNow} = useRelativeTime(props.user.created_at);
+const { fromNow } = useRelativeTime(props.user.created_at);
 </script>
 <style scoped>
 .profile-img-colors {

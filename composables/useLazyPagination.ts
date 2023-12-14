@@ -1,7 +1,7 @@
-import useAPIFetch from "./useAPIFetch";
-import { PaginationWrapper } from "~/types/dorastorm";
-import { ref, Ref } from "vue";
-import { UseFetchOptions } from "nuxt/app";
+import { ref, Ref } from 'vue';
+import { UseFetchOptions } from 'nuxt/app';
+import useAPIFetch from './useAPIFetch';
+import { PaginationWrapper } from '~/types/dorastorm';
 
 // WIP Composable. It still needs the sort and filtering capabilities.
 const useLazyPagination = <DataT>(
@@ -14,16 +14,16 @@ const useLazyPagination = <DataT>(
   const totalResults = ref<number>(0);
   const resultsPerPage = ref<number>(0);
 
-  async function toPage(page: number = 1, params: string = '') {
+  async function toPage (page: number = 1, params: string = '') {
     loading.value = true;
     let ep = endpoint + `?page=${page}`;
-    ep = params !== "" ? ep + `&${params}` : ep;
+    ep = params !== '' ? ep + `&${params}` : ep;
     const { data, error } = await useAPIFetch<PaginationWrapper<DataT>>({
       endpoint: ep,
-      options,
+      options
     });
     loading.value = false;
-    if (error.value) return error.value;
+    if (error.value) { return error.value; }
     paginationData.value = data.value!.data;
     currentPage.value = data.value!.meta.current_page;
     totalResults.value = data.value!.meta.total;
@@ -36,7 +36,7 @@ const useLazyPagination = <DataT>(
     currentPage,
     totalResults,
     resultsPerPage,
-    toPage,
+    toPage
   };
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-1">
     <div class="flex align-items-center">
-      <Checkbox :name="name" v-model="value" :class="{ 'p-invalid': errorMessage }" binary/>
+      <Checkbox v-model="value" :name="name" :class="{ 'p-invalid': errorMessage }" binary />
       <label :for="name" class="ml-1">{{ label }}</label>
     </div>
     <ErrorMessage :name="name" class="p-error" />

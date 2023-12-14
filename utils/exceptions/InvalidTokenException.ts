@@ -1,6 +1,6 @@
 export default class InvalidTokenException extends Error {
-  constructor(message: string) {
+  constructor (message: string) {
     super(message);
-    this.name = "InvalidTokenException";
+    this.name = 'InvalidTokenException';
   }
 }

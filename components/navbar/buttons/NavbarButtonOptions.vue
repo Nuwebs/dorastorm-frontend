@@ -1,13 +1,13 @@
 <template>
-  <NavbarButtonBase icon="pi pi-cog" a-label="Options" @click.stop.prevent="toggle" id="actions"/>
+  <NavbarButtonBase id="actions" icon="pi pi-cog" a-label="Options" @click.stop.prevent="toggle" />
   <ContextMenu ref="ncoMenu" :model="props.options" popup />
 </template>
 
 <script setup lang="ts">
-import NavbarButtonBase from './NavbarButtonBase.vue';
 import ContextMenu from 'primevue/contextmenu';
 import { MenuItem } from 'primevue/menuitem';
-import { ref } from "vue";
+import { ref } from 'vue';
+import NavbarButtonBase from './NavbarButtonBase.vue';
 
 interface Props {
   options: MenuItem[]
@@ -24,7 +24,7 @@ const toggle = () => {
 
   const event = new PointerEvent('click', {
     clientX: (coords.x + coords.width),
-    clientY: (coords.y + coords.height),
+    clientY: (coords.y + coords.height)
   });
   ncoMenu.value.toggle(event);
 };

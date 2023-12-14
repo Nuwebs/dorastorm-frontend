@@ -2,8 +2,8 @@
   <div class="mb-2">
     <label :for="name">{{ label }}</label>
     <div class="p-inputgroup flex-1">
-      <span class="p-inputgroup-addon" v-if="icon"><i :class="icon"></i></span>
-      <InputNumber :name="name" v-model="value" :class="{ 'p-invalid': errorMessage }" v-bind="props.options" />
+      <span v-if="icon" class="p-inputgroup-addon"><i :class="icon" /></span>
+      <InputNumber v-model="value" :name="name" :class="{ 'p-invalid': errorMessage }" v-bind="props.options" />
     </div>
     <ErrorMessage :name="name" class="p-error" />
   </div>

@@ -1,16 +1,30 @@
 <template>
   <section class="container">
-    <h1 class="mt-0">{{ $t("modules.quotations.list") }}</h1>
-    <DataTable :loading="loading" lazy :value="paginationData" paginator :total-records="totalResults"
-      :rows="resultsPerPage" data-key="id" v-model:expanded-rows="expanded" v-model:filters="filters"
-      @page="(e: DataTablePageEvent) => toPage(e.page + 1)">
+    <h1 class="mt-0">
+      {{ $t("modules.quotations.list") }}
+    </h1>
+    <DataTable
+      v-model:expanded-rows="expanded"
+      v-model:filters="filters"
+      :loading="loading"
+      lazy
+      :value="paginationData"
+      paginator
+      :total-records="totalResults"
+      :rows="resultsPerPage"
+      data-key="id"
+      @page="(e: DataTablePageEvent) => toPage(e.page + 1)"
+    >
       <template #header>
         <div class="flex justify-content-between">
           <Button icon="pi pi-refresh" class="mr-2" @click="search(currentPage)" />
           <div>
             <div class="flex alig-items-center">
-              <InputText v-model="(filters['global'].value as string)" class="max-w-10rem md:max-w-full"
-                @keyup.enter="search()" />
+              <InputText
+                v-model="filters['global'].value"
+                class="max-w-10rem md:max-w-full"
+                @keyup.enter="search()"
+              />
               <Button icon="pi pi-search" @click="search()" />
             </div>
           </div>
@@ -29,12 +43,18 @@
           {{ useDateFormat(slotProps.data.created_at) }}
         </template>
       </Column>
-      <Column field="id" :header="$t('general.action')" v-if="userCan(Permission.QUOTATIONS_DELETE)">
+      <Column v-if="userCan(Permission.QUOTATIONS_DELETE)" field="id" :header="$t('general.action')">
         <template #body="row">
-          <ActionButtonDelete endpoint="/quotations/{id}" :model-id="row.data.id" :cd-messages="{
-            header: $t('modules.quotations.delete'),
-            message: $t('modules.quotations.delete_warning')
-          }" @deleted="deleted" v-if="userCan(Permission.QUOTATIONS_DELETE)" />
+          <ActionButtonDelete
+            v-if="userCan(Permission.QUOTATIONS_DELETE)"
+            endpoint="/quotations/{id}"
+            :model-id="row.data.id"
+            :cd-messages="{
+              header: $t('modules.quotations.delete'),
+              message: $t('modules.quotations.delete_warning')
+            }"
+            @deleted="deleted"
+          />
         </template>
       </Column>
     </DataTable>
@@ -42,35 +62,35 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta, useDateFormat } from '#imports';
-import useCachedPermissions from "~/composables/useCachedPermissions";
-import useLazyPagination from "~/composables/useLazyPagination";
-import { onMounted, ref } from "vue";
-import { DataTablePageEvent } from 'primevue/datatable';
+import { onMounted, ref } from 'vue';
+import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import Permission from '~/utils/permissions';
-import { DataTableFilter, Quotation } from '~/types/dorastorm';
-import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
-import DataTable from 'primevue/datatable';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Permission from '~/utils/permissions';
+import { DataTableFilter, Quotation } from '~/types/dorastorm';
+import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
+
+import useLazyPagination from '~/composables/useLazyPagination';
+import useCachedPermissions from '~/composables/useCachedPermissions';
+import { definePageMeta, useDateFormat } from '#imports';
 
 definePageMeta({
-  middleware: ["auth-guard"],
+  middleware: ['auth-guard'],
   permissions: [Permission.QUOTATIONS_READ]
 });
 
 const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
-const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage }
-  = useLazyPagination<Quotation>("/quotations");
+const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage } =
+  useLazyPagination<Quotation>('/quotations');
 
 const expanded = ref<Quotation[]>([]);
 const filters = ref<DataTableFilter<Quotation>>({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 });
 
-async function deleted(): Promise<void> {
+async function deleted (): Promise<void> {
   let page = currentPage.value;
   if (paginationData.value.length - 1 <= 0) {
     page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
@@ -78,11 +98,11 @@ async function deleted(): Promise<void> {
   await toPage(page);
 }
 
-async function search(page: number = 1) {
+async function search (page: number = 1) {
   await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 
 onMounted(async () => {
   await toPage(1);
-})
+});
 </script>

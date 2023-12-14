@@ -1,5 +1,5 @@
 <template>
-  <Button 
+  <Button
     text
     plain
     :icon="props.icon"
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
+import Button from 'primevue/button';
 
 interface Props {
   icon: string;

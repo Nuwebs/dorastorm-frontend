@@ -1,29 +1,29 @@
 <template>
-  <TheDSNavbar class="ds-navbar" @sidebarButtonClick="sidebarVisible = !sidebarVisible" :full="shouldBeSidebar"/>
+  <TheDSNavbar class="ds-navbar" :full="shouldBeSidebar" @sidebar-button-click="sidebarVisible = !sidebarVisible" />
   <main class="p-3 min-h-fullscreen">
-    <aside :class="sidebarClasses" v-if="shouldBeSidebar">
+    <aside v-if="shouldBeSidebar" :class="sidebarClasses">
       <PanelMenu :model="sidebarMenuItems()" />
     </aside>
     <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
       <PanelMenu :model="overlayMenu" />
     </OverlaySidebar>
     <article :class="contentClasses">
-      <slot></slot>
+      <slot />
     </article>
   </main>
   <ConfirmDialog />
 </template>
 
 <script setup lang="ts">
-import TheDSNavbar from '~/components/TheDSNavbar.vue';
-import { ref, computed, watch } from "vue";
-import useWindowWidth from '~/composables/useWindowWidth';
-import OverlaySidebar from "primevue/sidebar";
-import { sidebarMenuItems, commonMenuOptions } from '~/services/menus';
-import PanelMenu from "primevue/panelmenu";
+import { ref, computed, watch } from 'vue';
+import OverlaySidebar from 'primevue/sidebar';
+import PanelMenu from 'primevue/panelmenu';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { useLocalePath, useRouter } from '#imports';
 import { MenuItem } from 'primevue/menuitem';
+import { useLocalePath, useRouter } from '#imports';
+import { sidebarMenuItems, commonMenuOptions } from '~/services/menus';
+import useWindowWidth from '~/composables/useWindowWidth';
+import TheDSNavbar from '~/components/TheDSNavbar.vue';
 
 const windowWidth = useWindowWidth();
 const router = useRouter();
@@ -40,22 +40,22 @@ const sidebarClasses = computed<string>(() => {
 
 const contentClasses = computed<string>(() => {
   let classes = 'p-3 shadow-1 surface-section';
-  if (shouldBeSidebar.value) classes += ' layout-content';
-  if (!sidebarVisible.value) classes += ' ml-0';
+  if (shouldBeSidebar.value) { classes += ' layout-content'; }
+  if (!sidebarVisible.value) { classes += ' ml-0'; }
   return classes;
 });
 
 const overlayMenu = computed<MenuItem[]>(() => {
   return [
     {
-      label: "Inicio",
-      icon: "pi pi-home",
-      to: lp("/ds")
+      label: 'Inicio',
+      icon: 'pi pi-home',
+      to: lp('/ds')
     },
     ...sidebarMenuItems(),
-    ...commonMenuOptions(),
+    ...commonMenuOptions()
   ];
-})
+});
 
 watch(windowWidth, () => {
   if (windowWidth.value >= 992) {
@@ -68,8 +68,8 @@ watch(windowWidth, () => {
 });
 
 watch(currentRoute, () => {
-  if (!shouldBeSidebar.value && sidebarVisible.value) sidebarVisible.value = false;
-})
+  if (!shouldBeSidebar.value && sidebarVisible.value) { sidebarVisible.value = false; }
+});
 </script>
 <style scoped>
 .ds-navbar {

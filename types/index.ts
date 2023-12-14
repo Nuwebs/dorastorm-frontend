@@ -1,4 +1,4 @@
-import { UseFetchOptions } from "nuxt/app";
+import { UseFetchOptions } from 'nuxt/app';
 
 export interface JWTResponse {
   accessToken: string;

@@ -1,11 +1,11 @@
 <template>
   <section class="container">
-    <Card class="shadow-1 mb-3" v-if="authStore.user">
+    <Card v-if="authStore.user" class="shadow-1 mb-3">
       <template #title>
         {{ $t("general.welcome") }}
       </template>
       <template #content>
-        <UserDataRow :user="authStore.user"></UserDataRow>
+        <UserDataRow :user="authStore.user" />
       </template>
     </Card>
     <Card class="shadow-1 h-15rem">
@@ -20,13 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import { definePageMeta } from '#imports';
 import Card from 'primevue/card';
+import { definePageMeta } from '#imports';
 import UserDataRow from '~/components/user/UserDataRow.vue';
 import useAuthStore from '~/stores/authStore';
 
 definePageMeta({
-  middleware: ["auth-guard"]
+  middleware: ['auth-guard']
 });
 
 const authStore = useAuthStore();

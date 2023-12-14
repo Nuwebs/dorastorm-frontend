@@ -1,19 +1,19 @@
-import { DsMenuItem } from "~/types/dorastorm";
-import { MenuItem } from "primevue/menuitem";
-import useAuthStore from "~/stores/authStore";
-import useSidebar from "./sidebar";
-import useCommonOptions from "./commonOptions";
-import cloneDeep from "lodash-es/cloneDeep";
-import { ComputedRef } from "vue";
-import useGuestOptions from "./guestOptions";
-import useGuestNavbar from "./guestNavbar";
-import Permission from "~/utils/permissions";
+import { MenuItem } from 'primevue/menuitem';
+import cloneDeep from 'lodash-es/cloneDeep';
+import { ComputedRef } from 'vue';
+import useSidebar from './sidebar';
+import useCommonOptions from './commonOptions';
+import useGuestOptions from './guestOptions';
+import useGuestNavbar from './guestNavbar';
+import useAuthStore from '~/stores/authStore';
+import { DsMenuItem } from '~/types/dorastorm';
+import Permission from '~/utils/permissions';
 
 const authStore = useAuthStore();
 
 const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
-  let processedMenuItems: MenuItem[] = [];
-  for (let menuItem of dsMenuItems) {
+  const processedMenuItems: MenuItem[] = [];
+  for (const menuItem of dsMenuItems) {
     if (!menuItem.permissions) {
       processedMenuItems.push(menuItem);
       continue;
@@ -22,7 +22,7 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
     const checker = isPermissionsArray
       ? authStore.hasAnyPermission
       : authStore.hasPermission;
-    if (!checker(menuItem.permissions as Permission & Permission[])) continue;
+    if (!checker(menuItem.permissions as Permission & Permission[])) { continue; }
     if (menuItem.items) {
       menuItem.items = processMenuItems(menuItem.items);
     }
@@ -34,7 +34,7 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
 // This function receives the computed property of the DsMenuItem array.
 // This is meant to properly update the lang if it is switched
 const getMenuItems = (dsMenuItems: ComputedRef<DsMenuItem[]>): MenuItem[] => {
-  let menu = cloneDeep<DsMenuItem[]>(dsMenuItems.value);
+  const menu = cloneDeep<DsMenuItem[]>(dsMenuItems.value);
   // Write here any operation that should be done
   // before the menu processing.
   return processMenuItems(menu);

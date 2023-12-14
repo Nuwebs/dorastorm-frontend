@@ -1,9 +1,18 @@
 <template>
   <div class="mb-2">
     <label :for="name">{{ label }}</label>
-    <Dropdown class="w-full" :name="name" :options="options" :option-label="optionLabel" :option-value="optionValue"
-      :loading="loading" :placeholder="loading ? $t('general.loading') : placeholder"
-      :class="{ 'p-invalid': errorMessage }" v-model="value" :filter="!!filter"/>
+    <Dropdown
+      v-model="value"
+      class="w-full"
+      :name="name"
+      :options="options"
+      :option-label="optionLabel"
+      :option-value="optionValue"
+      :loading="loading"
+      :placeholder="loading ? $t('general.loading') : placeholder"
+      :class="{ 'p-invalid': errorMessage }"
+      :filter="!!filter"
+    />
     <ErrorMessage :name="name" class="p-error" />
   </div>
 </template>

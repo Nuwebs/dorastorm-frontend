@@ -1,7 +1,7 @@
-import { FilterMatchModeOptions } from "primevue/api";
-import { MenuItem } from "primevue/menuitem";
-import { RouteLocationNormalized } from "vue-router";
-import Permission from "~/utils/permissions";
+import { FilterMatchModeOptions } from 'primevue/api';
+import { MenuItem } from 'primevue/menuitem';
+import { RouteLocationNormalized } from 'vue-router';
+import Permission from '~/utils/permissions';
 
 export interface NewRole {
   hierarchy: number;
@@ -49,7 +49,7 @@ export interface DsLoginCredentials {
 }
 
 export interface DsRouteMeta extends RouteLocationNormalized {
-  meta: RouteLocationNormalized["meta"] & {
+  meta: RouteLocationNormalized['meta'] & {
     strictPermissions?: boolean;
     permissions?: Permission[];
   };
@@ -74,8 +74,9 @@ export type DataTableColumn = {
 };
 
 export type Filter<T> = {
-  value: T[keyof T] | null;
+  value: any | null;
   matchMode: FilterMatchModeOptions[keyof FilterMatchModeOptions];
+  temp?: T
 };
 
 export type DataTableFilter<T = any> = {

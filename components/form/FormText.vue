@@ -2,9 +2,14 @@
   <div class="mb-2">
     <label :for="name">{{ label }}</label>
     <div class="p-inputgroup flex-1">
-      <span class="p-inputgroup-addon" v-if="icon"><i :class="icon"></i></span>
-      <InputText :name="name" :type="type" :placeholder="placeholder ? placeholder : undefined" v-model="value"
-        :class="{ 'p-invalid': errorMessage }" />
+      <span v-if="icon" class="p-inputgroup-addon"><i :class="icon" /></span>
+      <InputText
+        v-model="value"
+        :name="name"
+        :type="type"
+        :placeholder="placeholder ? placeholder : undefined"
+        :class="{ 'p-invalid': errorMessage }"
+      />
     </div>
     <ErrorMessage :name="name" class="p-error" />
   </div>

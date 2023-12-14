@@ -1,24 +1,26 @@
 <template>
   <TheLoadingSpinner v-if="loading" />
   <TheDS404 v-else-if="is404" />
-  <section class="container" v-if="!loading && role !== null">
-    <h3 class="mb-2 mt-0">{{ $t("modules.roles.update") }}</h3>
+  <section v-if="!loading && role !== null" class="container">
+    <h3 class="mb-2 mt-0">
+      {{ $t("modules.roles.update") }}
+    </h3>
     <RoleFormContainer v-model="role" updating :submit-handler="submit" />
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useToast } from 'primevue/usetoast';
 import { definePageMeta, useAPIFetch, useGeneralErrorToast, useI18n, useRoute, useSubmitHandler } from '#imports';
 import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
-import { ref, onMounted } from 'vue';
 import { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
-import { useToast } from 'primevue/usetoast';
 
 definePageMeta({
-  middleware: ["auth-guard"],
+  middleware: ['auth-guard'],
   permissions: [Permission.ROLES_UPDATE]
 });
 
@@ -34,33 +36,33 @@ onMounted(async () => {
   const { data, error } = await useAPIFetch<Role>({
     endpoint: `/roles/${route.params.id}`
   });
-  if (error.value) is404.value = true;
+  if (error.value) { is404.value = true; }
   role.value = data.value;
   loading.value = false;
 });
 
 const submit = async () => await useSubmitHandler<DsValidationErrorBag<Role>>(
   {
-    endpoint: "/roles/" + route.params.id,
+    endpoint: '/roles/' + route.params.id,
     options: {
-      method: "PATCH",
+      method: 'PATCH',
       body: role.value
     }
   },
   () => {
     toast.add({
-      severity: "success",
-      detail: t("general.updated"),
+      severity: 'success',
+      detail: t('general.updated'),
       life: 3000
     });
   },
   (error) => {
     if (error.statusCode === 422 && error.data?.errors && error.data.errors.permissions) {
       return toast.add({
-        severity: "error",
-        detail: t("error.422.specific.role_permissions"),
-        life: 3000,
-      })
+        severity: 'error',
+        detail: t('error.422.specific.role_permissions'),
+        life: 3000
+      });
     }
     toast.add(useGeneralErrorToast());
   }

@@ -1,10 +1,10 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
-import { User } from "~/types/dorastorm";
-import Permission from "~/utils/permissions";
-import { getUserInfo } from "~/services/auth";
+import { ref, computed } from 'vue';
+import { defineStore } from 'pinia';
+import { User } from '~/types/dorastorm';
+import Permission from '~/utils/permissions';
+import { getUserInfo } from '~/services/auth';
 
-const useAuthStore = defineStore("auth", () => {
+const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const token = ref<string | null>(null);
   const expiresEpoch = ref<number>(-1);
@@ -13,48 +13,48 @@ const useAuthStore = defineStore("auth", () => {
   const userRefreshed = ref<boolean>(false);
 
   const isLoggedIn = computed<boolean>(() => {
-    return user.value === null ? false : true;
+    return user.value !== null;
   });
 
   const getPermissions = computed<string[] | null>(() => {
-    if (!user.value) return null;
+    if (!user.value) { return null; }
     return user.value.role.permissions;
   });
 
   const getUserRoleHierarchy = computed<number | null>(() => {
-    if (!user.value) return null;
+    if (!user.value) { return null; }
     return user.value.role.hierarchy;
   });
 
-  function hasPermission(permission: Permission): boolean {
-    if (!user.value) return false;
+  function hasPermission (permission: Permission): boolean {
+    if (!user.value) { return false; }
     return user.value.role.permissions.includes(permission);
   }
 
-  function hasAnyPermission(permissions: Permission[]): boolean {
-    if (!user.value) return false;
-    return user.value.role.permissions.some((permission) =>
+  function hasAnyPermission (permissions: Permission[]): boolean {
+    if (!user.value) { return false; }
+    return user.value.role.permissions.some(permission =>
       permissions.includes(permission)
     );
   }
 
-  function hasEveryPermissions(permissions: Permission[]): boolean {
-    if (!user.value) return false;
+  function hasEveryPermissions (permissions: Permission[]): boolean {
+    if (!user.value) { return false; }
     for (const permission of permissions) {
-      if (!hasPermission(permission)) return false;
+      if (!hasPermission(permission)) { return false; }
     }
     return true;
   }
 
-  async function refreshUserData(): Promise<void> {
-    if (updating.value) return;
+  async function refreshUserData (): Promise<void> {
+    if (updating.value) { return; }
     updating.value = true;
     userRefreshed.value = true;
     await getUserInfo();
     updating.value = false;
   }
 
-  function $reset(): void {
+  function $reset (): void {
     user.value = null;
     token.value = null;
     expiresEpoch.value = -1;
@@ -73,7 +73,7 @@ const useAuthStore = defineStore("auth", () => {
     hasEveryPermissions,
     userRefreshed,
     refreshUserData,
-    $reset,
+    $reset
   };
 });
 

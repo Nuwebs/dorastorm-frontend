@@ -2,17 +2,17 @@ import {
   defineNuxtRouteMiddleware,
   navigateTo,
   setPageLayout,
-  useNuxtApp,
-} from "#imports";
-import useAuthStore from "~/stores/authStore";
-import { DsRouteMeta } from "~/types/dorastorm";
+  useNuxtApp
+} from '#imports';
+import useAuthStore from '~/stores/authStore';
+import { DsRouteMeta } from '~/types/dorastorm';
 export default defineNuxtRouteMiddleware(
-  (to: DsRouteMeta, from: DsRouteMeta) => {
+  (to: DsRouteMeta, _: DsRouteMeta) => {
     const authStore = useAuthStore();
     const lp = useNuxtApp().$localePath;
-    if (!authStore.isLoggedIn) return navigateTo(lp("/login"));
-    if (!to.meta.layout) setPageLayout("ds");
-    if (!to.meta.permissions) return;
+    if (!authStore.isLoggedIn) { return navigateTo(lp('/login')); }
+    if (!to.meta.layout) { setPageLayout('ds'); }
+    if (!to.meta.permissions) { return; }
     if (
       to.meta.bailSelf &&
       authStore.user &&
@@ -23,6 +23,6 @@ export default defineNuxtRouteMiddleware(
     const checker = to.meta.strictPermissions
       ? authStore.hasEveryPermissions
       : authStore.hasAnyPermission;
-    if (!checker(to.meta.permissions)) return navigateTo(lp("/ds"));
+    if (!checker(to.meta.permissions)) { return navigateTo(lp('/ds')); }
   }
 );

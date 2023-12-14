@@ -1,6 +1,6 @@
-import { computed, ComputedRef } from "vue";
-import useAuthStore from "~/stores/authStore";
-import Permission from "~/utils/permissions";
+import { computed, ComputedRef } from 'vue';
+import useAuthStore from '~/stores/authStore';
+import Permission from '~/utils/permissions';
 
 type CachedPermissions = Partial<Record<Permission, ComputedRef<boolean>>>;
 
@@ -12,33 +12,34 @@ const useCachedPermissions = (
     hasAnyPermission,
     hasEveryPermissions,
     hasPermission,
-    getUserRoleHierarchy,
+    getUserRoleHierarchy
   } = useAuthStore();
 
   const cached: CachedPermissions = {};
 
-  for (let permission of permissions) {
+  for (const permission of permissions) {
     cached[permission] = computed<boolean>(() => {
       return hasPermission(permission);
     });
   }
 
-  function userCan(permission: Permission): boolean {
+  function userCan (permission: Permission): boolean {
     const cPermission = cached[permission];
     if (cPermission !== undefined) {
       return cPermission.value;
     }
+    // eslint-disable-next-line no-console
     console.error(
       `The permission ${permission} isn't cached. Make sure you are passing the right permission as parameter or you cached the correct permisisons.`
     );
     return false;
   }
 
-  function roleCan(
+  function roleCan (
     hierarchyNeeded: number,
     selfIncluded: boolean = false
   ): boolean {
-    if (getUserRoleHierarchy === null) return false;
+    if (getUserRoleHierarchy === null) { return false; }
     return selfIncluded
       ? getUserRoleHierarchy <= hierarchyNeeded
       : getUserRoleHierarchy < hierarchyNeeded;
@@ -53,7 +54,7 @@ const useCachedPermissions = (
   return {
     userCan,
     roleCan,
-    userIsAllowed,
+    userIsAllowed
   };
 };
 

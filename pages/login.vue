@@ -3,16 +3,25 @@
     <div class="col-12 md:col-4 md:col-offset-4">
       <Card>
         <template #title>
-          {{ $t('general.login') }}</template>
+          {{ $t('general.login') }}
+        </template>
         <template #content>
           <form @submit="onSubmit">
-            <FormText name="email" :label="$t('forms.email')" type="email" placeholder="example@example.com"
-              icon="pi pi-at" />
+            <FormText
+              name="email"
+              :label="$t('forms.email')"
+              type="email"
+              placeholder="example@example.com"
+              icon="pi pi-at"
+            />
             <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock" />
             <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
-              {{ $t('forms.submit') }}</Button>
-            <Hr />
-            <NuxtLink :to="lp('/forgot-password')" class="nlink">{{ $t('forms.forgot_password') }}</NuxtLink>
+              {{ $t('forms.submit') }}
+            </Button>
+            <Divider />
+            <NuxtLink :to="lp('/forgot-password')" class="nlink">
+              {{ $t('forms.forgot_password') }}
+            </NuxtLink>
           </form>
         </template>
       </Card>
@@ -21,15 +30,15 @@
 </template>
 
 <script setup lang="ts">
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import { useForm } from 'vee-validate';
+import { object, string } from 'yup';
+import Divider from 'primevue/divider';
 import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
 import { DsLoginCredentials } from '~/types/dorastorm';
-import Card from "primevue/card";
-import Button from "primevue/button";
-import Hr from '~/components/Hr.vue';
 import FormText from '~/components/form/FormText.vue';
-import { useForm } from "vee-validate";
-import { object, string } from "yup";
 
 definePageMeta({
   middleware: ['guest-guard']
@@ -38,8 +47,8 @@ const lp = useLocalePath();
 const { t } = useI18n();
 
 const validations = object({
-  email: string().required().email().label(t("forms.email")),
-  password: string().required().label(t("forms.password"))
+  email: string().required().email().label(t('forms.email')),
+  password: string().required().label(t('forms.password'))
 });
 
 const { handleSubmit, isSubmitting, setFieldError } = useForm<DsLoginCredentials>({
@@ -52,8 +61,8 @@ const onSubmit = handleSubmit(async (payload) => {
     if (response.statusCode === 422) {
       return setFieldError('email', response.data.errors.email);
     }
-    return setFieldError("password", t("error.fatal"));
+    return setFieldError('password', t('error.fatal'));
   }
   navigateTo(lp('/ds'));
-})
+});
 </script>

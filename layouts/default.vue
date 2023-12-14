@@ -1,7 +1,7 @@
 <template>
-  <TheNavbar></TheNavbar>
+  <TheNavbar />
   <main>
-    <slot></slot>
+    <slot />
   </main>
 </template>
 <script setup lang="ts">

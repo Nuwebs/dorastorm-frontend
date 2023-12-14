@@ -1,9 +1,9 @@
-import { useFetch, useNuxtApp } from "#imports";
-import { UseFetchOptions, navigateTo, useRuntimeConfig } from "nuxt/app";
-import useAuthStore from "~/stores/authStore";
-import { ApiFetch } from "~/types";
-import { logout } from "~/services/auth";
-import { FetchError } from "ofetch/node";
+import { UseFetchOptions, navigateTo, useRuntimeConfig } from 'nuxt/app';
+import { FetchError } from 'ofetch/node';
+import { useFetch, useNuxtApp } from '#imports';
+import useAuthStore from '~/stores/authStore';
+import { ApiFetch } from '~/types';
+import { logout } from '~/services/auth';
 
 const generateOptions = <ResponseT>(
   auth: boolean,
@@ -21,26 +21,26 @@ const generateOptions = <ResponseT>(
   }
   const locale = useNuxtApp().$i18n.locale;
   baseOptions.headers = {
-    ... baseOptions.headers,
-    "Accept-Language": locale
-  }
+    ...baseOptions.headers,
+    'Accept-Language': locale
+  };
   return Object.assign({}, baseOptions, options);
 };
 
 const useAPIFetch = async <ResponseT = void, ErrorT = any>({
   endpoint,
   auth = true,
-  options = {},
+  options = {}
 }: ApiFetch<ResponseT>) => {
   const cOptions = generateOptions<ResponseT>(auth, options);
-  return useFetch<ResponseT, FetchError<ErrorT>>(endpoint, {
+  return await useFetch<ResponseT, FetchError<ErrorT>>(endpoint, {
     ...(cOptions as object),
-    async onResponseError({ response }) {
+    async onResponseError ({ response }) {
       if (response.status === 401) {
         await logout(true);
-        navigateTo("/login");
+        navigateTo('/login');
       }
-    },
+    }
   });
 };
 
