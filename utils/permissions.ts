@@ -20,24 +20,29 @@ enum Permission {
   QUOTATIONS_DELETE = 'quotations-delete',
 
   PROFILE_READ = 'profile-read',
-  PROFILE_UPDATE = 'profile-update',
-};
+  PROFILE_UPDATE = 'profile-update'
+}
 
-export function getPermissionsGroups (permissions: Permission[]) {
-  return permissions.reduce((acc: RolePermissionGroup[], permission: Permission) => {
-    const module = permission.split('-')[0];
-    const existingModule = acc.find((m: RolePermissionGroup) => m.module === module);
+export function getPermissionsGroups(permissions: Permission[]) {
+  return permissions.reduce(
+    (acc: RolePermissionGroup[], permission: Permission) => {
+      const module = permission.split('-')[0];
+      const existingModule = acc.find(
+        (m: RolePermissionGroup) => m.module === module
+      );
 
-    if (existingModule) {
-      existingModule.permissions.push(permission);
-    } else {
-      acc.push({
-        module,
-        permissions: [permission]
-      });
-    }
-    return acc;
-  }, []);
+      if (existingModule) {
+        existingModule.permissions.push(permission);
+      } else {
+        acc.push({
+          module,
+          permissions: [permission]
+        });
+      }
+      return acc;
+    },
+    []
+  );
 }
 
 export default Permission;

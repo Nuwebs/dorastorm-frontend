@@ -2,16 +2,14 @@
   <section class="container">
     <Card v-if="authStore.user" class="shadow-1 mb-3">
       <template #title>
-        {{ $t("general.welcome") }}
+        {{ $t('general.welcome') }}
       </template>
       <template #content>
         <UserDataRow :user="authStore.user" />
       </template>
     </Card>
     <Card class="shadow-1 h-15rem">
-      <template #title>
-        Custom card
-      </template>
+      <template #title> Custom card </template>
       <template #content>
         <p>Your custom information system content!</p>
       </template>

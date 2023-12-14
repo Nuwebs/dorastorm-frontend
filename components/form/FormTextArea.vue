@@ -18,18 +18,22 @@ import { toRef } from 'vue';
 import { useField } from 'vee-validate';
 
 interface Props {
-  name: string,
-  label: string,
-  rows?: number,
-  autoResize?: boolean
-  modelValue?: string
+  name: string;
+  label: string;
+  rows?: number;
+  autoResize?: boolean;
+  modelValue?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   rows: 5,
   autoResize: false
 });
 
-const { errorMessage, value } = useField<string>(toRef(props, 'name'), undefined, {
-  syncVModel: true
-});
+const { errorMessage, value } = useField<string>(
+  toRef(props, 'name'),
+  undefined,
+  {
+    syncVModel: true
+  }
+);
 </script>

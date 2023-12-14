@@ -40,11 +40,15 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['update:modelValue']);
-const { value, errorMessage } = useField<null | string | Date>(() => props.name, undefined, {
-  syncVModel: true
-});
+const { value, errorMessage } = useField<null | string | Date>(
+  () => props.name,
+  undefined,
+  {
+    syncVModel: true
+  }
+);
 
-function handler (nValue: undefined | null | string | Date): void {
+function handler(nValue: undefined | null | string | Date): void {
   value.value = nValue || null;
   if (nValue === undefined || nValue === null) {
     return emit('update:modelValue', null);

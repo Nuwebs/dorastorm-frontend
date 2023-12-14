@@ -22,7 +22,9 @@ const processMenuItems = (dsMenuItems: DsMenuItem[]): MenuItem[] => {
     const checker = isPermissionsArray
       ? authStore.hasAnyPermission
       : authStore.hasPermission;
-    if (!checker(menuItem.permissions as Permission & Permission[])) { continue; }
+    if (!checker(menuItem.permissions as Permission & Permission[])) {
+      continue;
+    }
     if (menuItem.items) {
       menuItem.items = processMenuItems(menuItem.items);
     }

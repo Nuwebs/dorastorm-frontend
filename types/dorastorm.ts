@@ -10,7 +10,7 @@ export interface NewRole {
   permissions: Permission[];
 }
 
-export interface Role extends NewRole{
+export interface Role extends NewRole {
   id: number;
   created_at: string;
   modified_at: string;
@@ -37,7 +37,7 @@ export interface NewQuotation {
   content: string;
 }
 
-export interface Quotation extends NewQuotation{
+export interface Quotation extends NewQuotation {
   id: number;
   created_at: string;
   modified_at: string;
@@ -76,7 +76,7 @@ export type DataTableColumn = {
 export type Filter<T> = {
   value: any | null;
   matchMode: FilterMatchModeOptions[keyof FilterMatchModeOptions];
-  temp?: T
+  temp?: T;
 };
 
 export type DataTableFilter<T = any> = {

@@ -97,10 +97,7 @@ const useSidebar = (): ComputedRef<DsMenuItem[]> => {
       {
         label: t('modules.quotations.title'),
         icon: 'pi pi-envelope',
-        permissions: [
-          Permission.QUOTATIONS_READ,
-          Permission.QUOTATIONS_DELETE
-        ],
+        permissions: [Permission.QUOTATIONS_READ, Permission.QUOTATIONS_DELETE],
         items: [
           {
             label: t('modules.quotations.index'),

@@ -23,7 +23,12 @@ export default defineNuxtConfig({
   imports: {
     autoImport: false
   },
-  modules: ['@pinia/nuxt', '@vee-validate/nuxt', '@nuxtjs/i18n', '@nuxtjs/eslint-module'],
+  modules: [
+    '@pinia/nuxt',
+    '@vee-validate/nuxt',
+    '@nuxtjs/i18n',
+    '@nuxtjs/eslint-module'
+  ],
   runtimeConfig: {
     public: {
       backendURL: process.env.backendURL || 'http://localhost:8000',

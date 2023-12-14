@@ -12,7 +12,8 @@ const defaultErrorHandler = (): void => {
 const useSubmitHandler = async <ErrorT = any>(
   options: ApiFetch<void>,
   successHandler: () => void,
-  errorHandler: (error: FetchError<ErrorT>) => void = () => defaultErrorHandler()
+  errorHandler: (error: FetchError<ErrorT>) => void = () =>
+    defaultErrorHandler()
 ): Promise<boolean> => {
   const { error } = await useAPIFetch(options);
 

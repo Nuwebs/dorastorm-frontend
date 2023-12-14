@@ -5,10 +5,10 @@
     </div>
     <div class="col-8 flex flex-column justify-content-center">
       <h1 class="m-0 text-2xl">
-        {{ props.title? title :$t("error.404.default_title") }}
+        {{ props.title ? title : $t('error.404.default_title') }}
       </h1>
       <h3 class="m-0 text-color-secondary">
-        {{ props.subtitle? subtitle : $t("error.404.default_resource") }}
+        {{ props.subtitle ? subtitle : $t('error.404.default_resource') }}
       </h3>
     </div>
   </section>

@@ -14,7 +14,7 @@ const useLazyPagination = <DataT>(
   const totalResults = ref<number>(0);
   const resultsPerPage = ref<number>(0);
 
-  async function toPage (page: number = 1, params: string = '') {
+  async function toPage(page: number = 1, params: string = '') {
     loading.value = true;
     let ep = endpoint + `?page=${page}`;
     ep = params !== '' ? ep + `&${params}` : ep;
@@ -23,7 +23,9 @@ const useLazyPagination = <DataT>(
       options
     });
     loading.value = false;
-    if (error.value) { return error.value; }
+    if (error.value) {
+      return error.value;
+    }
     paginationData.value = data.value!.data;
     currentPage.value = data.value!.meta.current_page;
     totalResults.value = data.value!.meta.total;

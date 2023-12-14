@@ -1,13 +1,27 @@
 <template>
   <section class="container">
     <h1 class="mt-0">
-      {{ $t("modules.users.create") }}
+      {{ $t('modules.users.create') }}
     </h1>
     <form @submit="submit">
-      <FormText name="name" type="text" :label="$t('modules.users.name')" placeholder="James Douglas" />
-      <FormText name="email" type="email" :label="$t('forms.email')" placeholder="example@example.com" />
+      <FormText
+        name="name"
+        type="text"
+        :label="$t('modules.users.name')"
+        placeholder="James Douglas"
+      />
+      <FormText
+        name="email"
+        type="email"
+        :label="$t('forms.email')"
+        placeholder="example@example.com"
+      />
       <FormText name="password" type="password" :label="$t('forms.password')" />
-      <FormText name="password_confirmation" type="password" :label="$t('forms.confirm_password')" />
+      <FormText
+        name="password_confirmation"
+        type="password"
+        :label="$t('forms.confirm_password')"
+      />
       <FormSelect
         name="role_id"
         :label="$t('modules.users.role_select')"
@@ -18,7 +32,7 @@
         :placeholder="$t('modules.users.role_default')"
       />
       <Button :loading="isSubmitting" type="submit">
-        {{ $t("forms.submit") }}
+        {{ $t('forms.submit') }}
       </Button>
     </form>
   </section>
@@ -60,23 +74,24 @@ const validate = object({
   name: string().required().min(4).label(t('modules.users.name')),
   email: string().required().email().label(t('forms.email')),
   password: string().required().min(8).label(t('forms.password')),
-  password_confirmation: string().required().oneOf(
-    [yupRef('password')],
-    t('error.validation.confirm_password')
-  ).label(t('forms.confirm_password')),
+  password_confirmation: string()
+    .required()
+    .oneOf([yupRef('password')], t('error.validation.confirm_password'))
+    .label(t('forms.confirm_password')),
   role_id: number().required().label(t('modules.users.role'))
 });
 
-const { handleSubmit, resetForm, isSubmitting, setFieldError } = useForm<NewUser>({
-  validationSchema: validate,
-  initialValues: {
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    role_id: undefined
-  }
-});
+const { handleSubmit, resetForm, isSubmitting, setFieldError } =
+  useForm<NewUser>({
+    validationSchema: validate,
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+      role_id: undefined
+    }
+  });
 
 onMounted(async () => {
   loading.value = true;
@@ -100,7 +115,11 @@ const submit = handleSubmit(async (payload) => {
       }
     },
     () => {
-      toast.add({ severity: 'success', detail: t('modules.users.created'), life: 3000 });
+      toast.add({
+        severity: 'success',
+        detail: t('modules.users.created'),
+        life: 3000
+      });
       resetForm();
     },
     (error) => {

@@ -14,8 +14,17 @@
               placeholder="example@example.com"
               icon="pi pi-at"
             />
-            <FormText name="password" :label="$t('forms.password')" type="password" icon="pi pi-lock" />
-            <Button type="submit" class="w-full justify-content-center mb-2" :loading="isSubmitting">
+            <FormText
+              name="password"
+              :label="$t('forms.password')"
+              type="password"
+              icon="pi pi-lock"
+            />
+            <Button
+              type="submit"
+              class="w-full justify-content-center mb-2"
+              :loading="isSubmitting"
+            >
               {{ $t('forms.submit') }}
             </Button>
             <Divider />
@@ -51,9 +60,10 @@ const validations = object({
   password: string().required().label(t('forms.password'))
 });
 
-const { handleSubmit, isSubmitting, setFieldError } = useForm<DsLoginCredentials>({
-  validationSchema: validations
-});
+const { handleSubmit, isSubmitting, setFieldError } =
+  useForm<DsLoginCredentials>({
+    validationSchema: validations
+  });
 
 const onSubmit = handleSubmit(async (payload) => {
   const response = await login(payload);

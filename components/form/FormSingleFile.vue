@@ -1,7 +1,13 @@
 <template>
   <div>
     <label :for="name" class="block mb-1">{{ label }}</label>
-    <input :id="name" type="file" :name="name" :accept="accept" @change="handleChange">
+    <input
+      :id="name"
+      type="file"
+      :name="name"
+      :accept="accept"
+      @change="handleChange"
+    />
     <ErrorMessage :name="name" class="p-error" />
   </div>
 </template>
@@ -22,7 +28,7 @@ const { value } = useField<null | File>(() => props.name, undefined, {
   syncVModel: true
 });
 
-function handleChange (event: Event) {
+function handleChange(event: Event) {
   const inputElement = event.target as HTMLInputElement;
   if (inputElement.files && inputElement.files.length > 0) {
     value.value = inputElement.files[0];

@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <h1 class="mt-0">
-      {{ $t("modules.users.list") }}
+      {{ $t('modules.users.list') }}
     </h1>
     <DataTable
       v-model:expanded-rows="expanded"
@@ -17,10 +17,18 @@
     >
       <template #header>
         <div class="flex justify-content-between">
-          <Button icon="pi pi-refresh" class="mr-2" @click="search(currentPage)" />
+          <Button
+            icon="pi pi-refresh"
+            class="mr-2"
+            @click="search(currentPage)"
+          />
           <div>
             <div class="flex alig-items-center">
-              <InputText v-model="(filters['global'].value)" class="max-w-10rem md:max-w-full" @keyup.enter="search()" />
+              <InputText
+                v-model="filters['global'].value"
+                class="max-w-10rem md:max-w-full"
+                @keyup.enter="search()"
+              />
               <Button icon="pi pi-search" @click="search()" />
             </div>
           </div>
@@ -36,7 +44,10 @@
       <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
         <template #body="row">
           <ActionButtonDelete
-            v-if="userCan(Permission.USERS_DELETE) && roleCan(row.data.role.hierarchy, true)"
+            v-if="
+              userCan(Permission.USERS_DELETE) &&
+              roleCan(row.data.role.hierarchy, true)
+            "
             endpoint="/users/{id}"
             :model-id="row.data.id"
             :cd-messages="{
@@ -46,7 +57,10 @@
             @deleted="deleted"
           />
           <ActionButtonUpdate
-            v-if="userCan(Permission.USERS_UPDATE) && roleCan(row.data.role.hierarchy, true)"
+            v-if="
+              userCan(Permission.USERS_UPDATE) &&
+              roleCan(row.data.role.hierarchy, true)
+            "
             route="/ds/users/edit-{id}"
             :model-id="row.data.id"
           />
@@ -82,32 +96,43 @@ definePageMeta({
 });
 
 const toast = useToast();
-const { userCan, roleCan, userIsAllowed } = useCachedPermissions([Permission.USERS_UPDATE, Permission.USERS_DELETE]);
-const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage } =
-  useLazyPagination<User>('/users');
+const { userCan, roleCan, userIsAllowed } = useCachedPermissions([
+  Permission.USERS_UPDATE,
+  Permission.USERS_DELETE
+]);
+const {
+  paginationData,
+  loading,
+  totalResults,
+  toPage,
+  resultsPerPage,
+  currentPage
+} = useLazyPagination<User>('/users');
 
 const expanded = ref<User[]>([]);
 const filters = ref<DataTableFilter<User>>({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 });
 
-async function loadData (page: number): Promise<void> {
+async function loadData(page: number): Promise<void> {
   const res = await toPage(page);
   if (res) {
-    if (res.statusCode === 403) { return toast.add(use403Toast()); }
+    if (res.statusCode === 403) {
+      return toast.add(use403Toast());
+    }
     return toast.add(useGeneralErrorToast());
   }
 }
 
-async function deleted (): Promise<void> {
+async function deleted(): Promise<void> {
   let page = currentPage.value;
   if (paginationData.value.length - 1 <= 0) {
     page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
-  };
+  }
   await loadData(page);
 }
 
-async function search (page: number = 1) {
+async function search(page: number = 1) {
   await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 

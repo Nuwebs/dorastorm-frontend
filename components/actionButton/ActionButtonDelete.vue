@@ -27,9 +27,9 @@ interface Props {
   cdMessages: {
     message: string;
     header: string;
-  }
+  };
   modelIdReplace?: string;
-  options?: any
+  options?: any;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,12 +37,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  deleted: [id: number | string]
+  deleted: [id: number | string];
 }>();
 
 if (!props.endpoint.includes(props.modelIdReplace)) {
   // eslint-disable-next-line no-console
-  console.error(`The endpoint ${props.endpoint} does not includes the replace key ${props.modelIdReplace}`);
+  console.error(
+    `The endpoint ${props.endpoint} does not includes the replace key ${props.modelIdReplace}`
+  );
 }
 
 const confirm = useConfirm();
@@ -50,7 +52,7 @@ const toast = useToast();
 const loading = ref<boolean>(false);
 const { t } = useI18n();
 
-function confirmDialog (): void {
+function confirmDialog(): void {
   confirm.require({
     message: props.cdMessages.message,
     header: props.cdMessages.header,
@@ -63,9 +65,12 @@ function confirmDialog (): void {
   });
 }
 
-async function deleteModel (): Promise<void> {
+async function deleteModel(): Promise<void> {
   loading.value = true;
-  const ep = props.endpoint.replace(props.modelIdReplace, String(props.modelId));
+  const ep = props.endpoint.replace(
+    props.modelIdReplace,
+    String(props.modelId)
+  );
   const { error } = await useAPIFetch({
     endpoint: ep,
     options: !props.options
@@ -86,7 +91,11 @@ async function deleteModel (): Promise<void> {
       toast.add(use404Toast());
       break;
     case 409:
-      toast.add({ severity: 'error', detail: t('error.409.specific.last_admin'), life: 3000 });
+      toast.add({
+        severity: 'error',
+        detail: t('error.409.specific.last_admin'),
+        life: 3000
+      });
       break;
     default:
       toast.add(useGeneralErrorToast());

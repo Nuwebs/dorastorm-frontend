@@ -2,7 +2,11 @@
   <div class="roles-permissions-container p-1 border-1 border-round">
     <ErrorMessage :name="props.name" class="p-error" />
     <div class="grid grid-nogutter">
-      <div v-for="(column, index) in slices" :key="index" class="col-12 md:col-6">
+      <div
+        v-for="(column, index) in slices"
+        :key="index"
+        class="col-12 md:col-6"
+      >
         <div
           v-for="permissionModule in column"
           :key="permissionModule.module"
@@ -11,8 +15,16 @@
           <p class="text-center m-0">
             {{ permissionModule.module.toUpperCase() }}
           </p>
-          <div v-for="permission in permissionModule.permissions" :key="permission">
-            <FormCheckboxValue v-model="rolePermissions" :name="permission" :content="permission" :label="permission" />
+          <div
+            v-for="permission in permissionModule.permissions"
+            :key="permission"
+          >
+            <FormCheckboxValue
+              v-model="rolePermissions"
+              :name="permission"
+              :content="permission"
+              :label="permission"
+            />
           </div>
         </div>
       </div>
@@ -30,7 +42,7 @@ import { getPermissionsGroups } from '~/utils/permissions';
 
 interface Props {
   name: string;
-  modelValue: string[]
+  modelValue: string[];
 }
 
 const props = defineProps<Props>();
@@ -40,7 +52,9 @@ const { value } = useField<string[]>(() => props.name, undefined, {
 });
 
 const rolePermissions = ref<string[]>(value.value);
-const userPermissions = ref<RolePermissionGroup[]>(getPermissionsGroups(useAuthStore().user!.role.permissions));
+const userPermissions = ref<RolePermissionGroup[]>(
+  getPermissionsGroups(useAuthStore().user!.role.permissions)
+);
 const emit = defineEmits(['update:modelValue']);
 const slices = computed(() => {
   const mid = Math.ceil(userPermissions.value.length / 2);

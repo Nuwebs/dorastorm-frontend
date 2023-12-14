@@ -18,13 +18,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 if (!props.route.includes(props.modelIdReplace)) {
   // eslint-disable-next-line no-console
-  console.error(`The route ${props.route} does not includes the replace key ${props.modelIdReplace}`);
+  console.error(
+    `The route ${props.route} does not includes the replace key ${props.modelIdReplace}`
+  );
 }
 
 const router = useRouter();
 const lp = useLocalePath();
 
-function push (): void {
+function push(): void {
   const r = props.route.replace(props.modelIdReplace, String(props.modelId));
   router.push(lp(r));
 }

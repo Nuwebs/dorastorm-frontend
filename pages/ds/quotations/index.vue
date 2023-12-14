@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <h1 class="mt-0">
-      {{ $t("modules.quotations.list") }}
+      {{ $t('modules.quotations.list') }}
     </h1>
     <DataTable
       v-model:expanded-rows="expanded"
@@ -17,7 +17,11 @@
     >
       <template #header>
         <div class="flex justify-content-between">
-          <Button icon="pi pi-refresh" class="mr-2" @click="search(currentPage)" />
+          <Button
+            icon="pi pi-refresh"
+            class="mr-2"
+            @click="search(currentPage)"
+          />
           <div>
             <div class="flex alig-items-center">
               <InputText
@@ -43,7 +47,11 @@
           {{ useDateFormat(slotProps.data.created_at) }}
         </template>
       </Column>
-      <Column v-if="userCan(Permission.QUOTATIONS_DELETE)" field="id" :header="$t('general.action')">
+      <Column
+        v-if="userCan(Permission.QUOTATIONS_DELETE)"
+        field="id"
+        :header="$t('general.action')"
+      >
         <template #body="row">
           <ActionButtonDelete
             v-if="userCan(Permission.QUOTATIONS_DELETE)"
@@ -82,23 +90,29 @@ definePageMeta({
 });
 
 const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
-const { paginationData, loading, totalResults, toPage, resultsPerPage, currentPage } =
-  useLazyPagination<Quotation>('/quotations');
+const {
+  paginationData,
+  loading,
+  totalResults,
+  toPage,
+  resultsPerPage,
+  currentPage
+} = useLazyPagination<Quotation>('/quotations');
 
 const expanded = ref<Quotation[]>([]);
 const filters = ref<DataTableFilter<Quotation>>({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 });
 
-async function deleted (): Promise<void> {
+async function deleted(): Promise<void> {
   let page = currentPage.value;
   if (paginationData.value.length - 1 <= 0) {
     page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
-  };
+  }
   await toPage(page);
 }
 
-async function search (page: number = 1) {
+async function search(page: number = 1) {
   await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 

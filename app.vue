@@ -16,7 +16,7 @@ const toastStore = useComposablesToastStore();
 const toast = useToast();
 const { t } = useI18n();
 
-function renderComposablesToast () {
+function renderComposablesToast() {
   toastStore.processToasts(toast.add, t);
 }
 

@@ -1,5 +1,9 @@
 <template>
-  <TheDSNavbar class="ds-navbar" :full="shouldBeSidebar" @sidebar-button-click="sidebarVisible = !sidebarVisible" />
+  <TheDSNavbar
+    class="ds-navbar"
+    :full="shouldBeSidebar"
+    @sidebar-button-click="sidebarVisible = !sidebarVisible"
+  />
   <main class="p-3 min-h-fullscreen">
     <aside v-if="shouldBeSidebar" :class="sidebarClasses">
       <PanelMenu :model="sidebarMenuItems()" />
@@ -35,13 +39,19 @@ const sidebarVisible = ref<boolean>(shouldBeSidebar.value);
 
 const sidebarClasses = computed<string>(() => {
   const baseClasses = 'layout-sidebar p-3 shadow-1';
-  return sidebarVisible.value ? baseClasses : baseClasses + ' layout-sidebar-hidden';
+  return sidebarVisible.value
+    ? baseClasses
+    : baseClasses + ' layout-sidebar-hidden';
 });
 
 const contentClasses = computed<string>(() => {
   let classes = 'p-3 shadow-1 surface-section';
-  if (shouldBeSidebar.value) { classes += ' layout-content'; }
-  if (!sidebarVisible.value) { classes += ' ml-0'; }
+  if (shouldBeSidebar.value) {
+    classes += ' layout-content';
+  }
+  if (!sidebarVisible.value) {
+    classes += ' ml-0';
+  }
   return classes;
 });
 
@@ -64,11 +74,13 @@ watch(windowWidth, () => {
   } else {
     shouldBeSidebar.value = false;
     sidebarVisible.value = false;
-  };
+  }
 });
 
 watch(currentRoute, () => {
-  if (!shouldBeSidebar.value && sidebarVisible.value) { sidebarVisible.value = false; }
+  if (!shouldBeSidebar.value && sidebarVisible.value) {
+    sidebarVisible.value = false;
+  }
 });
 </script>
 <style scoped>
@@ -82,7 +94,9 @@ watch(currentRoute, () => {
   width: 300px;
   overflow-y: auto;
   height: calc(88vh - 2rem);
-  transition: transform .2s, left .2s;
+  transition:
+    transform 0.2s,
+    left 0.2s;
   background-color: var(--surface-a);
 }
 
@@ -93,6 +107,6 @@ watch(currentRoute, () => {
 
 .layout-content {
   margin-left: calc(300px + 1rem);
-  transition: margin-left .2s;
+  transition: margin-left 0.2s;
 }
 </style>

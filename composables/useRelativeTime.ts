@@ -31,19 +31,19 @@ const useRelativeTime = (baseDate?: string) => {
   );
   const main = baseDate ? dayjs(baseDate) : dayjs();
 
-  function fromNow (withoutSuffix: boolean = false) {
+  function fromNow(withoutSuffix: boolean = false) {
     return main.fromNow(withoutSuffix);
   }
 
-  function toNow (withoutSuffix: boolean = false) {
+  function toNow(withoutSuffix: boolean = false) {
     return main.toNow(withoutSuffix);
   }
 
-  function from (comparedDate: string, withoutSuffix: boolean = false) {
+  function from(comparedDate: string, withoutSuffix: boolean = false) {
     return main.from(dayjs(comparedDate), withoutSuffix);
   }
 
-  function to (comparedDate: string, withoutSuffix: boolean = false) {
+  function to(comparedDate: string, withoutSuffix: boolean = false) {
     return main.to(dayjs(comparedDate), withoutSuffix);
   }
 

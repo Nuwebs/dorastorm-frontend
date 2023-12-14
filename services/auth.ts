@@ -62,7 +62,9 @@ export const refreshToken = async (): Promise<void> => {
   if (error.value) {
     cleanSavedKeys();
     authStore.$reset();
-    if (error.value.statusCode && error.value.statusCode === 409) { throw new ExpiredTokenException(''); }
+    if (error.value.statusCode && error.value.statusCode === 409) {
+      throw new ExpiredTokenException('');
+    }
     throw new InvalidTokenException('');
   }
   authStore.token = data.value!.accessToken;
@@ -77,7 +79,9 @@ export const getUserInfo = async (): Promise<void | ErrorBag> => {
   const { data: user, error: userError } = await useAPIFetch<User>({
     endpoint: config.public.authEndpoints.me
   });
-  if (userError.value) { return userError.value as ErrorBag; }
+  if (userError.value) {
+    return userError.value as ErrorBag;
+  }
 
   authStore.user = user.value!;
   saveUser(authStore.user);
@@ -97,12 +101,16 @@ export const login = async (
       body: credentials
     }
   });
-  if (jwtError.value) { return jwtError.value as ErrorBag; }
+  if (jwtError.value) {
+    return jwtError.value as ErrorBag;
+  }
   authStore.token = jwtData.value!.accessToken;
 
   // Get the user info
   const failed = await getUserInfo();
-  if (failed) { return failed as ErrorBag; }
+  if (failed) {
+    return failed as ErrorBag;
+  }
 
   // Final settings
   authStore.expiresEpoch = calculateExpireEpoch(jwtData.value!.expiresIn);
@@ -129,16 +137,22 @@ export const logout = async (
   // The session will be closed in the frontend no matter what
   authStore.$reset();
   cleanSavedKeys();
-  if (error.value) { return error.value as ErrorBag; }
+  if (error.value) {
+    return error.value as ErrorBag;
+  }
 };
 
 export const loadUserData = (): void => {
   const authStore = useAuthStore();
   authStore.appBooted = true;
   const token = isPotentiallyLoggedIn();
-  if (token === false) { return cleanSavedKeys(); }
+  if (token === false) {
+    return cleanSavedKeys();
+  }
   const user = getUserData();
-  if (user === false) { return cleanSavedKeys(); }
+  if (user === false) {
+    return cleanSavedKeys();
+  }
 
   const expiresEpoch = getExpiresEpoch();
 

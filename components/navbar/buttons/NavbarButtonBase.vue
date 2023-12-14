@@ -21,6 +21,6 @@ const props = defineProps<Props>();
 </script>
 <style scoped>
 .m-center {
-  top: 2px
+  top: 2px;
 }
 </style>

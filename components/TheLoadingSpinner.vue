@@ -1,9 +1,11 @@
 <template>
   <section class="loading-container">
-    <div class="loading-overlay grid grid-nogutter justify-content-center flex-column align-items-center">
+    <div
+      class="loading-overlay grid grid-nogutter justify-content-center flex-column align-items-center"
+    >
       <div class="loading-spinner" />
       <div class="loading-text mt-2">
-        {{ props.loadingText ? props.loadingText : $t("general.loading") }}
+        {{ props.loadingText ? props.loadingText : $t('general.loading') }}
       </div>
     </div>
   </section>

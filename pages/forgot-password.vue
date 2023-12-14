@@ -7,10 +7,18 @@
         </template>
         <template #content>
           <form @submit="submit">
-            <FormText v-model="data.email" name="email" type="email" :label="$t('forms.email')" />
-            <Button type="submit" class="w-full justify-content-center" :loading="isSubmitting">
-              {{ $t('forms.submit')
-              }}
+            <FormText
+              v-model="data.email"
+              name="email"
+              type="email"
+              :label="$t('forms.email')"
+            />
+            <Button
+              type="submit"
+              class="w-full justify-content-center"
+              :loading="isSubmitting"
+            >
+              {{ $t('forms.submit') }}
             </Button>
           </form>
         </template>
@@ -47,27 +55,30 @@ const { handleSubmit, isSubmitting, setFieldError } = useForm({
   validationSchema: validate
 });
 
-const submit = handleSubmit(async () => await useSubmitHandler(
-  {
-    endpoint: 'forgot-password',
-    auth: false,
-    options: {
-      method: 'post',
-      body: data.value
-    }
-  },
-  () => {
-    toast.add({
-      severity: 'success',
-      detail: t('modules.users.fp_email_send'),
-      life: 3000
-    });
-  },
-  (error) => {
-    if (error.statusCode === 422) {
-      return setFieldError('email', t('error.validation.email_404'));
-    }
-    setFieldError('password', t('error.fatal'));
-  }
-));
+const submit = handleSubmit(
+  async () =>
+    await useSubmitHandler(
+      {
+        endpoint: 'forgot-password',
+        auth: false,
+        options: {
+          method: 'post',
+          body: data.value
+        }
+      },
+      () => {
+        toast.add({
+          severity: 'success',
+          detail: t('modules.users.fp_email_send'),
+          life: 3000
+        });
+      },
+      (error) => {
+        if (error.statusCode === 422) {
+          return setFieldError('email', t('error.validation.email_404'));
+        }
+        setFieldError('password', t('error.fatal'));
+      }
+    )
+);
 </script>

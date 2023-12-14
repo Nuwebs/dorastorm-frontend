@@ -2,7 +2,10 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export const DEFAULT_FORMAT: string = 'YYYY/MM/DD';
 
-const useDateFormat = (payload: string | Date | Dayjs, format: string = DEFAULT_FORMAT): string => {
+const useDateFormat = (
+  payload: string | Date | Dayjs,
+  format: string = DEFAULT_FORMAT
+): string => {
   return dayjs(payload).format(format);
 };
 

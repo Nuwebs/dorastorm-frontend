@@ -1,24 +1,36 @@
 <template>
   <div>
     <form @submit="submit">
-      <FormText v-model="role.name" name="name" :label="$t('modules.roles.name')" type="text" />
-      <FormTextArea v-model="role.description" name="description" :label="$t('modules.roles.description')" />
+      <FormText
+        v-model="role.name"
+        name="name"
+        :label="$t('modules.roles.name')"
+        type="text"
+      />
+      <FormTextArea
+        v-model="role.description"
+        name="description"
+        :label="$t('modules.roles.description')"
+      />
       <div class="grid">
         <div class="col-12 md:col-8">
           <h3 class="mb-2 mt-0">
-            {{ $t("modules.roles.select_permissions") }}
+            {{ $t('modules.roles.select_permissions') }}
           </h3>
           <RoleFormPermissions v-model="role.permissions" name="permissions" />
         </div>
         <div class="col-12 md:col-4">
           <h3 class="mb-2 mt-0">
-            {{ $t("modules.roles.select_hierarchy") }}
+            {{ $t('modules.roles.select_hierarchy') }}
           </h3>
-          <RoleFormHierarchy v-model="role.hierarchy" :updating="!!props.updating" />
+          <RoleFormHierarchy
+            v-model="role.hierarchy"
+            :updating="!!props.updating"
+          />
         </div>
       </div>
       <Button :loading="isSubmitting" type="submit">
-        {{ $t("forms.submit") }}
+        {{ $t('forms.submit') }}
       </Button>
     </form>
   </div>
@@ -38,8 +50,8 @@ import { useI18n } from '#imports';
 
 interface Props {
   modelValue: Role | NewRole;
-  submitHandler(): Promise<boolean>
-  updating?: boolean
+  submitHandler(): Promise<boolean>;
+  updating?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -49,7 +61,8 @@ const { t } = useI18n();
 const validate = object({
   name: string().required().min(3).label(t('modules.roles.name')),
   description: string(),
-  permissions: array().min(1, t('error.422.specific.role_permissions'))
+  permissions: array()
+    .min(1, t('error.422.specific.role_permissions'))
     .label(t('modules.roles.select_permissions'))
 });
 
@@ -58,5 +71,4 @@ const { isSubmitting, handleSubmit } = useForm({
 });
 
 const submit = handleSubmit(props.submitHandler);
-
 </script>

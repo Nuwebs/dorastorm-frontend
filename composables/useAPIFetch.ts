@@ -35,7 +35,7 @@ const useAPIFetch = async <ResponseT = void, ErrorT = any>({
   const cOptions = generateOptions<ResponseT>(auth, options);
   return await useFetch<ResponseT, FetchError<ErrorT>>(endpoint, {
     ...(cOptions as object),
-    async onResponseError ({ response }) {
+    async onResponseError({ response }) {
       if (response.status === 401) {
         await logout(true);
         navigateTo('/login');

@@ -21,15 +21,19 @@ import { useField } from 'vee-validate';
 import InputText from 'primevue/inputtext';
 
 const props = defineProps<{
-  name: string,
-  label: string,
-  type: string,
-  placeholder?: string,
-  icon?: string,
-  modelValue?: string
+  name: string;
+  label: string;
+  type: string;
+  placeholder?: string;
+  icon?: string;
+  modelValue?: string;
 }>();
 
-const { errorMessage, value } = useField<string>(toRef(props, 'name'), undefined, {
-  syncVModel: true
-});
+const { errorMessage, value } = useField<string>(
+  toRef(props, 'name'),
+  undefined,
+  {
+    syncVModel: true
+  }
+);
 </script>

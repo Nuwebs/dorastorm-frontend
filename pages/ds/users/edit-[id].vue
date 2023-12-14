@@ -3,7 +3,7 @@
   <TheDS404 v-else-if="is404" :subtitle="$t('error.404.specific.user')" />
   <section v-else class="container">
     <h1 class="mt-0">
-      {{ $t("modules.users.user_info") }}
+      {{ $t('modules.users.user_info') }}
     </h1>
     <form class="mb-3" @submit="submit">
       <FormText
@@ -31,7 +31,7 @@
         :placeholder="$t('modules.users.role_default')"
       />
       <Button :loading="isSubmitting" type="submit">
-        {{ $t("forms.submit") }}
+        {{ $t('forms.submit') }}
       </Button>
     </form>
     <Divider />
@@ -49,7 +49,13 @@ import Divider from 'primevue/divider';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
 import { DsValidationErrorBag, Role, User } from '~/types/dorastorm';
-import { definePageMeta, useCachedPermissions, useI18n, useRoute, useSubmitHandler } from '#imports';
+import {
+  definePageMeta,
+  useCachedPermissions,
+  useI18n,
+  useRoute,
+  useSubmitHandler
+} from '#imports';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
@@ -85,9 +91,13 @@ const data = ref<UpdateUser>({
   role_id: -1
 });
 
-const roleIdValidation = { role_id: number().required().label(t('modules.users.role')) };
+const roleIdValidation = {
+  role_id: number().required().label(t('modules.users.role'))
+};
 const updatingSelf: boolean = Number(route.params.id) === authStore.user!.id;
-const shouldIncludeRole = ref<boolean>(!updatingSelf || userCan(Permission.USERS_UPDATE));
+const shouldIncludeRole = ref<boolean>(
+  !updatingSelf || userCan(Permission.USERS_UPDATE)
+);
 
 const validate = object({
   name: string().required().min(4).label(t('modules.users.name')),
@@ -99,7 +109,7 @@ const { handleSubmit, isSubmitting, setFieldError } = useForm({
   validationSchema: validate
 });
 
-async function fetchUser () {
+async function fetchUser() {
   const { data: user, error } = await useAPIFetch<User>({
     endpoint: '/users/' + route.params.id
   });
@@ -113,7 +123,7 @@ async function fetchUser () {
   };
 }
 
-async function fetchRoles () {
+async function fetchRoles() {
   const { data, error } = await useAPIFetch<Role[]>({
     endpoint: '/users/rolesbelow'
   });
@@ -130,32 +140,41 @@ onMounted(async () => {
     is404.value = true;
     return;
   }
-  if (shouldIncludeRole.value) { await fetchRoles(); }
+  if (shouldIncludeRole.value) {
+    await fetchRoles();
+  }
   loading.value = false;
 });
 
-const submit = handleSubmit(async () => await useSubmitHandler<DsValidationErrorBag<User>>(
-  {
-    endpoint: '/users/' + route.params.id,
-    options: {
-      method: 'PATCH',
-      body: data.value
-    }
-  },
-  async () => {
-    if (updatingSelf) {
-      await getUserInfo();
-    }
-    toast.add({ severity: 'success', detail: t('general.updated'), life: 3000 });
-  },
-  (error) => {
-    if (error.data && error.statusCode === 422) {
-      return setFieldError('email', error.data.errors.email);
-    }
-    if (error.data && error.statusCode === 409) {
-      return setFieldError('role_id', error.data.message);
-    }
-    toast.add(useGeneralErrorToast());
-  }
-));
+const submit = handleSubmit(
+  async () =>
+    await useSubmitHandler<DsValidationErrorBag<User>>(
+      {
+        endpoint: '/users/' + route.params.id,
+        options: {
+          method: 'PATCH',
+          body: data.value
+        }
+      },
+      async () => {
+        if (updatingSelf) {
+          await getUserInfo();
+        }
+        toast.add({
+          severity: 'success',
+          detail: t('general.updated'),
+          life: 3000
+        });
+      },
+      (error) => {
+        if (error.data && error.statusCode === 422) {
+          return setFieldError('email', error.data.errors.email);
+        }
+        if (error.data && error.statusCode === 409) {
+          return setFieldError('role_id', error.data.message);
+        }
+        toast.add(useGeneralErrorToast());
+      }
+    )
+);
 </script>
