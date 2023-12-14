@@ -74,9 +74,8 @@ export type DataTableColumn = {
 };
 
 export type Filter<T> = {
-  value: any | null;
+  value: T[keyof T] | null;
   matchMode: FilterMatchModeOptions[keyof FilterMatchModeOptions];
-  temp?: T;
 };
 
 export type DataTableFilter<T = any> = {

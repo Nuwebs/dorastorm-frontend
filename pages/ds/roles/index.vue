@@ -71,10 +71,9 @@
 
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, Ref } from 'vue';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
@@ -105,9 +104,9 @@ const {
 } = useLazyPagination<Role>('/roles');
 
 const expanded = ref<Role[]>([]);
-const filters = ref<DataTableFilter<Role>>({
+const filters = ref({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-});
+}) satisfies Ref<DataTableFilter<Role>>;
 
 async function loadData(page: number): Promise<void> {
   const res = await toPage(page);

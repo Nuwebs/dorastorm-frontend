@@ -74,7 +74,7 @@
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { useToast } from 'primevue/usetoast';
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
@@ -110,9 +110,9 @@ const {
 } = useLazyPagination<User>('/users');
 
 const expanded = ref<User[]>([]);
-const filters = ref<DataTableFilter<User>>({
+const filters = ref({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-});
+}) satisfies Ref<DataTableFilter<User>>;
 
 async function loadData(page: number): Promise<void> {
   const res = await toPage(page);

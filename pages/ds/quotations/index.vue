@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, Ref } from 'vue';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
@@ -100,9 +100,9 @@ const {
 } = useLazyPagination<Quotation>('/quotations');
 
 const expanded = ref<Quotation[]>([]);
-const filters = ref<DataTableFilter<Quotation>>({
+const filters = ref({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-});
+}) satisfies Ref<DataTableFilter<Quotation>>;
 
 async function deleted(): Promise<void> {
   let page = currentPage.value;
