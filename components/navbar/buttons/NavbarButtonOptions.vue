@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import ContextMenu from 'primevue/contextmenu';
-import { MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import { ref } from 'vue';
 import NavbarButtonBase from './NavbarButtonBase.vue';
 
