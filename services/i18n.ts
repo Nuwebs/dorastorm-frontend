@@ -1,8 +1,8 @@
-export type locale = {
+interface Locale {
   code: string;
   file: string;
   name: string;
-};
+}
 
 interface RouteRule {
   [key: string]: {
@@ -20,13 +20,9 @@ const SPA_ROUTES: string[] = ['/ds/**'];
 
 export const DEFAULT_LOCALE: string = 'en';
 
-// Currently using 'prefix' instead of 'prefix_and_default' because the later have too many bugs
-// https://github.com/nuxt-modules/i18n/issues/1977
-// https://github.com/nuxt-modules/i18n/issues/2131
-// Own bug: Does not change the locale in the index guest page
-export const STRATEGY: Strategy = 'prefix';
+export const STRATEGY: Strategy = 'prefix_and_default';
 
-export const LOCALES: locale[] = [
+export const LOCALES: Locale[] = [
   {
     code: 'en',
     file: 'en.json',
@@ -39,31 +35,48 @@ export const LOCALES: locale[] = [
   }
 ];
 
-export const getLocalesCodes = (): string[] => {
-  return LOCALES.reduce((acc: string[], locale: locale) => {
+function getLocalesCodes(locales: Locale[]): string[] {
+  return locales.reduce((acc: string[], locale: Locale) => {
     return [...acc, locale.code];
   }, []);
-};
+}
 
-export const getLocatedSPARoutes = (): string[] => {
-  const codes: string[] = getLocalesCodes();
-  const routesWithPrefix: string[] = [];
-  if (STRATEGY === 'no_prefix') {
-    return SPA_ROUTES;
+function getLocatedRoutes(
+  strategy: Strategy,
+  locales: Locale[],
+  routes: string[],
+  defaultLocale: string = DEFAULT_LOCALE
+): string[] {
+  if (locales.length < 1) {
+    // eslint-disable-next-line no-console
+    console.error('The locales array must have, at least, one locale object');
+    return [];
   }
-  SPA_ROUTES.forEach((route) => {
+  const codes: string[] = getLocalesCodes(locales);
+  const routesWithPrefix: string[] = [];
+  if (!codes.includes(defaultLocale)) {
+    // eslint-disable-next-line no-console
+    console.error(
+      'The selected default locale does not exist inside the provided locales array'
+    );
+    defaultLocale = locales[0].code;
+  }
+  if (strategy === 'no_prefix') {
+    return routes;
+  }
+  routes.forEach((route) => {
     for (const code of codes) {
-      if (code === DEFAULT_LOCALE && STRATEGY === 'prefix_except_default') {
+      if (code === DEFAULT_LOCALE && strategy === 'prefix_except_default') {
         continue;
       }
       routesWithPrefix.push(`/${code}${route}`);
     }
   });
-  return [...SPA_ROUTES, ...routesWithPrefix];
-};
+  return [...routes, ...routesWithPrefix];
+}
 
 export const getLocatedRouteRules = (): RouteRule => {
-  const routes = getLocatedSPARoutes();
+  const routes = getLocatedRoutes(STRATEGY, LOCALES, SPA_ROUTES);
   const full: RouteRule = {};
   routes.forEach((route: string) => {
     full[route] = { ssr: false };
