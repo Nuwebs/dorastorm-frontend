@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { ToastMessageOptions } from 'primevue/toast';
+import type { ToastMessageOptions } from 'primevue/toast';
 
 type ToastFunction = (payload: ToastMessageOptions) => void;
 type TFunction = (key: string | number) => string;

@@ -1,8 +1,9 @@
-import { UseFetchOptions, navigateTo, useRuntimeConfig } from 'nuxt/app';
+import type { UseFetchOptions } from 'nuxt/app';
+import { navigateTo, useRuntimeConfig } from 'nuxt/app';
 import { FetchError } from 'ofetch/node';
 import { useFetch, useNuxtApp } from '#imports';
 import useAuthStore from '~/stores/authStore';
-import { ApiFetch } from '~/types';
+import type { ApiFetch } from '~/types';
 import { logout } from '~/services/auth';
 
 const generateOptions = <ResponseT>(

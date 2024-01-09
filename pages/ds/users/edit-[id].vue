@@ -48,7 +48,7 @@ import Button from 'primevue/button';
 import Divider from 'primevue/divider';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
-import { DsValidationErrorBag, Role, User } from '~/types/dorastorm';
+import type { DsValidationErrorBag, Role, User } from '~/types/dorastorm';
 import {
   definePageMeta,
   useCachedPermissions,

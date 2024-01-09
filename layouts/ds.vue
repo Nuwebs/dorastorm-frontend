@@ -23,7 +23,7 @@ import { ref, computed, watch } from 'vue';
 import OverlaySidebar from 'primevue/sidebar';
 import PanelMenu from 'primevue/panelmenu';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import { useLocalePath, useRouter } from '#imports';
 import { sidebarMenuItems, commonMenuOptions } from '~/services/menus';
 import useWindowWidth from '~/composables/useWindowWidth';

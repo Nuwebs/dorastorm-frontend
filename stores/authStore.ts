@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { User } from '~/types/dorastorm';
+import type { User } from '~/types/dorastorm';
 import Permission from '~/utils/permissions';
 import { getUserInfo } from '~/services/auth';
 

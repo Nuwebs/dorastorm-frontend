@@ -46,7 +46,7 @@ import { object, string, number, ref as yupRef } from 'yup';
 import Button from 'primevue/button';
 import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 import FormText from '~/components/form/FormText.vue';
-import { DsValidationErrorBag, Role } from '~/types/dorastorm';
+import type { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
 import useAPIFetch from '~/composables/useAPIFetch';

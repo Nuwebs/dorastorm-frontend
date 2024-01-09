@@ -1,12 +1,12 @@
-import { MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
 import useSidebar from './sidebar';
 import useCommonOptions from './commonOptions';
 import useGuestOptions from './guestOptions';
 import useGuestNavbar from './guestNavbar';
 import useAuthStore from '~/stores/authStore';
-import { DsMenuItem } from '~/types/dorastorm';
+import type { DsMenuItem } from '~/types/dorastorm';
 import Permission from '~/utils/permissions';
 
 const authStore = useAuthStore();

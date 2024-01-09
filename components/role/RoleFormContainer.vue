@@ -45,7 +45,7 @@ import FormText from '../form/FormText.vue';
 import FormTextArea from '../form/FormTextArea.vue';
 import RoleFormPermissions from './RoleFormPermissions.vue';
 import RoleFormHierarchy from './RoleFormHierarchy.vue';
-import { Role, NewRole } from '~/types/dorastorm';
+import type { Role, NewRole } from '~/types/dorastorm';
 import { useI18n } from '#imports';
 
 interface Props {

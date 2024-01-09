@@ -1,6 +1,7 @@
-import { computed, ComputedRef } from 'vue';
+import { computed } from 'vue';
+import type { ComputedRef } from 'vue';
 import { useLocalePath, useI18n } from '#imports';
-import { DsMenuItem } from '~/types/dorastorm';
+import type { DsMenuItem } from '~/types/dorastorm';
 
 const useGuestNavbar = (): ComputedRef<DsMenuItem[]> => {
   const lp = useLocalePath();

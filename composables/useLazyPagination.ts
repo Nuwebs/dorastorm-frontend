@@ -1,7 +1,8 @@
-import { ref, Ref } from 'vue';
-import { UseFetchOptions } from 'nuxt/app';
+import type { Ref } from 'vue';
+import type { UseFetchOptions } from 'nuxt/app';
+import { ref } from 'vue';
 import useAPIFetch from './useAPIFetch';
-import { PaginationWrapper } from '~/types/dorastorm';
+import type { PaginationWrapper } from '~/types/dorastorm';
 
 // WIP Composable. It still needs the sort and filtering capabilities.
 const useLazyPagination = <DataT>(

@@ -18,7 +18,7 @@ import {
 } from '#imports';
 import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
-import { DsValidationErrorBag, NewRole } from '~/types/dorastorm';
+import type { DsValidationErrorBag, NewRole } from '~/types/dorastorm';
 
 definePageMeta({
   middleware: ['auth-guard'],

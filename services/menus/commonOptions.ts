@@ -1,4 +1,5 @@
-import { computed, ComputedRef } from 'vue';
+import { computed } from 'vue';
+import type { ComputedRef } from 'vue';
 import { logout } from '../auth';
 import {
   navigateTo,
@@ -6,7 +7,7 @@ import {
   useMenuLocalesSwitch,
   useI18n
 } from '#imports';
-import { DsMenuItem } from '~/types/dorastorm';
+import type { DsMenuItem } from '~/types/dorastorm';
 import useAuthStore from '~/stores/authStore';
 
 const useCommonOptions = (): ComputedRef<DsMenuItem[]> => {

@@ -46,7 +46,7 @@ import { object, string } from 'yup';
 import Divider from 'primevue/divider';
 import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
-import { DsLoginCredentials } from '~/types/dorastorm';
+import type { DsLoginCredentials } from '~/types/dorastorm';
 import FormText from '~/components/form/FormText.vue';
 
 definePageMeta({

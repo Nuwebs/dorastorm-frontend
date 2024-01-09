@@ -1,11 +1,12 @@
-import { computed, ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
+import { computed } from 'vue';
 import {
   navigateTo,
   useMenuLocalesSwitch,
   useI18n,
   useNuxtApp
 } from '#imports';
-import { DsMenuItem } from '~/types/dorastorm';
+import type { DsMenuItem } from '~/types/dorastorm';
 
 const useGuestOptions = (): ComputedRef<DsMenuItem[]> => {
   const { t } = useI18n();

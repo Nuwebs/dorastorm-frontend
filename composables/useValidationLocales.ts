@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/named
-import { setLocale, LocaleObject, defaultLocale } from 'yup';
+import { setLocale, defaultLocale } from 'yup';
+import type { LocaleObject } from 'yup';
 // Lang modules. These can't be async imported, so use it carefully.
 import { es } from 'yup-locales';
 

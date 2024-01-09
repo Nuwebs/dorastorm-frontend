@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import useRelativeTime from '~/composables/useRelativeTime';
-import { User } from '~/types/dorastorm';
+import type { User } from '~/types/dorastorm';
 
 interface Props {
   user: User;

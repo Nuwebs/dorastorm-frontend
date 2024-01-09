@@ -1,9 +1,9 @@
 import { useRuntimeConfig } from 'nuxt/app';
 import useAuthStore from '~/stores/authStore';
-import { DsLoginCredentials, User } from '~/types/dorastorm';
+import type { DsLoginCredentials, User } from '~/types/dorastorm';
 import ExpiredTokenException from '~/utils/exceptions/ExpiredTokenException';
 import InvalidTokenException from '~/utils/exceptions/InvalidTokenException';
-import { ErrorBag, JWTResponse } from '~/types';
+import type { ErrorBag, JWTResponse } from '~/types';
 import useAPIFetch from '~/composables/useAPIFetch';
 
 const saveToken = (token: string): void => {

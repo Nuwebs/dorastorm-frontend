@@ -1,4 +1,5 @@
-import { computed, ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
+import { computed } from 'vue';
 import useAuthStore from '~/stores/authStore';
 import Permission from '~/utils/permissions';
 

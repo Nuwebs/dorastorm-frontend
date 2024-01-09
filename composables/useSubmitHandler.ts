@@ -2,7 +2,7 @@ import { useToast } from 'primevue/usetoast';
 import { FetchError } from 'ofetch';
 import useAPIFetch from './useAPIFetch';
 import useGeneralErrorToast from './useGeneralErrorToast';
-import { ApiFetch } from '~/types';
+import type { ApiFetch } from '~/types';
 
 const defaultErrorHandler = (): void => {
   const toast = useToast();

@@ -5,7 +5,7 @@ import {
   useNuxtApp
 } from '#imports';
 import useAuthStore from '~/stores/authStore';
-import { DsRouteMeta } from '~/types/dorastorm';
+import type { DsRouteMeta } from '~/types/dorastorm';
 export default defineNuxtRouteMiddleware((to: DsRouteMeta, _: DsRouteMeta) => {
   const authStore = useAuthStore();
   const lp = useNuxtApp().$localePath;

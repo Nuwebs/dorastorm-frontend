@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { Quotation } from '~/types/dorastorm';
+import type { Quotation } from '~/types/dorastorm';
 
 interface Props {
   quotation: Quotation;

@@ -37,7 +37,7 @@ import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import TheLoadingSpinner from '../TheLoadingSpinner.vue';
 import { useAPIFetch, useGeneralErrorToast, useI18n } from '#imports';
-import { Role } from '~/types/dorastorm';
+import type { Role } from '~/types/dorastorm';
 import useAuthStore from '~/stores/authStore';
 
 interface Props {

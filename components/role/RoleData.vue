@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { Role, RolePermissionGroup } from '~/types/dorastorm';
+import type { Role, RolePermissionGroup } from '~/types/dorastorm';
 import { getPermissionsGroups } from '~/utils/permissions';
 
 interface Props {

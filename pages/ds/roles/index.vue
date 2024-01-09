@@ -70,16 +70,18 @@
 </template>
 
 <script setup lang="ts">
+import type { Ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref, Ref } from 'vue';
-import DataTable, { DataTablePageEvent } from 'primevue/datatable';
+import { onMounted, ref } from 'vue';
+import DataTable from 'primevue/datatable';
+import type { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Permission from '~/utils/permissions';
 import RoleData from '~/components/role/RoleData.vue';
-import { DataTableFilter, Role } from '~/types/dorastorm';
+import type { DataTableFilter, Role } from '~/types/dorastorm';
 import useLazyPagination from '~/composables/useLazyPagination';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import { definePageMeta, use403Toast, useGeneralErrorToast } from '#imports';

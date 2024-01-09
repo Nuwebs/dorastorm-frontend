@@ -1,5 +1,5 @@
 import { navigateTo, useNuxtApp, useValidationLocales } from '#imports';
-import { DsMenuItem } from '~/types/dorastorm';
+import type { DsMenuItem } from '~/types/dorastorm';
 import { LOCALES } from '~/services/i18n';
 
 const useMenuLocalesSwitch = () => {

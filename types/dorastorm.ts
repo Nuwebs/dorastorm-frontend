@@ -1,6 +1,6 @@
-import { FilterMatchModeOptions } from 'primevue/api';
-import { MenuItem } from 'primevue/menuitem';
-import { RouteLocationNormalized } from 'vue-router';
+import type { FilterMatchModeOptions } from 'primevue/api';
+import type { MenuItem } from 'primevue/menuitem';
+import type { RouteLocationNormalized } from 'vue-router';
 import Permission from '~/utils/permissions';
 
 export interface NewRole {

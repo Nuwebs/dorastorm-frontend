@@ -1,4 +1,4 @@
-import { RolePermissionGroup } from '~/types/dorastorm';
+import type { RolePermissionGroup } from '~/types/dorastorm';
 
 enum Permission {
   USERS_CREATE = 'users-create',

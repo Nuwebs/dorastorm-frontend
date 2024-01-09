@@ -71,15 +71,17 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTablePageEvent } from 'primevue/datatable';
+import type { Ref } from 'vue';
+import DataTable from 'primevue/datatable';
+import type { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { useToast } from 'primevue/usetoast';
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { definePageMeta, onMounted } from '#imports';
-import { DataTableFilter, User } from '~/types/dorastorm';
+import type { DataTableFilter, User } from '~/types/dorastorm';
 import use403Toast from '~/composables/use403Toast';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 

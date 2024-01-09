@@ -37,7 +37,7 @@ import { ref, watch, computed } from 'vue';
 import { useField } from 'vee-validate';
 import FormCheckboxValue from '../form/FormCheckboxValue.vue';
 import useAuthStore from '~/stores/authStore';
-import { RolePermissionGroup } from '~/types/dorastorm';
+import type { RolePermissionGroup } from '~/types/dorastorm';
 import { getPermissionsGroups } from '~/utils/permissions';
 
 interface Props {

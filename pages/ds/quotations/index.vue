@@ -70,14 +70,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, Ref } from 'vue';
-import DataTable, { DataTablePageEvent } from 'primevue/datatable';
+import type { Ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import DataTable from 'primevue/datatable';
+import type { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Permission from '~/utils/permissions';
-import { DataTableFilter, Quotation } from '~/types/dorastorm';
+import type { DataTableFilter, Quotation } from '~/types/dorastorm';
 import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
 
 import useLazyPagination from '~/composables/useLazyPagination';

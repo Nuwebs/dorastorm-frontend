@@ -22,7 +22,7 @@ import {
 } from '#imports';
 import Permission from '~/utils/permissions';
 import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
-import { DsValidationErrorBag, Role } from '~/types/dorastorm';
+import type { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
 
