@@ -1,14 +1,3 @@
-<template>
-  <TheLoadingSpinner v-if="loading" />
-  <TheDS404 v-else-if="is404" />
-  <section v-if="!loading && role !== null" class="container">
-    <h3 class="mb-2 mt-0">
-      {{ $t('modules.roles.update') }}
-    </h3>
-    <RoleFormContainer v-model="role" updating :submit-handler="submit" />
-  </section>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
@@ -82,3 +71,13 @@ const submit = async () =>
     }
   );
 </script>
+<template>
+  <TheLoadingSpinner v-if="loading" />
+  <TheDS404 v-else-if="is404" />
+  <section v-if="!loading && role !== null" class="container">
+    <h3 class="mb-2 mt-0">
+      {{ $t('modules.roles.update') }}
+    </h3>
+    <RoleFormContainer v-model="role" updating :submit-handler="submit" />
+  </section>
+</template>

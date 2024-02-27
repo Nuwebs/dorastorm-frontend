@@ -1,75 +1,3 @@
-<template>
-  <section class="container">
-    <h1 class="mt-0">
-      {{ $t('modules.users.list') }}
-    </h1>
-    <DataTable
-      v-model:expanded-rows="expanded"
-      v-model:filters="filters"
-      :loading="loading"
-      lazy
-      :value="paginationData"
-      paginator
-      :total-records="totalResults"
-      :rows="resultsPerPage"
-      data-key="id"
-      @page="(e: DataTablePageEvent) => toPage(e.page + 1)"
-    >
-      <template #header>
-        <div class="flex justify-content-between">
-          <Button
-            icon="pi pi-refresh"
-            class="mr-2"
-            @click="search(currentPage)"
-          />
-          <div>
-            <div class="flex alig-items-center">
-              <InputText
-                v-model="filters['global'].value"
-                class="max-w-10rem md:max-w-full"
-                @keyup.enter="search()"
-              />
-              <Button icon="pi pi-search" @click="search()" />
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #expansion="slotProps">
-        <UserDataRow :user="slotProps.data" />
-      </template>
-      <Column expander />
-      <Column field="id" :header="$t('general.id')" />
-      <Column field="name" :header="$t('modules.users.name')" />
-      <Column field="email" :header="$t('forms.email')" />
-      <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
-        <template #body="row">
-          <ActionButtonDelete
-            v-if="
-              userCan(Permission.USERS_DELETE) &&
-              roleCan(row.data.role.hierarchy, true)
-            "
-            endpoint="/users/{id}"
-            :model-id="row.data.id"
-            :cd-messages="{
-              header: $t('modules.users.delete'),
-              message: $t('modules.users.delete_warning')
-            }"
-            @deleted="deleted"
-          />
-          <ActionButtonUpdate
-            v-if="
-              userCan(Permission.USERS_UPDATE) &&
-              roleCan(row.data.role.hierarchy, true)
-            "
-            route="/ds/users/edit-{id}"
-            :model-id="row.data.id"
-          />
-        </template>
-      </Column>
-    </DataTable>
-  </section>
-</template>
-
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import DataTable from 'primevue/datatable';
@@ -142,3 +70,74 @@ onMounted(async () => {
   await loadData(1);
 });
 </script>
+<template>
+  <section class="container">
+    <h1 class="mt-0">
+      {{ $t('modules.users.list') }}
+    </h1>
+    <DataTable
+      v-model:expanded-rows="expanded"
+      v-model:filters="filters"
+      :loading="loading"
+      lazy
+      :value="paginationData"
+      paginator
+      :total-records="totalResults"
+      :rows="resultsPerPage"
+      data-key="id"
+      @page="(e: DataTablePageEvent) => toPage(e.page + 1)"
+    >
+      <template #header>
+        <div class="flex justify-content-between">
+          <Button
+            icon="pi pi-refresh"
+            class="mr-2"
+            @click="search(currentPage)"
+          />
+          <div>
+            <div class="flex alig-items-center">
+              <InputText
+                v-model="filters['global'].value"
+                class="max-w-10rem md:max-w-full"
+                @keyup.enter="search()"
+              />
+              <Button icon="pi pi-search" @click="search()" />
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #expansion="slotProps">
+        <UserDataRow :user="slotProps.data" />
+      </template>
+      <Column expander />
+      <Column field="id" :header="$t('general.id')" />
+      <Column field="name" :header="$t('modules.users.name')" />
+      <Column field="email" :header="$t('forms.email')" />
+      <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
+        <template #body="row">
+          <ActionButtonDelete
+            v-if="
+              userCan(Permission.USERS_DELETE) &&
+              roleCan(row.data.role.hierarchy, true)
+            "
+            endpoint="/users/{id}"
+            :model-id="row.data.id"
+            :cd-messages="{
+              header: $t('modules.users.delete'),
+              message: $t('modules.users.delete_warning')
+            }"
+            @deleted="deleted"
+          />
+          <ActionButtonUpdate
+            v-if="
+              userCan(Permission.USERS_UPDATE) &&
+              roleCan(row.data.role.hierarchy, true)
+            "
+            route="/ds/users/edit-{id}"
+            :model-id="row.data.id"
+          />
+        </template>
+      </Column>
+    </DataTable>
+  </section>
+</template>

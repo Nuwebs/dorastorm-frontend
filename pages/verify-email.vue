@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { navigateTo, useLocalePath, useRoute } from '#imports';
+import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
+
+const route = useRoute();
+const lp = useLocalePath();
+const loading = ref<boolean>(true);
+const worked = ref<boolean>(false);
+
+onMounted(async () => {
+  if (!(route.query && route.query.api)) {
+    await navigateTo(lp('/login'));
+  }
+  loading.value = true;
+  try {
+    await $fetch(route.query.api as string);
+    worked.value = true;
+  } catch {
+    worked.value = false;
+  }
+  loading.value = false;
+});
+</script>
 <template>
   <TheLoadingSpinner v-if="loading" />
   <section v-if="!loading" class="container">
@@ -30,28 +54,3 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { navigateTo, useLocalePath, useRoute } from '#imports';
-import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
-
-const route = useRoute();
-const lp = useLocalePath();
-const loading = ref<boolean>(true);
-const worked = ref<boolean>(false);
-
-onMounted(async () => {
-  if (!(route.query && route.query.api)) {
-    await navigateTo(lp('/login'));
-  }
-  loading.value = true;
-  try {
-    await $fetch(route.query.api as string);
-    worked.value = true;
-  } catch {
-    worked.value = false;
-  }
-  loading.value = false;
-});
-</script>

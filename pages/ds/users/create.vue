@@ -1,43 +1,3 @@
-<template>
-  <section class="container">
-    <h1 class="mt-0">
-      {{ $t('modules.users.create') }}
-    </h1>
-    <form @submit="submit">
-      <FormText
-        name="name"
-        type="text"
-        :label="$t('modules.users.name')"
-        placeholder="James Douglas"
-      />
-      <FormText
-        name="email"
-        type="email"
-        :label="$t('forms.email')"
-        placeholder="example@example.com"
-      />
-      <FormText name="password" type="password" :label="$t('forms.password')" />
-      <FormText
-        name="password_confirmation"
-        type="password"
-        :label="$t('forms.confirm_password')"
-      />
-      <FormSelect
-        name="role_id"
-        :label="$t('modules.users.role_select')"
-        :options="availableRoles"
-        option-label="name"
-        option-value="id"
-        :loading="loading"
-        :placeholder="$t('modules.users.role_default')"
-      />
-      <Button :loading="isSubmitting" type="submit">
-        {{ $t('forms.submit') }}
-      </Button>
-    </form>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
@@ -131,3 +91,42 @@ const submit = handleSubmit(async (payload) => {
   );
 });
 </script>
+<template>
+  <section class="container">
+    <h1 class="mt-0">
+      {{ $t('modules.users.create') }}
+    </h1>
+    <form @submit="submit">
+      <FormText
+        name="name"
+        type="text"
+        :label="$t('modules.users.name')"
+        placeholder="James Douglas"
+      />
+      <FormText
+        name="email"
+        type="email"
+        :label="$t('forms.email')"
+        placeholder="example@example.com"
+      />
+      <FormText name="password" type="password" :label="$t('forms.password')" />
+      <FormText
+        name="password_confirmation"
+        type="password"
+        :label="$t('forms.confirm_password')"
+      />
+      <FormSelect
+        name="role_id"
+        :label="$t('modules.users.role_select')"
+        :options="availableRoles"
+        option-label="name"
+        option-value="id"
+        :loading="loading"
+        :placeholder="$t('modules.users.role_default')"
+      />
+      <Button :loading="isSubmitting" type="submit">
+        {{ $t('forms.submit') }}
+      </Button>
+    </form>
+  </section>
+</template>

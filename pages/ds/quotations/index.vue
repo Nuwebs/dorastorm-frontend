@@ -1,3 +1,56 @@
+<script setup lang="ts">
+import type { Ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import DataTable from 'primevue/datatable';
+import type { DataTablePageEvent } from 'primevue/datatable';
+import Column from 'primevue/column';
+import { FilterMatchMode } from 'primevue/api';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Permission from '~/utils/permissions';
+import type { DataTableFilter, Quotation } from '~/types/dorastorm';
+import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
+
+import useLazyPagination from '~/composables/useLazyPagination';
+import useCachedPermissions from '~/composables/useCachedPermissions';
+import { definePageMeta, useDateFormat } from '#imports';
+
+definePageMeta({
+  middleware: ['auth-guard'],
+  permissions: [Permission.QUOTATIONS_READ]
+});
+
+const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
+const {
+  paginationData,
+  loading,
+  totalResults,
+  toPage,
+  resultsPerPage,
+  currentPage
+} = useLazyPagination<Quotation>('/quotations');
+
+const expanded = ref<Quotation[]>([]);
+const filters = ref({
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
+}) satisfies Ref<DataTableFilter<Quotation>>;
+
+async function deleted(): Promise<void> {
+  let page = currentPage.value;
+  if (paginationData.value.length - 1 <= 0) {
+    page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
+  }
+  await toPage(page);
+}
+
+async function search(page: number = 1) {
+  await toPage(page, `filter[global]=${filters.value.global.value}`);
+}
+
+onMounted(async () => {
+  await toPage(1);
+});
+</script>
 <template>
   <section class="container">
     <h1 class="mt-0">
@@ -68,57 +121,3 @@
     </DataTable>
   </section>
 </template>
-
-<script setup lang="ts">
-import type { Ref } from 'vue';
-import { onMounted, ref } from 'vue';
-import DataTable from 'primevue/datatable';
-import type { DataTablePageEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import { FilterMatchMode } from 'primevue/api';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Permission from '~/utils/permissions';
-import type { DataTableFilter, Quotation } from '~/types/dorastorm';
-import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
-
-import useLazyPagination from '~/composables/useLazyPagination';
-import useCachedPermissions from '~/composables/useCachedPermissions';
-import { definePageMeta, useDateFormat } from '#imports';
-
-definePageMeta({
-  middleware: ['auth-guard'],
-  permissions: [Permission.QUOTATIONS_READ]
-});
-
-const { userCan } = useCachedPermissions([Permission.QUOTATIONS_DELETE]);
-const {
-  paginationData,
-  loading,
-  totalResults,
-  toPage,
-  resultsPerPage,
-  currentPage
-} = useLazyPagination<Quotation>('/quotations');
-
-const expanded = ref<Quotation[]>([]);
-const filters = ref({
-  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-}) satisfies Ref<DataTableFilter<Quotation>>;
-
-async function deleted(): Promise<void> {
-  let page = currentPage.value;
-  if (paginationData.value.length - 1 <= 0) {
-    page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
-  }
-  await toPage(page);
-}
-
-async function search(page: number = 1) {
-  await toPage(page, `filter[global]=${filters.value.global.value}`);
-}
-
-onMounted(async () => {
-  await toPage(1);
-});
-</script>

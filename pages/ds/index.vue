@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import Card from 'primevue/card';
+import { definePageMeta } from '#imports';
+import UserDataRow from '~/components/user/UserDataRow.vue';
+import useAuthStore from '~/stores/authStore';
+
+definePageMeta({
+  middleware: ['auth-guard']
+});
+
+const authStore = useAuthStore();
+</script>
 <template>
   <section class="container">
     <Card v-if="authStore.user" class="shadow-1 mb-3">
@@ -16,16 +28,3 @@
     </Card>
   </section>
 </template>
-
-<script setup lang="ts">
-import Card from 'primevue/card';
-import { definePageMeta } from '#imports';
-import UserDataRow from '~/components/user/UserDataRow.vue';
-import useAuthStore from '~/stores/authStore';
-
-definePageMeta({
-  middleware: ['auth-guard']
-});
-
-const authStore = useAuthStore();
-</script>

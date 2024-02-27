@@ -1,23 +1,3 @@
-<template>
-  <TheDSNavbar
-    class="ds-navbar"
-    :full="shouldBeSidebar"
-    @sidebar-button-click="sidebarVisible = !sidebarVisible"
-  />
-  <main class="p-3 min-h-fullscreen">
-    <aside v-if="shouldBeSidebar" :class="sidebarClasses">
-      <PanelMenu :model="sidebarMenuItems()" />
-    </aside>
-    <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
-      <PanelMenu :model="overlayMenu" />
-    </OverlaySidebar>
-    <article :class="contentClasses">
-      <slot />
-    </article>
-  </main>
-  <ConfirmDialog />
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import OverlaySidebar from 'primevue/sidebar';
@@ -83,6 +63,26 @@ watch(currentRoute, () => {
   }
 });
 </script>
+<template>
+  <TheDSNavbar
+    class="ds-navbar"
+    :full="shouldBeSidebar"
+    @sidebar-button-click="sidebarVisible = !sidebarVisible"
+  />
+  <main class="p-3 min-h-fullscreen">
+    <aside v-if="shouldBeSidebar" :class="sidebarClasses">
+      <PanelMenu :model="sidebarMenuItems()" />
+    </aside>
+    <OverlaySidebar v-if="!shouldBeSidebar" v-model:visible="sidebarVisible">
+      <PanelMenu :model="overlayMenu" />
+    </OverlaySidebar>
+    <article :class="contentClasses">
+      <slot />
+    </article>
+  </main>
+  <ConfirmDialog />
+</template>
+
 <style scoped>
 .ds-navbar {
   position: sticky;

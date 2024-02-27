@@ -1,38 +1,3 @@
-<template>
-  <section class="grid-nogutter flex flex-column justify-content-center py-8">
-    <div class="col-12 md:col-4 md:col-offset-4">
-      <Card>
-        <template #title>
-          {{ $t('forms.reset_password') }}
-        </template>
-        <template #content>
-          <form @submit="submit">
-            <FormText
-              v-model="data.password"
-              name="password"
-              type="password"
-              :label="$t('forms.password')"
-            />
-            <FormText
-              v-model="data.password_confirmation"
-              name="password_confirmation"
-              type="password"
-              :label="$t('forms.confirm_password')"
-            />
-            <Button
-              type="submit"
-              class="w-full justify-content-center"
-              :loading="isSubmitting"
-            >
-              {{ $t('forms.submit') }}
-            </Button>
-          </form>
-        </template>
-      </Card>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { navigateTo, useRoute } from 'nuxt/app';
 import { ref } from 'vue';
@@ -111,3 +76,37 @@ const submit = handleSubmit(() =>
   )
 );
 </script>
+<template>
+  <section class="grid-nogutter flex flex-column justify-content-center py-8">
+    <div class="col-12 md:col-4 md:col-offset-4">
+      <Card>
+        <template #title>
+          {{ $t('forms.reset_password') }}
+        </template>
+        <template #content>
+          <form @submit="submit">
+            <FormText
+              v-model="data.password"
+              name="password"
+              type="password"
+              :label="$t('forms.password')"
+            />
+            <FormText
+              v-model="data.password_confirmation"
+              name="password_confirmation"
+              type="password"
+              :label="$t('forms.confirm_password')"
+            />
+            <Button
+              type="submit"
+              class="w-full justify-content-center"
+              :loading="isSubmitting"
+            >
+              {{ $t('forms.submit') }}
+            </Button>
+          </form>
+        </template>
+      </Card>
+    </div>
+  </section>
+</template>

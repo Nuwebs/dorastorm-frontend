@@ -1,12 +1,3 @@
-<template>
-  <section class="container">
-    <h3 class="mb-2 mt-0">
-      {{ $t('modules.roles.create') }}
-    </h3>
-    <RoleFormContainer v-model="newRole" :submit-handler="handler" />
-  </section>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
@@ -65,3 +56,11 @@ const handler = async () =>
     }
   );
 </script>
+<template>
+  <section class="container">
+    <h3 class="mb-2 mt-0">
+      {{ $t('modules.roles.create') }}
+    </h3>
+    <RoleFormContainer v-model="newRole" :submit-handler="handler" />
+  </section>
+</template>

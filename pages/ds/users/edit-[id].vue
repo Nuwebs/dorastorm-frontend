@@ -1,44 +1,3 @@
-<template>
-  <TheLoadingSpinner v-if="loading" />
-  <TheDS404 v-else-if="is404" :subtitle="$t('error.404.specific.user')" />
-  <section v-else class="container">
-    <h1 class="mt-0">
-      {{ $t('modules.users.user_info') }}
-    </h1>
-    <form class="mb-3" @submit="submit">
-      <FormText
-        v-model="data.name"
-        name="name"
-        type="text"
-        :label="$t('modules.users.name')"
-        placeholder="James Douglas"
-      />
-      <FormText
-        v-model="data.email"
-        name="email"
-        type="email"
-        :label="$t('forms.email')"
-        placeholder="example@example.com"
-      />
-      <FormSelect
-        v-if="shouldIncludeRole"
-        v-model="data.role_id"
-        name="role_id"
-        :label="$t('modules.users.role_select')"
-        :options="availableRoles"
-        option-label="name"
-        option-value="id"
-        :placeholder="$t('modules.users.role_default')"
-      />
-      <Button :loading="isSubmitting" type="submit">
-        {{ $t('forms.submit') }}
-      </Button>
-    </form>
-    <Divider />
-    <UserChangePassword :user-id="Number(route.params.id)" />
-  </section>
-</template>
-
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
@@ -178,3 +137,43 @@ const submit = handleSubmit(
     )
 );
 </script>
+<template>
+  <TheLoadingSpinner v-if="loading" />
+  <TheDS404 v-else-if="is404" :subtitle="$t('error.404.specific.user')" />
+  <section v-else class="container">
+    <h1 class="mt-0">
+      {{ $t('modules.users.user_info') }}
+    </h1>
+    <form class="mb-3" @submit="submit">
+      <FormText
+        v-model="data.name"
+        name="name"
+        type="text"
+        :label="$t('modules.users.name')"
+        placeholder="James Douglas"
+      />
+      <FormText
+        v-model="data.email"
+        name="email"
+        type="email"
+        :label="$t('forms.email')"
+        placeholder="example@example.com"
+      />
+      <FormSelect
+        v-if="shouldIncludeRole"
+        v-model="data.role_id"
+        name="role_id"
+        :label="$t('modules.users.role_select')"
+        :options="availableRoles"
+        option-label="name"
+        option-value="id"
+        :placeholder="$t('modules.users.role_default')"
+      />
+      <Button :loading="isSubmitting" type="submit">
+        {{ $t('forms.submit') }}
+      </Button>
+    </form>
+    <Divider />
+    <UserChangePassword :user-id="Number(route.params.id)" />
+  </section>
+</template>

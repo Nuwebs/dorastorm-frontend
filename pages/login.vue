@@ -1,3 +1,41 @@
+<script setup lang="ts">
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import { useForm } from 'vee-validate';
+import { object, string } from 'yup';
+import Divider from 'primevue/divider';
+import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
+import { login } from '~/services/auth';
+import type { DsLoginCredentials } from '~/types/dorastorm';
+import FormText from '~/components/form/FormText.vue';
+
+definePageMeta({
+  middleware: ['guest-guard']
+});
+const lp = useLocalePath();
+const { t } = useI18n();
+
+const validations = object({
+  email: string().required().email().label(t('forms.email')),
+  password: string().required().label(t('forms.password'))
+});
+
+const { handleSubmit, isSubmitting, setFieldError } =
+  useForm<DsLoginCredentials>({
+    validationSchema: validations
+  });
+
+const onSubmit = handleSubmit(async (payload) => {
+  const response = await login(payload);
+  if (response) {
+    if (response.statusCode === 422) {
+      return setFieldError('email', response.data.errors.email);
+    }
+    return setFieldError('password', t('error.fatal'));
+  }
+  navigateTo(lp('/ds'));
+});
+</script>
 <template>
   <section class="grid-nogutter flex flex-column justify-content-center py-8">
     <div class="col-12 md:col-4 md:col-offset-4">
@@ -37,42 +75,3 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import Card from 'primevue/card';
-import Button from 'primevue/button';
-import { useForm } from 'vee-validate';
-import { object, string } from 'yup';
-import Divider from 'primevue/divider';
-import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
-import { login } from '~/services/auth';
-import type { DsLoginCredentials } from '~/types/dorastorm';
-import FormText from '~/components/form/FormText.vue';
-
-definePageMeta({
-  middleware: ['guest-guard']
-});
-const lp = useLocalePath();
-const { t } = useI18n();
-
-const validations = object({
-  email: string().required().email().label(t('forms.email')),
-  password: string().required().label(t('forms.password'))
-});
-
-const { handleSubmit, isSubmitting, setFieldError } =
-  useForm<DsLoginCredentials>({
-    validationSchema: validations
-  });
-
-const onSubmit = handleSubmit(async (payload) => {
-  const response = await login(payload);
-  if (response) {
-    if (response.statusCode === 422) {
-      return setFieldError('email', response.data.errors.email);
-    }
-    return setFieldError('password', t('error.fatal'));
-  }
-  navigateTo(lp('/ds'));
-});
-</script>

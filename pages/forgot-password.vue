@@ -1,32 +1,3 @@
-<template>
-  <section class="grid-nogutter flex flex-column justify-content-center py-8">
-    <div class="col-12 md:col-4 md:col-offset-4">
-      <Card>
-        <template #title>
-          {{ $t('forms.forgot_password') }}
-        </template>
-        <template #content>
-          <form @submit="submit">
-            <FormText
-              v-model="data.email"
-              name="email"
-              type="email"
-              :label="$t('forms.email')"
-            />
-            <Button
-              type="submit"
-              class="w-full justify-content-center"
-              :loading="isSubmitting"
-            >
-              {{ $t('forms.submit') }}
-            </Button>
-          </form>
-        </template>
-      </Card>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import Card from 'primevue/card';
 import { ref } from 'vue';
@@ -82,3 +53,31 @@ const submit = handleSubmit(
     )
 );
 </script>
+<template>
+  <section class="grid-nogutter flex flex-column justify-content-center py-8">
+    <div class="col-12 md:col-4 md:col-offset-4">
+      <Card>
+        <template #title>
+          {{ $t('forms.forgot_password') }}
+        </template>
+        <template #content>
+          <form @submit="submit">
+            <FormText
+              v-model="data.email"
+              name="email"
+              type="email"
+              :label="$t('forms.email')"
+            />
+            <Button
+              type="submit"
+              class="w-full justify-content-center"
+              :loading="isSubmitting"
+            >
+              {{ $t('forms.submit') }}
+            </Button>
+          </form>
+        </template>
+      </Card>
+    </div>
+  </section>
+</template>

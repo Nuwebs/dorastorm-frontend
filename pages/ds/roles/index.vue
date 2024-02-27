@@ -1,3 +1,70 @@
+<script setup lang="ts">
+import type { Ref } from 'vue';
+import { useToast } from 'primevue/usetoast';
+import { onMounted, ref } from 'vue';
+import DataTable from 'primevue/datatable';
+import type { DataTablePageEvent } from 'primevue/datatable';
+import Column from 'primevue/column';
+import { FilterMatchMode } from 'primevue/api';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Permission from '~/utils/permissions';
+import RoleData from '~/components/role/RoleData.vue';
+import type { DataTableFilter, Role } from '~/types/dorastorm';
+import useLazyPagination from '~/composables/useLazyPagination';
+import useCachedPermissions from '~/composables/useCachedPermissions';
+import { definePageMeta, use403Toast, useGeneralErrorToast } from '#imports';
+
+definePageMeta({
+  middleware: ['auth-guard'],
+  permissions: [Permission.ROLES_READ]
+});
+
+const toast = useToast();
+const { userCan, userIsAllowed, roleCan } = useCachedPermissions([
+  Permission.ROLES_UPDATE,
+  Permission.ROLES_DELETE
+]);
+const {
+  paginationData,
+  loading,
+  totalResults,
+  toPage,
+  resultsPerPage,
+  currentPage
+} = useLazyPagination<Role>('/roles');
+
+const expanded = ref<Role[]>([]);
+const filters = ref({
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
+}) satisfies Ref<DataTableFilter<Role>>;
+
+async function loadData(page: number): Promise<void> {
+  const res = await toPage(page);
+  if (res) {
+    if (res.statusCode === 403) {
+      return toast.add(use403Toast());
+    }
+    return toast.add(useGeneralErrorToast());
+  }
+}
+
+async function deleted(): Promise<void> {
+  let page = currentPage.value;
+  if (paginationData.value.length - 1 <= 0) {
+    page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
+  }
+  await loadData(page);
+}
+
+async function search(page: number = 1) {
+  await toPage(page, `filter[global]=${filters.value.global.value}`);
+}
+
+onMounted(async () => {
+  await loadData(1);
+});
+</script>
 <template>
   <section class="container">
     <h1 class="mt-0">
@@ -68,71 +135,3 @@
     </DataTable>
   </section>
 </template>
-
-<script setup lang="ts">
-import type { Ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import { onMounted, ref } from 'vue';
-import DataTable from 'primevue/datatable';
-import type { DataTablePageEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import { FilterMatchMode } from 'primevue/api';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Permission from '~/utils/permissions';
-import RoleData from '~/components/role/RoleData.vue';
-import type { DataTableFilter, Role } from '~/types/dorastorm';
-import useLazyPagination from '~/composables/useLazyPagination';
-import useCachedPermissions from '~/composables/useCachedPermissions';
-import { definePageMeta, use403Toast, useGeneralErrorToast } from '#imports';
-
-definePageMeta({
-  middleware: ['auth-guard'],
-  permissions: [Permission.ROLES_READ]
-});
-
-const toast = useToast();
-const { userCan, userIsAllowed, roleCan } = useCachedPermissions([
-  Permission.ROLES_UPDATE,
-  Permission.ROLES_DELETE
-]);
-const {
-  paginationData,
-  loading,
-  totalResults,
-  toPage,
-  resultsPerPage,
-  currentPage
-} = useLazyPagination<Role>('/roles');
-
-const expanded = ref<Role[]>([]);
-const filters = ref({
-  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-}) satisfies Ref<DataTableFilter<Role>>;
-
-async function loadData(page: number): Promise<void> {
-  const res = await toPage(page);
-  if (res) {
-    if (res.statusCode === 403) {
-      return toast.add(use403Toast());
-    }
-    return toast.add(useGeneralErrorToast());
-  }
-}
-
-async function deleted(): Promise<void> {
-  let page = currentPage.value;
-  if (paginationData.value.length - 1 <= 0) {
-    page = currentPage.value - 1 >= 0 ? currentPage.value - 1 : 1;
-  }
-  await loadData(page);
-}
-
-async function search(page: number = 1) {
-  await toPage(page, `filter[global]=${filters.value.global.value}`);
-}
-
-onMounted(async () => {
-  await loadData(1);
-});
-</script>
