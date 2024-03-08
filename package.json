@@ -19,7 +19,7 @@
     "@types/node": "^18",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
-    "nuxt": "3.9.1",
+    "nuxt": "^3.10.3",
     "prettier": "^3.1.1"
   },
   "overrides": {
@@ -28,7 +28,6 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "@vee-validate/nuxt": "^4.8.6",
-    "@vee-validate/yup": "^4.8.6",
     "dayjs": "^1.11.7",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.34",
