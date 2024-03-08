@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import Menubar from 'primevue/menubar';
+import type { MenuItem } from 'primevue/menuitem';
+
+defineProps<{
+  content?: MenuItem[];
+}>();
+</script>
+
 <template>
   <nav class="shadow-1 navbar">
     <Menubar class="py-3 px-6 h-full surface-section" :model="content">
@@ -14,14 +23,6 @@
   </nav>
 </template>
 
-<script setup lang="ts">
-import Menubar from 'primevue/menubar';
-import type { MenuItem } from 'primevue/menuitem';
-
-defineProps<{
-  content?: MenuItem[];
-}>();
-</script>
 <style scoped>
 .p-menubar {
   border: 0;

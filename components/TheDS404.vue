@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const props = defineProps<{
+  title?: string;
+  subtitle?: string;
+}>();
+</script>
+
 <template>
   <section class="container py-8 grid grid-nogutter">
     <div class="col-4 flex justify-content-end">
@@ -13,9 +20,3 @@
     </div>
   </section>
 </template>
-<script setup lang="ts">
-const props = defineProps<{
-  title?: string;
-  subtitle?: string;
-}>();
-</script>

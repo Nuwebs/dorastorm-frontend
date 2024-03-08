@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const props = defineProps<{
+  loadingText?: string;
+}>();
+</script>
+
 <template>
   <section class="loading-container">
     <div
@@ -10,12 +16,6 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-const props = defineProps<{
-  loadingText?: string;
-}>();
-</script>
 
 <style scoped>
 .loading-container {

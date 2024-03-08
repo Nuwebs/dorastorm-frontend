@@ -1,40 +1,3 @@
-<template>
-  <section class="mt-3">
-    <Button
-      v-if="!toggle"
-      class="mb-2"
-      severity="warning"
-      @click="toggle = !toggle"
-    >
-      {{ $t('modules.users.change_password') }}
-    </Button>
-    <form v-show="toggle" @submit="submit">
-      <FormText
-        name="current_password"
-        type="password"
-        :label="$t('forms.current_password')"
-      />
-      <FormText name="password" type="password" :label="$t('forms.password')" />
-      <FormText
-        name="password_confirmation"
-        type="password"
-        :label="$t('forms.confirm_password')"
-      />
-      <Button
-        class="mr-2"
-        :loading="isSubmitting"
-        severity="secondary"
-        @click="toggle = !toggle"
-      >
-        {{ $t('general.cancel') }}
-      </Button>
-      <Button :loading="isSubmitting" type="submit">
-        {{ $t('modules.users.change_password') }}
-      </Button>
-    </form>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
@@ -106,3 +69,40 @@ const submit = handleSubmit(async (payload) => {
   resetForm();
 });
 </script>
+
+<template>
+  <section class="mt-3">
+    <Button
+      v-if="!toggle"
+      class="mb-2"
+      severity="warning"
+      @click="toggle = !toggle"
+    >
+      {{ $t('modules.users.change_password') }}
+    </Button>
+    <form v-show="toggle" @submit="submit">
+      <FormText
+        name="current_password"
+        type="password"
+        :label="$t('forms.current_password')"
+      />
+      <FormText name="password" type="password" :label="$t('forms.password')" />
+      <FormText
+        name="password_confirmation"
+        type="password"
+        :label="$t('forms.confirm_password')"
+      />
+      <Button
+        class="mr-2"
+        :loading="isSubmitting"
+        severity="secondary"
+        @click="toggle = !toggle"
+      >
+        {{ $t('general.cancel') }}
+      </Button>
+      <Button :loading="isSubmitting" type="submit">
+        {{ $t('modules.users.change_password') }}
+      </Button>
+    </form>
+  </section>
+</template>

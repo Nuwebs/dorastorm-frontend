@@ -1,37 +1,3 @@
-<template>
-  <div v-if="!loading">
-    <ul class="slist p-1 border-1 border-round">
-      <li
-        v-for="(role, index) in availableRoles"
-        :key="role.id"
-        class="p-2 m-2 text-center border-round border-1"
-        :draggable="role.id === selected"
-        :class="[
-          {
-            draggable: role.id === selected,
-            'border-dashed border-green-900':
-              dragging &&
-              role.id !== selected &&
-              role.hierarchy > userHierarchy,
-            'bg-green-100':
-              dragging && iDragging !== index && role.hierarchy > userHierarchy,
-            'bg-green-300':
-              dragging && iEnter === role.id && role.hierarchy > userHierarchy
-          }
-        ]"
-        @dragstart="dragStart(index)"
-        @dragend="dragging = false"
-        @dragenter="iEnter = role.id"
-        @dragover.prevent
-        @drop.prevent="drop(index)"
-      >
-        {{ role.id === selected ? role.name + '*' : role.name }}
-      </li>
-    </ul>
-  </div>
-  <TheLoadingSpinner v-else />
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
@@ -120,6 +86,41 @@ onMounted(async () => {
   loading.value = false;
 });
 </script>
+
+<template>
+  <div v-if="!loading">
+    <ul class="slist p-1 border-1 border-round">
+      <li
+        v-for="(role, index) in availableRoles"
+        :key="role.id"
+        class="p-2 m-2 text-center border-round border-1"
+        :draggable="role.id === selected"
+        :class="[
+          {
+            draggable: role.id === selected,
+            'border-dashed border-green-900':
+              dragging &&
+              role.id !== selected &&
+              role.hierarchy > userHierarchy,
+            'bg-green-100':
+              dragging && iDragging !== index && role.hierarchy > userHierarchy,
+            'bg-green-300':
+              dragging && iEnter === role.id && role.hierarchy > userHierarchy
+          }
+        ]"
+        @dragstart="dragStart(index)"
+        @dragend="dragging = false"
+        @dragenter="iEnter = role.id"
+        @dragover.prevent
+        @drop.prevent="drop(index)"
+      >
+        {{ role.id === selected ? role.name + '*' : role.name }}
+      </li>
+    </ul>
+  </div>
+  <TheLoadingSpinner v-else />
+</template>
+
 <style scoped>
 /* (A) LIST STYLES */
 .slist {

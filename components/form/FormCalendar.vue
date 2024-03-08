@@ -1,24 +1,3 @@
-<template>
-  <div class="mb-2">
-    <label class="block" :for="name">{{ props.label }}</label>
-    <Calendar
-      class="w-full"
-      :model-value="value"
-      :inline="props.inline"
-      :show-icon="props.showIcon"
-      :min-date="props.minDate"
-      :max-date="props.maxDate"
-      :date-format="props.dateFormat"
-      :class="{ 'p-invalid': errorMessage }"
-      :time-only="!!props.timeOnly"
-      hour-format="12"
-      @update:model-value="handler"
-      @date-select="handler"
-    />
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import Calendar from 'primevue/calendar';
 import { useField, ErrorMessage } from 'vee-validate';
@@ -59,5 +38,23 @@ function handler(nValue: undefined | null | string | Date): void {
   emit('update:modelValue', nValue);
 }
 </script>
-
-<style scoped></style>
+<template>
+  <div class="mb-2">
+    <label class="block" :for="name">{{ props.label }}</label>
+    <Calendar
+      class="w-full"
+      :model-value="value"
+      :inline="props.inline"
+      :show-icon="props.showIcon"
+      :min-date="props.minDate"
+      :max-date="props.maxDate"
+      :date-format="props.dateFormat"
+      :class="{ 'p-invalid': errorMessage }"
+      :time-only="!!props.timeOnly"
+      hour-format="12"
+      @update:model-value="handler"
+      @date-select="handler"
+    />
+    <ErrorMessage :name="name" class="p-error" />
+  </div>
+</template>

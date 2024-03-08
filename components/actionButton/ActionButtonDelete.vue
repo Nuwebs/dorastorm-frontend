@@ -1,15 +1,3 @@
-<template>
-  <Button
-    icon="pi pi-trash"
-    text
-    rounded
-    aria-label="Delete"
-    severity="danger"
-    :loading="loading"
-    @click="confirmDialog"
-  />
-</template>
-
 <script setup lang="ts">
 import Button from 'primevue/button';
 import { ref } from 'vue';
@@ -103,3 +91,14 @@ async function deleteModel(): Promise<void> {
   }
 }
 </script>
+<template>
+  <Button
+    icon="pi pi-trash"
+    text
+    rounded
+    aria-label="Delete"
+    severity="danger"
+    :loading="loading"
+    @click="confirmDialog"
+  />
+</template>

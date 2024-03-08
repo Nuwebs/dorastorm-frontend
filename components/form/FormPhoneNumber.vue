@@ -1,20 +1,3 @@
-<template>
-  <div class="mb-2">
-    <label :for="name">{{ label }}</label>
-    <div class="p-inputgroup flex-1">
-      <span v-if="icon" class="p-inputgroup-addon"><i :class="icon" /></span>
-      <InputMask
-        v-model="value"
-        :name="name"
-        :mask="format"
-        :placeholder="placeholder"
-        :class="{ 'p-invalid': errorMessage }"
-      />
-    </div>
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { toRef } from 'vue';
 import { useField } from 'vee-validate';
@@ -41,3 +24,19 @@ const { errorMessage, value } = useField<string>(
   }
 );
 </script>
+<template>
+  <div class="mb-2">
+    <label :for="name">{{ label }}</label>
+    <div class="p-inputgroup flex-1">
+      <span v-if="icon" class="p-inputgroup-addon"><i :class="icon" /></span>
+      <InputMask
+        v-model="value"
+        :name="name"
+        :mask="format"
+        :placeholder="placeholder"
+        :class="{ 'p-invalid': errorMessage }"
+      />
+    </div>
+    <ErrorMessage :name="name" class="p-error" />
+  </div>
+</template>

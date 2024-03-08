@@ -1,7 +1,3 @@
-<template>
-  <Button icon="pi pi-pencil" text rounded aria-label="Update" @click="push" />
-</template>
-
 <script setup lang="ts">
 import Button from 'primevue/button';
 import { useRouter, useLocalePath } from '#imports';
@@ -31,3 +27,6 @@ function push(): void {
   router.push(lp(r));
 }
 </script>
+<template>
+  <Button icon="pi pi-pencil" text rounded aria-label="Update" @click="push" />
+</template>

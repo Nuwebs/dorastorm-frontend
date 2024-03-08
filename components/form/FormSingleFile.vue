@@ -1,17 +1,3 @@
-<template>
-  <div>
-    <label :for="name" class="block mb-1">{{ label }}</label>
-    <input
-      :id="name"
-      type="file"
-      :name="name"
-      :accept="accept"
-      @change="handleChange"
-    />
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useField } from 'vee-validate';
 
@@ -37,6 +23,20 @@ function handleChange(event: Event) {
   }
 }
 </script>
+
+<template>
+  <div>
+    <label :for="name" class="block mb-1">{{ label }}</label>
+    <input
+      :id="name"
+      type="file"
+      :name="name"
+      :accept="accept"
+      @change="handleChange"
+    />
+    <ErrorMessage :name="name" class="p-error" />
+  </div>
+</template>
 
 <style scoped>
 input::file-selector-button {

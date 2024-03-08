@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import type { Role, RolePermissionGroup } from '~/types/dorastorm';
+import { getPermissionsGroups } from '~/utils/permissions';
+
+interface Props {
+  role: Role;
+}
+
+const props = defineProps<Props>();
+const rolePermissions = ref<RolePermissionGroup[]>([]);
+
+onMounted(() => {
+  const processed = getPermissionsGroups(props.role.permissions);
+  rolePermissions.value = processed.sort(
+    (a: RolePermissionGroup, b: RolePermissionGroup) => {
+      if (a.module < b.module) {
+        return -1;
+      } else if (a.module > b.module) {
+        return 1;
+      }
+      return 0;
+    }
+  );
+});
+</script>
+
 <template>
   <div>
     <h3 class="my-0">
@@ -25,32 +52,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import type { Role, RolePermissionGroup } from '~/types/dorastorm';
-import { getPermissionsGroups } from '~/utils/permissions';
-
-interface Props {
-  role: Role;
-}
-
-const props = defineProps<Props>();
-const rolePermissions = ref<RolePermissionGroup[]>([]);
-
-onMounted(() => {
-  const processed = getPermissionsGroups(props.role.permissions);
-  rolePermissions.value = processed.sort(
-    (a: RolePermissionGroup, b: RolePermissionGroup) => {
-      if (a.module < b.module) {
-        return -1;
-      } else if (a.module > b.module) {
-        return 1;
-      }
-      return 0;
-    }
-  );
-});
-</script>
 <style scoped>
 .permission-list {
   list-style: none;

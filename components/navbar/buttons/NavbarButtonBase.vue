@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import Button from 'primevue/button';
+
+interface Props {
+  icon: string;
+  aLabel: string;
+}
+
+const props = defineProps<Props>();
+</script>
+
 <template>
   <Button
     text
@@ -9,16 +20,6 @@
   />
 </template>
 
-<script setup lang="ts">
-import Button from 'primevue/button';
-
-interface Props {
-  icon: string;
-  aLabel: string;
-}
-
-const props = defineProps<Props>();
-</script>
 <style scoped>
 .m-center {
   top: 2px;

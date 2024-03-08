@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import useRelativeTime from '~/composables/useRelativeTime';
+import type { User } from '~/types/dorastorm';
+
+interface Props {
+  user: User;
+}
+
+const props = defineProps<Props>();
+const { fromNow } = useRelativeTime(props.user.created_at);
+</script>
+
 <template>
   <div class="grid grid-nogutter">
     <div class="col-12 md:col-3 md:max-h-10rem flex md:justify-content-center">
@@ -21,17 +33,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import useRelativeTime from '~/composables/useRelativeTime';
-import type { User } from '~/types/dorastorm';
-
-interface Props {
-  user: User;
-}
-
-const props = defineProps<Props>();
-const { fromNow } = useRelativeTime(props.user.created_at);
-</script>
 <style scoped>
 .profile-img-colors {
   filter: invert(77%) sepia(9%) saturate(112%) hue-rotate(122deg)

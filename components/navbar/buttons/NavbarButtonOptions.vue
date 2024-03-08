@@ -1,13 +1,3 @@
-<template>
-  <NavbarButtonBase
-    id="actions"
-    icon="pi pi-cog"
-    a-label="Options"
-    @click.stop.prevent="toggle"
-  />
-  <ContextMenu ref="ncoMenu" :model="props.options" popup />
-</template>
-
 <script setup lang="ts">
 import ContextMenu from 'primevue/contextmenu';
 import type { MenuItem } from 'primevue/menuitem';
@@ -34,3 +24,13 @@ const toggle = () => {
   ncoMenu.value.toggle(event);
 };
 </script>
+
+<template>
+  <NavbarButtonBase
+    id="actions"
+    icon="pi pi-cog"
+    a-label="Options"
+    @click.stop.prevent="toggle"
+  />
+  <ContextMenu ref="ncoMenu" :model="props.options" popup />
+</template>

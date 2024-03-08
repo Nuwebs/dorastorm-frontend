@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import type { Quotation } from '~/types/dorastorm';
+
+interface Props {
+  quotation: Quotation;
+}
+
+const props = defineProps<Props>();
+</script>
+
 <template>
   <div class="grid grig-nogutter">
     <div class="col-12 md:col-8">
@@ -15,13 +25,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Quotation } from '~/types/dorastorm';
-
-interface Props {
-  quotation: Quotation;
-}
-
-const props = defineProps<Props>();
-</script>
