@@ -2,23 +2,27 @@
 import Card from 'primevue/card';
 import { ref } from 'vue';
 import { useForm } from 'vee-validate';
-import { object, string } from 'yup';
+import { ObjectSchema, object, string } from 'yup';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 import FormText from '~/components/form/FormText.vue';
 
+interface ForgotPassword {
+  email: string;
+}
+
 definePageMeta({
   middleware: ['guest-guard']
 });
 
-const data = ref({
+const data = ref<ForgotPassword>({
   email: ''
 });
 const toast = useToast();
 const { t } = useI18n();
 
-const validate = object({
+const validate: ObjectSchema<ForgotPassword> = object({
   email: string().required().email().label(t('forms.email'))
 });
 

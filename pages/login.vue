@@ -4,6 +4,7 @@ import Button from 'primevue/button';
 import { useForm } from 'vee-validate';
 import { object, string } from 'yup';
 import Divider from 'primevue/divider';
+import type { ObjectSchema } from 'yup';
 import { definePageMeta, navigateTo, useI18n, useLocalePath } from '#imports';
 import { login } from '~/services/auth';
 import type { DsLoginCredentials } from '~/types/dorastorm';
@@ -15,7 +16,7 @@ definePageMeta({
 const lp = useLocalePath();
 const { t } = useI18n();
 
-const validations = object({
+const validations: ObjectSchema<DsLoginCredentials> = object({
   email: string().required().email().label(t('forms.email')),
   password: string().required().label(t('forms.password'))
 });

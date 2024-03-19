@@ -2,7 +2,7 @@
 import { useToast } from 'primevue/usetoast';
 import { useForm } from 'vee-validate';
 import { ref, onMounted } from 'vue';
-import { object, string, number, ref as yupRef } from 'yup';
+import { object, string, number, ref as yupRef, ObjectSchema } from 'yup';
 import Button from 'primevue/button';
 import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 import FormText from '~/components/form/FormText.vue';
@@ -30,7 +30,7 @@ const { t } = useI18n();
 const loading = ref<boolean>(false);
 const availableRoles = ref<Role[]>([]);
 
-const validate = object({
+const validate: ObjectSchema<NewUser> = object({
   name: string().required().min(4).label(t('modules.users.name')),
   email: string().required().email().label(t('forms.email')),
   password: string().required().min(8).label(t('forms.password')),

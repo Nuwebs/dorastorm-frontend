@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Button from 'primevue/button';
-import { object, string, array } from 'yup';
+import { object, string, array, ObjectSchema, number } from 'yup';
 import { useForm } from 'vee-validate';
 import FormText from '../form/FormText.vue';
 import FormTextArea from '../form/FormTextArea.vue';
@@ -9,6 +9,7 @@ import RoleFormPermissions from './RoleFormPermissions.vue';
 import RoleFormHierarchy from './RoleFormHierarchy.vue';
 import type { Role, NewRole } from '~/types/dorastorm';
 import { useI18n } from '#imports';
+import type Permission from '~/utils/permissions';
 
 interface Props {
   modelValue: Role | NewRole;
@@ -20,12 +21,18 @@ const props = defineProps<Props>();
 const role = ref<Role | NewRole>(props.modelValue);
 const { t } = useI18n();
 
-const validate = object({
-  name: string().required().min(3).label(t('modules.roles.name')),
-  description: string(),
+const validate: ObjectSchema<NewRole> = object({
+  name: string().required().defined().min(3).label(t('modules.roles.name')),
+  description: string()
+    .required()
+    .defined()
+    .label(t('modules.roles.description')),
   permissions: array()
+    .of(string<Permission>().required().defined())
+    .required()
     .min(1, t('error.422.specific.role_permissions'))
-    .label(t('modules.roles.select_permissions'))
+    .label(t('modules.roles.select_permissions')),
+  hierarchy: number().required().defined()
 });
 
 const { isSubmitting, handleSubmit } = useForm({
@@ -62,6 +69,7 @@ const submit = handleSubmit(props.submitHandler);
           </h3>
           <RoleFormHierarchy
             v-model="role.hierarchy"
+            name="hierarchy"
             :updating="!!props.updating"
           />
         </div>

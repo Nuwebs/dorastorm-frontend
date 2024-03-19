@@ -2,10 +2,11 @@
 import { navigateTo, useRoute } from 'nuxt/app';
 import { ref } from 'vue';
 import { useForm } from 'vee-validate';
-import { object, string, ref as yupRef } from 'yup';
+import { ObjectSchema, object, string, ref as yupRef } from 'yup';
 import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
+import { isArray } from 'lodash-es';
 import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 
 definePageMeta({
@@ -23,14 +24,24 @@ if (process.client) {
   }
 }
 
-const data = ref({
-  email: route.query.email,
-  token: route.query.token,
+interface BaseRequiredData {
+  password: string;
+  password_confirmation: string;
+}
+
+interface RequiredData extends BaseRequiredData {
+  email: string | null;
+  token: string | null;
+}
+
+const data = ref<RequiredData>({
+  email: isArray(route.query.email) ? route.query.email[0] : route.query.email,
+  token: isArray(route.query.token) ? route.query.token[0] : route.query.token,
   password: '',
   password_confirmation: ''
 });
 
-const validate = object({
+const validate: ObjectSchema<BaseRequiredData> = object({
   password: string().required().min(8).label(t('forms.password')),
   password_confirmation: string()
     .required()

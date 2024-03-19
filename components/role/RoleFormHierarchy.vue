@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { useField } from 'vee-validate';
 import TheLoadingSpinner from '../TheLoadingSpinner.vue';
 import { useAPIFetch, useGeneralErrorToast, useI18n } from '#imports';
 import type { Role } from '~/types/dorastorm';
@@ -8,6 +9,7 @@ import useAuthStore from '~/stores/authStore';
 
 interface Props {
   modelValue: number;
+  name: string;
   updating: boolean;
 }
 
@@ -18,7 +20,13 @@ type RoleHierarchy = {
 };
 
 const props = defineProps<Props>();
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  'update:modelValue': [payload: number];
+}>();
+const { value } = useField<number>(() => props.name, undefined, {
+  syncVModel: true
+});
+
 const toast = useToast();
 const { t } = useI18n();
 const authStore = useAuthStore();
@@ -79,7 +87,7 @@ onMounted(async () => {
     emit('update:modelValue', maxHierarchy);
   } else {
     selected.value = roles.find(
-      (role: RoleHierarchy) => role.hierarchy === props.modelValue
+      (role: RoleHierarchy) => role.hierarchy === value.value
     )!.id;
   }
   availableRoles.value = roles;
