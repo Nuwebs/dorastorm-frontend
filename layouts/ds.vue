@@ -25,7 +25,7 @@ const sidebarClasses = computed<string>(() => {
 });
 
 const contentClasses = computed<string>(() => {
-  let classes = 'p-3 shadow-1 surface-section';
+  let classes = 'p-3 shadow-1 surface-section ds-main';
   if (shouldBeSidebar.value) {
     classes += ' layout-content';
   }
@@ -108,5 +108,9 @@ watch(currentRoute, () => {
 .layout-content {
   margin-left: calc(300px + 1rem);
   transition: margin-left 0.2s;
+}
+
+.ds-main {
+  min-height: calc(88vh - 2rem);
 }
 </style>
