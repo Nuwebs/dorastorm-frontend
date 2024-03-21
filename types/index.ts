@@ -10,8 +10,21 @@ export interface ErrorBag<T = any> {
   statusMessage: string;
   data?: T;
 }
-export interface ApiFetch<ResponseT> {
+
+interface BaseApiFetch {
   endpoint: string;
   auth?: boolean;
+}
+
+export type UtilFetchOptions<ResponseT> = Omit<
+  UseFetchOptions<ResponseT>,
+  'key' | 'watch' | '$fetch'
+>;
+
+export interface ApiFetchUtil<ResponseT> extends BaseApiFetch {
+  options?: UtilFetchOptions<ResponseT>;
+}
+
+export interface ApiFetchComposable<ResponseT> extends BaseApiFetch {
   options?: UseFetchOptions<ResponseT>;
 }
