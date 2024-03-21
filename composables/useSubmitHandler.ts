@@ -1,8 +1,8 @@
 import { useToast } from 'primevue/usetoast';
 import { FetchError } from 'ofetch';
-import useAPIFetch from './useAPIFetch';
 import useGeneralErrorToast from './useGeneralErrorToast';
-import type { ApiFetch } from '~/types';
+import type { ApiFetchUtil } from '~/types';
+import apiFetch from '~/utils/api-fetch';
 
 const defaultErrorHandler = (): void => {
   const toast = useToast();
@@ -10,15 +10,15 @@ const defaultErrorHandler = (): void => {
 };
 
 const useSubmitHandler = async <ErrorT = any>(
-  options: ApiFetch<void>,
+  options: ApiFetchUtil<void>,
   successHandler: () => void,
   errorHandler: (error: FetchError<ErrorT>) => void = () =>
     defaultErrorHandler()
 ): Promise<boolean> => {
-  const { error } = await useAPIFetch(options);
+  const { error } = await apiFetch(options);
 
-  if (error.value) {
-    errorHandler(error.value);
+  if (error) {
+    errorHandler(error);
     return false;
   }
   successHandler();

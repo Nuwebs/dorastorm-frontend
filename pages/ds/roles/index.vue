@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import type { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -61,9 +61,7 @@ async function search(page: number = 1) {
   await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 
-onMounted(async () => {
-  await loadData(1);
-});
+loadData(1);
 </script>
 <template>
   <section class="container">

@@ -9,8 +9,8 @@ import FormText from '~/components/form/FormText.vue';
 import type { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import FormSelect from '~/components/form/FormSelect.vue';
-import useAPIFetch from '~/composables/useAPIFetch';
 import Permission from '~/utils/permissions';
+import apiFetch from '~/utils/api-fetch';
 
 definePageMeta({
   middleware: ['auth-guard'],
@@ -55,14 +55,14 @@ const { handleSubmit, resetForm, isSubmitting, setFieldError } =
 
 onMounted(async () => {
   loading.value = true;
-  const { data, error } = await useAPIFetch<Role[]>({
+  const { data, error } = await apiFetch<Role[]>({
     endpoint: '/users/rolesbelow'
   });
-  if (error.value) {
+  if (error) {
     return toast.add(useGeneralErrorToast());
   }
   loading.value = false;
-  availableRoles.value = data.value!;
+  availableRoles.value = data!;
 });
 
 const submit = handleSubmit(async (payload) => {

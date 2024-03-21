@@ -7,7 +7,7 @@ import { useI18n } from '#imports';
 import use404Toast from '~/composables/use404Toast';
 import use403Toast from '~/composables/use403Toast';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
-import useAPIFetch from '~/composables/useAPIFetch';
+import apiFetch from '~/utils/api-fetch';
 
 interface Props {
   endpoint: string;
@@ -59,7 +59,7 @@ async function deleteModel(): Promise<void> {
     props.modelIdReplace,
     String(props.modelId)
   );
-  const { error } = await useAPIFetch({
+  const { error } = await apiFetch({
     endpoint: ep,
     options: !props.options
       ? {
@@ -68,10 +68,10 @@ async function deleteModel(): Promise<void> {
       : props.options
   });
   loading.value = false;
-  if (!error.value) {
+  if (!error) {
     return emit('deleted', props.modelId);
   }
-  switch (error.value.statusCode) {
+  switch (error.statusCode) {
     case 403:
       toast.add(use403Toast());
       break;

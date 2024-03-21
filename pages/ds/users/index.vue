@@ -8,7 +8,7 @@ import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import { definePageMeta, onMounted } from '#imports';
+import { definePageMeta } from '#imports';
 import type { DataTableFilter, User } from '~/types/dorastorm';
 import use403Toast from '~/composables/use403Toast';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
@@ -66,9 +66,7 @@ async function search(page: number = 1) {
   await toPage(page, `filter[global]=${filters.value.global.value}`);
 }
 
-onMounted(async () => {
-  await loadData(1);
-});
+loadData(1);
 </script>
 <template>
   <section class="container">

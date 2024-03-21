@@ -3,9 +3,10 @@ import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { useField } from 'vee-validate';
 import TheLoadingSpinner from '../TheLoadingSpinner.vue';
-import { useAPIFetch, useGeneralErrorToast, useI18n } from '#imports';
+import { useGeneralErrorToast, useI18n } from '#imports';
 import type { Role } from '~/types/dorastorm';
 import useAuthStore from '~/stores/authStore';
+import apiFetch from '~/utils/api-fetch';
 
 interface Props {
   modelValue: number;
@@ -59,14 +60,14 @@ function drop(droppedPosition: number): void {
 
 onMounted(async () => {
   loading.value = true;
-  const { error, data } = await useAPIFetch<Role[]>({
+  const { error, data } = await apiFetch<Role[]>({
     endpoint: '/users/rolesbelow'
   });
-  if (error.value) {
+  if (error) {
     return toast.add(useGeneralErrorToast());
   }
 
-  const roles: RoleHierarchy[] = data.value!.map((role): RoleHierarchy => {
+  const roles: RoleHierarchy[] = data!.map((role): RoleHierarchy => {
     return {
       id: role.id,
       name: role.name,

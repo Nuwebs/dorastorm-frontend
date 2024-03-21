@@ -4,7 +4,7 @@ import type { DsLoginCredentials, User } from '~/types/dorastorm';
 import ExpiredTokenException from '~/utils/exceptions/ExpiredTokenException';
 import InvalidTokenException from '~/utils/exceptions/InvalidTokenException';
 import type { ErrorBag, JWTResponse } from '~/types';
-import useAPIFetch from '~/composables/useAPIFetch';
+import apiFetch from '~/utils/api-fetch';
 
 const saveToken = (token: string): void => {
   localStorage.setItem('ds-jwt', token);
@@ -56,19 +56,19 @@ export const isTokenExpired = (expiresEpoch: number): boolean => {
 export const refreshToken = async (): Promise<void> => {
   const authStore = useAuthStore();
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
-  const { data, error } = await useAPIFetch<JWTResponse>({
+  const { data, error } = await apiFetch<JWTResponse>({
     endpoint: ep
   });
-  if (error.value) {
+  if (error) {
     cleanSavedKeys();
     authStore.$reset();
-    if (error.value.statusCode && error.value.statusCode === 409) {
+    if (error.statusCode && error.statusCode === 409) {
       throw new ExpiredTokenException('');
     }
     throw new InvalidTokenException('');
   }
-  authStore.token = data.value!.accessToken;
-  authStore.expiresEpoch = calculateExpireEpoch(data.value!.expiresIn);
+  authStore.token = data!.accessToken;
+  authStore.expiresEpoch = calculateExpireEpoch(data!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
 };
@@ -76,14 +76,14 @@ export const refreshToken = async (): Promise<void> => {
 export const getUserInfo = async (): Promise<void | ErrorBag> => {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
-  const { data: user, error: userError } = await useAPIFetch<User>({
+  const { data: user, error: userError } = await apiFetch<User>({
     endpoint: config.public.authEndpoints.me
   });
-  if (userError.value) {
-    return userError.value as ErrorBag;
+  if (userError) {
+    return userError as ErrorBag;
   }
 
-  authStore.user = user.value!;
+  authStore.user = user!;
   saveUser(authStore.user);
 };
 
@@ -93,7 +93,7 @@ export const login = async (
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
   // Get the access token
-  const { data: jwtData, error: jwtError } = await useAPIFetch<JWTResponse>({
+  const { data: jwtData, error: jwtError } = await apiFetch<JWTResponse>({
     endpoint: config.public.authEndpoints.login,
     auth: false,
     options: {
@@ -101,10 +101,10 @@ export const login = async (
       body: credentials
     }
   });
-  if (jwtError.value) {
-    return jwtError.value as ErrorBag;
+  if (jwtError) {
+    return jwtError as ErrorBag;
   }
-  authStore.token = jwtData.value!.accessToken;
+  authStore.token = jwtData!.accessToken;
 
   // Get the user info
   const failed = await getUserInfo();
@@ -113,7 +113,7 @@ export const login = async (
   }
 
   // Final settings
-  authStore.expiresEpoch = calculateExpireEpoch(jwtData.value!.expiresIn);
+  authStore.expiresEpoch = calculateExpireEpoch(jwtData!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
 };
@@ -128,7 +128,7 @@ export const logout = async (
     return;
   }
   const ep = useRuntimeConfig().public.authEndpoints.logout;
-  const { error } = await useAPIFetch<void>({
+  const { error } = await apiFetch<void>({
     endpoint: ep,
     options: {
       method: 'post'
@@ -137,8 +137,8 @@ export const logout = async (
   // The session will be closed in the frontend no matter what
   authStore.$reset();
   cleanSavedKeys();
-  if (error.value) {
-    return error.value as ErrorBag;
+  if (error) {
+    return error as ErrorBag;
   }
 };
 

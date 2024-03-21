@@ -7,7 +7,7 @@ import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import { useI18n } from '#imports';
-import useAPIFetch from '~/composables/useAPIFetch';
+import apiFetch from '~/utils/api-fetch';
 
 interface NewPassword {
   current_password: string;
@@ -45,15 +45,15 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } =
   });
 
 const submit = handleSubmit(async (payload) => {
-  const { error } = await useAPIFetch({
+  const { error } = await apiFetch({
     endpoint: `/users/${props.userId}/password`,
     options: {
       method: 'PATCH',
       body: payload
     }
   });
-  if (error.value) {
-    if (error.value.statusCode === 422) {
+  if (error) {
+    if (error.statusCode === 422) {
       return setFieldError(
         'current_password',
         t('error.validation.current_password')

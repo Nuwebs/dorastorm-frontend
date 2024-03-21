@@ -18,10 +18,10 @@ import {
 import FormText from '~/components/form/FormText.vue';
 import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
-import useAPIFetch from '~/composables/useAPIFetch';
 import Permission from '~/utils/permissions';
 import useAuthStore from '~/stores/authStore';
 import { getUserInfo } from '~/services/auth';
+import apiFetch from '~/utils/api-fetch';
 
 definePageMeta({
   middleware: ['auth-guard'],
@@ -69,27 +69,27 @@ const { handleSubmit, isSubmitting, setFieldError } = useForm({
 });
 
 async function fetchUser() {
-  const { data: user, error } = await useAPIFetch<User>({
+  const { data: user, error } = await apiFetch<User>({
     endpoint: '/users/' + route.params.id
   });
-  if (error.value) {
-    return error.value;
+  if (error) {
+    return error;
   }
   data.value = {
-    name: user.value!.name,
-    email: user.value!.email,
-    role_id: user.value!.role.id
+    name: user!.name,
+    email: user!.email,
+    role_id: user!.role.id
   };
 }
 
 async function fetchRoles() {
-  const { data, error } = await useAPIFetch<Role[]>({
+  const { data, error } = await apiFetch<Role[]>({
     endpoint: '/users/rolesbelow'
   });
-  if (error.value) {
+  if (error) {
     return toast.add(useGeneralErrorToast());
   }
-  availableRoles.value = data.value!;
+  availableRoles.value = data!;
 }
 
 onMounted(async () => {

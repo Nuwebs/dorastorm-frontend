@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import {
   definePageMeta,
-  useAPIFetch,
   useGeneralErrorToast,
   useI18n,
   useRoute,
@@ -14,6 +13,7 @@ import RoleFormContainer from '~/components/role/RoleFormContainer.vue';
 import type { DsValidationErrorBag, Role } from '~/types/dorastorm';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import TheDS404 from '~/components/TheDS404.vue';
+import apiFetch from '~/utils/api-fetch';
 
 definePageMeta({
   middleware: ['auth-guard'],
@@ -29,13 +29,13 @@ const { t } = useI18n();
 
 onMounted(async () => {
   loading.value = true;
-  const { data, error } = await useAPIFetch<Role>({
+  const { data, error } = await apiFetch<Role>({
     endpoint: `/roles/${route.params.id}`
   });
-  if (error.value) {
+  if (error) {
     is404.value = true;
   }
-  role.value = data.value;
+  role.value = data;
   loading.value = false;
 });
 
