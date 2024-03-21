@@ -10,14 +10,14 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { definePageMeta } from '#imports';
 import type { DataTableFilter, User } from '~/types/dorastorm';
-import use403Toast from '~/composables/use403Toast';
-import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
+import use403Toast from '~/composables/use-403-toast';
+import useGeneralErrorToast from '~/composables/use-general-error-toast';
 
-import useLazyPagination from '~/composables/useLazyPagination';
+import useLazyPagination from '~/composables/use-lazy-pagination';
 import ActionButtonDelete from '~/components/actionButton/ActionButtonDelete.vue';
 import ActionButtonUpdate from '~/components/actionButton/ActionButtonUpdate.vue';
 import UserDataRow from '~/components/user/UserDataRow.vue';
-import useCachedPermissions from '~/composables/useCachedPermissions';
+import useCachedPermissions from '~/composables/use-cached-permissions';
 import Permission from '~/utils/permissions';
 
 definePageMeta({

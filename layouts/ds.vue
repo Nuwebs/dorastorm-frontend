@@ -6,7 +6,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import type { MenuItem } from 'primevue/menuitem';
 import { useLocalePath, useRouter } from '#imports';
 import { sidebarMenuItems, commonMenuOptions } from '~/services/menus';
-import useWindowWidth from '~/composables/useWindowWidth';
+import useWindowWidth from '~/composables/use-window-width';
 import TheDSNavbar from '~/components/TheDSNavbar.vue';
 
 const windowWidth = useWindowWidth();

@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import Button from 'primevue/button';
 import FormText from '~/components/form/FormText.vue';
-import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
+import useGeneralErrorToast from '~/composables/use-general-error-toast';
 import { useI18n } from '#imports';
 import apiFetch from '~/utils/api-fetch';
 

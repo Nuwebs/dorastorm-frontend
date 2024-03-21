@@ -16,7 +16,7 @@ import {
   useSubmitHandler
 } from '#imports';
 import FormText from '~/components/form/FormText.vue';
-import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
+import useGeneralErrorToast from '~/composables/use-general-error-toast';
 import UserChangePassword from '~/components/user/UserChangePassword.vue';
 import Permission from '~/utils/permissions';
 import useAuthStore from '~/stores/authStore';

@@ -11,8 +11,8 @@ import Button from 'primevue/button';
 import Permission from '~/utils/permissions';
 import RoleData from '~/components/role/RoleData.vue';
 import type { DataTableFilter, Role } from '~/types/dorastorm';
-import useLazyPagination from '~/composables/useLazyPagination';
-import useCachedPermissions from '~/composables/useCachedPermissions';
+import useLazyPagination from '~/composables/use-lazy-pagination';
+import useCachedPermissions from '~/composables/use-cached-permissions';
 import { definePageMeta, use403Toast, useGeneralErrorToast } from '#imports';
 
 definePageMeta({

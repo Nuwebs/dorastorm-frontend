@@ -11,8 +11,8 @@ import Permission from '~/utils/permissions';
 import type { DataTableFilter, Quotation } from '~/types/dorastorm';
 import QuotationDataRow from '~/components/quotation/QuotationDataRow.vue';
 
-import useLazyPagination from '~/composables/useLazyPagination';
-import useCachedPermissions from '~/composables/useCachedPermissions';
+import useLazyPagination from '~/composables/use-lazy-pagination';
+import useCachedPermissions from '~/composables/use-cached-permissions';
 import { definePageMeta, useDateFormat } from '#imports';
 
 definePageMeta({

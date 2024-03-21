@@ -7,7 +7,7 @@ import Button from 'primevue/button';
 import { definePageMeta, useI18n, useSubmitHandler } from '#imports';
 import FormText from '~/components/form/FormText.vue';
 import type { DsValidationErrorBag, Role } from '~/types/dorastorm';
-import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
+import useGeneralErrorToast from '~/composables/use-general-error-toast';
 import FormSelect from '~/components/form/FormSelect.vue';
 import Permission from '~/utils/permissions';
 import apiFetch from '~/utils/api-fetch';

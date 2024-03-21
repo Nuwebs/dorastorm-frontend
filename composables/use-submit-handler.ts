@@ -1,6 +1,6 @@
 import { useToast } from 'primevue/usetoast';
 import { FetchError } from 'ofetch';
-import useGeneralErrorToast from './useGeneralErrorToast';
+import useGeneralErrorToast from './use-general-error-toast';
 import type { ApiFetchUtil } from '~/types';
 import apiFetch from '~/utils/api-fetch';
 

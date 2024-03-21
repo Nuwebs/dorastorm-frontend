@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useRelativeTime from '~/composables/useRelativeTime';
+import useRelativeTime from '~/composables/use-relative-time';
 import type { User } from '~/types/dorastorm';
 
 interface Props {

@@ -4,9 +4,9 @@ import { ref } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from '#imports';
-import use404Toast from '~/composables/use404Toast';
-import use403Toast from '~/composables/use403Toast';
-import useGeneralErrorToast from '~/composables/useGeneralErrorToast';
+import use404Toast from '~/composables/use-404-toast';
+import use403Toast from '~/composables/use-403-toast';
+import useGeneralErrorToast from '~/composables/use-general-error-toast';
 import apiFetch from '~/utils/api-fetch';
 
 interface Props {
