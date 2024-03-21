@@ -9,19 +9,19 @@ const defaultErrorHandler = (): void => {
   toast.add(useGeneralErrorToast());
 };
 
-const useSubmitHandler = async <ErrorT = any>(
-  options: ApiFetchUtil<void>,
-  successHandler: () => void,
+const useSubmitHandler = async <ErrorT = any, ResponseT = unknown>(
+  options: ApiFetchUtil<ResponseT>,
+  successHandler: (data?: ResponseT | null) => void,
   errorHandler: (error: FetchError<ErrorT>) => void = () =>
     defaultErrorHandler()
 ): Promise<boolean> => {
-  const { error } = await apiFetch(options);
+  const { data, error } = await apiFetch<ResponseT, ErrorT>(options);
 
   if (error) {
     errorHandler(error);
     return false;
   }
-  successHandler();
+  successHandler(data);
   return true;
 };
 

@@ -1,14 +1,15 @@
 import { navigateTo } from '#app';
+import { FetchError } from 'ofetch/node';
 import { utilOptions } from './api-fetch-options';
 import { logout } from '~/services/auth';
 import type { ApiFetchUtil } from '~/types';
 
 interface FetchedResponse<ResponseT, ErrorT> {
   data: ResponseT | null;
-  error: ErrorT | null;
+  error: FetchError<ErrorT> | null;
 }
 
-async function apiFetch<ResponseT = void, ErrorT = any>({
+async function apiFetch<ResponseT = unknown, ErrorT = any>({
   endpoint,
   auth = true,
   options = {}
@@ -29,7 +30,7 @@ async function apiFetch<ResponseT = void, ErrorT = any>({
       }
     });
   } catch (error: any) {
-    response.error = error as ErrorT;
+    response.error = error as FetchError<ErrorT>;
   }
   return response;
 }
