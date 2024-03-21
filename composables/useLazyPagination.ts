@@ -1,10 +1,11 @@
 import type { Ref } from 'vue';
 import type { UseFetchOptions } from 'nuxt/app';
 import { ref } from 'vue';
-import useAPIFetch from './useAPIFetch';
 import type { PaginationWrapper } from '~/types/dorastorm';
+import apiFetch from '~/utils/api-fetch';
 
 // WIP Composable. It still needs the sort and filtering capabilities.
+// This could be refactored to use useAPIFetch
 const useLazyPagination = <DataT>(
   endpoint: string,
   options: UseFetchOptions<PaginationWrapper<DataT>> = {}
@@ -19,18 +20,18 @@ const useLazyPagination = <DataT>(
     loading.value = true;
     let ep = endpoint + `?page=${page}`;
     ep = params !== '' ? ep + `&${params}` : ep;
-    const { data, error } = await useAPIFetch<PaginationWrapper<DataT>>({
+    const { data, error } = await apiFetch<PaginationWrapper<DataT>>({
       endpoint: ep,
       options
     });
     loading.value = false;
-    if (error.value) {
-      return error.value;
+    if (error) {
+      return error;
     }
-    paginationData.value = data.value!.data;
-    currentPage.value = data.value!.meta.current_page;
-    totalResults.value = data.value!.meta.total;
-    resultsPerPage.value = data.value!.meta.per_page;
+    paginationData.value = data!.data;
+    currentPage.value = data!.meta.current_page;
+    totalResults.value = data!.meta.total;
+    resultsPerPage.value = data!.meta.per_page;
   }
 
   return {
