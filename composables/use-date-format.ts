@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-// TODO: Convert it to a util
+// TODO: Convert it to an util
 export const DEFAULT_FORMAT: string = 'YYYY/MM/DD';
 
 const useDateFormat = (

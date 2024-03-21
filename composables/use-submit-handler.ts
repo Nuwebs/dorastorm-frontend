@@ -5,10 +5,12 @@ import type { ApiFetchUtil } from '~/types';
 import apiFetch from '~/utils/api-fetch';
 
 const defaultErrorHandler = (): void => {
+  // TODO: To become a real util, the toast should be moved away
   const toast = useToast();
   toast.add(useGeneralErrorToast());
 };
 
+// TODO: Convert it to an util
 const useSubmitHandler = async <ErrorT = any, ResponseT = unknown>(
   options: ApiFetchUtil<ResponseT>,
   successHandler: (data?: ResponseT | null) => void,

@@ -13,6 +13,7 @@ const SUPPORTED_LOCALES: SupportedLocales = {
   en: DEFAULT
 };
 
+// TODO: Convert it to an util
 const useValidationLocales = (locale: string) => {
   const check = locale in SUPPORTED_LOCALES;
   if (!check) {

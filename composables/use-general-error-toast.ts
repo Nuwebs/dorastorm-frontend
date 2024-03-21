@@ -1,6 +1,7 @@
 import type { ToastMessageOptions } from 'primevue/toast';
 import { useNuxtApp } from '#imports';
 
+// TODO: Convert it to an util
 const useGeneralErrorToast = (): ToastMessageOptions => {
   const t = useNuxtApp().$i18n.t;
   return {
