@@ -1,9 +1,26 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from "@primevue/themes/aura";
+
 export default defineNuxtConfig({
   ssr: false,
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@pinia/nuxt", "@nuxtjs/i18n"],
+  modules: ["@primevue/nuxt-module", "@pinia/nuxt", "@nuxtjs/i18n"],
+  css: ["~/assets/styles/ds.css"],
+
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: ".ds-dark-mode",
+          cssLayer: {
+            name: "primevue",
+            order: "tailwind-base, primevue, tailwind-utilities",
+          },
+        },
+      },
+    },
+  },
 
   runtimeConfig: {
     public: {
@@ -14,6 +31,13 @@ export default defineNuxtConfig({
         logout: "/logout",
         me: "/me",
       },
+    },
+  },
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
 });
