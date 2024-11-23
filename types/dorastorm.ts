@@ -1,4 +1,5 @@
 import type { RouteLocationNormalized } from "vue-router";
+import { FetchError } from "ofetch/node";
 import type { Permission } from "~/services/permission-service";
 
 export interface DsRouteMeta extends RouteLocationNormalized {
@@ -9,8 +10,11 @@ export interface DsRouteMeta extends RouteLocationNormalized {
 }
 
 // Error related
-export interface DsValidationErrorBag<T> {
+export interface LaravelErrorBag {
   message: string;
+}
+
+export interface LaravelValidationErrorBag<T> extends LaravelErrorBag {
   errors: Partial<Record<keyof T, string[]>>;
 }
 
