@@ -1,4 +1,4 @@
-export const PERMISSIONS = {
+export const PERMISSION = {
   USERS_CREATE: "users-create",
   USERS_READ: "users-read",
   USERS_UPDATE: "users-update",
@@ -10,4 +10,4 @@ export const PERMISSIONS = {
   ROLES_DELETE: "roles-delete",
 } as const;
 
-export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
+export type Permission = (typeof PERMISSION)[keyof typeof PERMISSION];

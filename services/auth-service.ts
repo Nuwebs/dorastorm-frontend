@@ -7,6 +7,19 @@ import ExpiredTokenException from "~/exceptions/ExpiredTokenException";
 import InvalidTokenException from "~/exceptions/InvalidTokenException";
 import type { ErrorBag } from "~/types/fetch";
 
+export const AUTH_ENDPOINT = {
+  LOGIN: "/login",
+  REFRESH: "/token",
+  LOGOUT: "/logout",
+  LOGGED_USER_INFO: "/me",
+} as const;
+
+export type AuthEndpoint = (typeof AUTH_ENDPOINT)[keyof typeof AUTH_ENDPOINT];
+
+export const BACKEND_URL = useRuntimeConfig().public.backendURL;
+
+const authStore = useAuthStore();
+
 /**
  * Saves a the DS JWT token to localStorage.
  */
@@ -88,9 +101,9 @@ export function isTokenExpired(expiresEpoch: number): boolean {
  * Throws exceptions if the token refresh fails.
  */
 export async function refreshToken(): Promise<void> {
-  const authStore = useAuthStore();
-  const ep = useRuntimeConfig().public.authEndpoints.refresh;
-  const { data, error } = await apiFetch<JWTResponse>({ endpoint: ep });
+  const { data, error } = await apiFetch<JWTResponse>({
+    endpoint: AUTH_ENDPOINT.REFRESH,
+  });
   if (error) {
     cleanSavedKeys();
     authStore.$reset();
@@ -108,17 +121,15 @@ export async function refreshToken(): Promise<void> {
 /**
  * Retrieves user information from the server and updates the auth store.
  */
-export async function getUserInfo(): Promise<void | ErrorBag> {
-  const config = useRuntimeConfig();
-  const authStore = useAuthStore();
-  const { data: user, error: userError } = await apiFetch<User>({
-    endpoint: config.public.authEndpoints.me,
+export async function getUserInfo(): Promise<void | ErrorBag<User>> {
+  const { data, error } = await apiFetch<User, ErrorBag<User>>({
+    endpoint: AUTH_ENDPOINT.LOGGED_USER_INFO,
   });
-  if (userError) {
-    return userError as ErrorBag;
+  if (error) {
+    return error.data;
   }
 
-  authStore.user = user!;
+  authStore.user = data!;
   saveUser(authStore.user);
 }
 
@@ -128,27 +139,25 @@ export async function getUserInfo(): Promise<void | ErrorBag> {
 export async function login(
   credentials: DefaultLoginCredentials
 ): Promise<void | ErrorBag> {
-  const config = useRuntimeConfig();
-  const authStore = useAuthStore();
-  const { data: jwtData, error: jwtError } = await apiFetch<JWTResponse>({
-    endpoint: config.public.authEndpoints.login,
+  const { data, error } = await apiFetch<JWTResponse>({
+    endpoint: AUTH_ENDPOINT.LOGIN,
     auth: false,
     options: {
       method: "post",
       body: credentials,
     },
   });
-  if (jwtError) {
-    return jwtError as ErrorBag;
+  if (error) {
+    return error as ErrorBag;
   }
-  authStore.token = jwtData!.accessToken;
+  authStore.token = data!.accessToken;
 
   const failed = await getUserInfo();
   if (failed) {
     return failed as ErrorBag;
   }
 
-  authStore.expiresEpoch = calculateExpireEpoch(jwtData!.expiresIn);
+  authStore.expiresEpoch = calculateExpireEpoch(data!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
 }
@@ -160,15 +169,13 @@ export async function login(
 export async function logout(
   fastCall: boolean = false
 ): Promise<void | ErrorBag> {
-  const authStore = useAuthStore();
   if (fastCall) {
     authStore.$reset();
     cleanSavedKeys();
     return;
   }
-  const ep = useRuntimeConfig().public.authEndpoints.logout;
   const { error } = await apiFetch<void>({
-    endpoint: ep,
+    endpoint: AUTH_ENDPOINT.LOGOUT,
     options: {
       method: "post",
     },
@@ -184,7 +191,6 @@ export async function logout(
  * Loads user data from localStorage into the auth store.
  */
 export function loadUserData(): void {
-  const authStore = useAuthStore();
   authStore.appBooted = true;
   const token = isPotentiallyLoggedIn();
   if (token === false) {

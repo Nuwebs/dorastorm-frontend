@@ -25,12 +25,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       backendURL: process.env.backendURL || "http://localhost:8000",
-      authEndpoints: {
-        login: "/login",
-        refresh: "/token",
-        logout: "/logout",
-        me: "/me",
-      },
     },
   },
 
