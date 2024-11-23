@@ -7,59 +7,90 @@ import ExpiredTokenException from "~/exceptions/ExpiredTokenException";
 import InvalidTokenException from "~/exceptions/InvalidTokenException";
 import type { ErrorBag } from "~/types/fetch";
 
-const saveToken = (token: string): void => {
+/**
+ * Saves a the DS JWT token to localStorage.
+ */
+function saveToken(token: string): void {
   localStorage.setItem("ds-jwt", token);
-};
+}
 
-const saveUser = (user: User): void => {
+/**
+ * Saves a user object to localStorage.
+ */
+function saveUser(user: User): void {
   localStorage.setItem("user", JSON.stringify(user));
-};
+}
 
-const saveExpiresEpoch = (expiresIn: number): void => {
+/**
+ * Saves the DS JWT token expire epoch (unix timestamp) to localStorage.
+ */
+function saveExpiresEpoch(expiresIn: number): void {
   localStorage.setItem("expiresEpoch", String(expiresIn));
-};
+}
 
-const isPotentiallyLoggedIn = (): boolean | string => {
+/**
+ * Checks if the DS JWT token exists in localStorage and returns it. Returns false if not found.
+ */
+function isPotentiallyLoggedIn(): boolean | string {
   const token = localStorage.getItem("ds-jwt");
   return token !== null ? token : false;
-};
+}
 
-const getUserData = (): boolean | User => {
+/**
+ * Retrieves the user object from localStorage. Returns false if not found.
+ */
+function getUserData(): boolean | User {
   const user = localStorage.getItem("user");
   return user !== null ? JSON.parse(user) : false;
-};
+}
 
-const getExpiresEpoch = (): number => {
+/**
+ * Retrieves the expiration epoch from localStorage. Returns -1 if not found.
+ */
+function getExpiresEpoch(): number {
   const expiresIn = localStorage.getItem("expiresEpoch");
   return expiresIn !== null ? Number(expiresIn) : -1;
-};
+}
 
-const getActualEpoch = (): number => {
+/**
+ * Retrieves the current epoch time in seconds.
+ */
+function getActualEpoch(): number {
   return Math.floor(Date.now() / 1000);
-};
+}
 
-const cleanSavedKeys = (): void => {
+/**
+ * Removes specific keys related to authentication from localStorage.
+ */
+function cleanSavedKeys(): void {
   localStorage.removeItem("ds-jwt");
   localStorage.removeItem("user");
   localStorage.removeItem("expiresEpoch");
-};
+}
 
-const calculateExpireEpoch = (expiresIn: number): number => {
+/**
+ * Calculates the expiration epoch based on the current time and a given duration.
+ */
+function calculateExpireEpoch(expiresIn: number): number {
   return getActualEpoch() + expiresIn - 30;
-};
+}
 
-// The expiresEpoch is the past Date.now()/1000 + expiresIn - diff
-export const isTokenExpired = (expiresEpoch: number): boolean => {
+/**
+ * Checks if a tje DS JWT token has expired based on the expiration epoch.
+ */
+export function isTokenExpired(expiresEpoch: number): boolean {
   const epoch: number = getActualEpoch();
   return epoch >= expiresEpoch;
-};
+}
 
-export const refreshToken = async (): Promise<void> => {
+/**
+ * Refreshes the DS JWT token and updates localStorage with new values.
+ * Throws exceptions if the token refresh fails.
+ */
+export async function refreshToken(): Promise<void> {
   const authStore = useAuthStore();
   const ep = useRuntimeConfig().public.authEndpoints.refresh;
-  const { data, error } = await apiFetch<JWTResponse>({
-    endpoint: ep,
-  });
+  const { data, error } = await apiFetch<JWTResponse>({ endpoint: ep });
   if (error) {
     cleanSavedKeys();
     authStore.$reset();
@@ -72,9 +103,12 @@ export const refreshToken = async (): Promise<void> => {
   authStore.expiresEpoch = calculateExpireEpoch(data!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
-};
+}
 
-export const getUserInfo = async (): Promise<void | ErrorBag> => {
+/**
+ * Retrieves user information from the server and updates the auth store.
+ */
+export async function getUserInfo(): Promise<void | ErrorBag> {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
   const { data: user, error: userError } = await apiFetch<User>({
@@ -86,14 +120,16 @@ export const getUserInfo = async (): Promise<void | ErrorBag> => {
 
   authStore.user = user!;
   saveUser(authStore.user);
-};
+}
 
-export const login = async (
+/**
+ * Logs in a user with provided credentials and updates the auth store.
+ */
+export async function login(
   credentials: DefaultLoginCredentials
-): Promise<void | ErrorBag> => {
+): Promise<void | ErrorBag> {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
-  // Get the access token
   const { data: jwtData, error: jwtError } = await apiFetch<JWTResponse>({
     endpoint: config.public.authEndpoints.login,
     auth: false,
@@ -107,21 +143,23 @@ export const login = async (
   }
   authStore.token = jwtData!.accessToken;
 
-  // Get the user info
   const failed = await getUserInfo();
   if (failed) {
     return failed as ErrorBag;
   }
 
-  // Final settings
   authStore.expiresEpoch = calculateExpireEpoch(jwtData!.expiresIn);
   saveToken(authStore.token);
   saveExpiresEpoch(authStore.expiresEpoch);
-};
+}
 
-export const logout = async (
+/**
+ * Logs out a user and clears authentication data. If the fastCall param is sent
+ * it removes the token from the app but does not inform the backend.
+ */
+export async function logout(
   fastCall: boolean = false
-): Promise<void | ErrorBag> => {
+): Promise<void | ErrorBag> {
   const authStore = useAuthStore();
   if (fastCall) {
     authStore.$reset();
@@ -135,15 +173,17 @@ export const logout = async (
       method: "post",
     },
   });
-  // The session will be closed in the frontend no matter what
   authStore.$reset();
   cleanSavedKeys();
   if (error) {
     return error as ErrorBag;
   }
-};
+}
 
-export const loadUserData = (): void => {
+/**
+ * Loads user data from localStorage into the auth store.
+ */
+export function loadUserData(): void {
   const authStore = useAuthStore();
   authStore.appBooted = true;
   const token = isPotentiallyLoggedIn();
@@ -160,4 +200,4 @@ export const loadUserData = (): void => {
   authStore.token = token as string;
   authStore.user = user as User;
   authStore.expiresEpoch = expiresEpoch;
-};
+}
