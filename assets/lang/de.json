@@ -1,0 +1,199 @@
+{
+  "error": {
+    "403": {
+      "default_message": "Was versuchen Sie zu tun?",
+      "default_title": "403: Sie sollten hier nicht sein"
+    },
+    "404": {
+      "default_message": "Wohin gehst du?!",
+      "default_resource": "Wir konnten die angegebene Ressource nicht finden",
+      "default_title": "404: Hoppla!",
+      "specific": {
+        "post": "Wir konnten den angegebenen Beitrag nicht finden.",
+        "role": "Wir konnten die angegebene Rolle nicht finden.",
+        "user": "Wir konnten den angegebenen Benutzer nicht finden."
+      }
+    },
+    "409": {
+      "default_message": "",
+      "default_title": "409: Konflikt",
+      "session_expired": "Die Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+      "specific": {
+        "last_admin": "Sie sind der letzte verbleibende Superadministrator!"
+      }
+    },
+    "422": {
+      "specific": {
+        "role_permissions": "Die Rolle muss mindestens eine Berechtigung haben."
+      }
+    },
+    "invalid_token": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "fatal": "Es ist ein Fehler aufgetreten. Versuchen Sie es später erneut oder kontaktieren Sie den Administrator.",
+    "validation": {
+      "confirm_password": "Die Passwörter stimmen nicht überein",
+      "current_password": "Falsches aktuelles Passwort",
+      "email_404": "Wir bedauern Ihnen mitteilen zu müssen, dass die von Ihnen angegebene E-Mail-Adresse in unserer Datenbank nicht vorhanden zu sein scheint.",
+      "reset_password": "Wir bedauern Ihnen mitteilen zu müssen, dass Ihr Passwort nicht geändert werden konnte, da die zeitliche Begrenzung hierfür abgelaufen sein könnte. Wir empfehlen, eine weitere E-Mail zur Wiederherstellung des Passworts anzufordern, um fortzufahren."
+    }
+  },
+  "modules": {
+    "users": {
+      "change_password": "Passwort ändern",
+      "created": "Benutzer erstellt!",
+      "create": "Benutzer erstellen",
+      "delete": "Benutzer löschen",
+      "delete_warning": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "deleted": "Der Benutzer wurde gelöscht.",
+      "fp_email_send": "Ihre E-Mail zur Passwortwiederherstellung wurde gesendet.",
+      "index": "Alle Benutzer anzeigen",
+      "list": "Benutzerliste",
+      "name": "Benutzername:",
+      "password_changed": "Das Passwort wurde erfolgreich geändert.",
+      "read": "Benutzerdaten anzeigen",
+      "role": "Rolle:",
+      "role_default": "Rolle auswählen",
+      "role_select": "Benutzerrolle auswählen:",
+      "title": "Benutzer",
+      "update": "Benutzerdaten aktualisieren",
+      "update_self": "Profil aktualisieren",
+      "user_info": "Benutzerinformationen"
+    },
+    "roles": {
+      "create": "Rolle erstellen",
+      "created": "Rolle erstellt!",
+      "delete": "Rolle löschen",
+      "delete_warning": "Sind Sie sicher, dass Sie diese Rolle löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "deleted": "Die Rolle wurde gelöscht.",
+      "description": "Rollenbeschreibung:",
+      "index": "Alle Rollen anzeigen",
+      "list": "Rollenliste",
+      "name": "Rollenname:",
+      "new_role": "NEUE ROLLE",
+      "others": "Andere",
+      "read": "Rolleninformationen anzeigen",
+      "role_permissions": "Rollenberechtigungen:",
+      "select_hierarchy": "Ziehen Sie die Rollenhierarchie (*)",
+      "select_permissions": "Berechtigungen der Rolle auswählen",
+      "title": "Rollen",
+      "update": "Rolleninformationen aktualisieren"
+    },
+    "services": {
+      "create": "Service erstellen",
+      "created": "Service erstellt!",
+      "delete": "Service löschen",
+      "discount": "Servicerabatt:",
+      "tax": "Steuer",
+      "delete_warning": "Sind Sie sicher, dass Sie diesen Service löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "deleted": "Der Service wurde gelöscht.",
+      "enable": "Verfügbar",
+      "should_invoice": "Rechnung stellen",
+      "index": "Alle Services anzeigen",
+      "list": "Serviceliste",
+      "name": "Service-Name:",
+      "new_service": "NEUER SERVICE",
+      "others": "Andere",
+      "read": "Serviceinformationen anzeigen",
+      "title": "Services",
+      "update": "Serviceinformationen aktualisieren"
+    },
+    "posts": {
+      "author": "Autor:",
+      "banner": "Beitragsbanner",
+      "check_save_message": "Sie haben den Beitrag nicht gespeichert. Möchten Sie trotzdem fortfahren?",
+      "check_save_ok": "Ohne Speichern fortfahren",
+      "check_save_title": "Warnung",
+      "content": "Beitragsinhalt:",
+      "create": "Beiträge erstellen",
+      "created": "Beitrag erstellt!",
+      "delete": "Beitrag löschen",
+      "deleted": "Der Beitrag wurde gelöscht.",
+      "delete_warning": "Sind Sie sicher, dass Sie diesen Beitrag löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "description": "Kurze Beitragsbeschreibung:",
+      "first": "Neueste",
+      "index": "Beiträge anzeigen",
+      "index_mine": "Meine Beiträge",
+      "index_private": "Beiträge des Personals",
+      "no_recommendations": "Keine Empfehlungen verfügbar",
+      "options": "Sichtbarkeitsoptionen",
+      "post_title": "Beitragstitel:",
+      "previous": "Neuere",
+      "private": "Beitrag nur für Personal (privater Beitrag)",
+      "read_more": "LESEMODUS...",
+      "recent": "Neueste Beiträge",
+      "recommended": "Sie sollten lesen:",
+      "replace_banner_message": "Sind Sie sicher, dass Sie dieses Beitragsbanner ersetzen möchten?",
+      "replace_banner_ok": "Ersetzen",
+      "replace_banner_title": "Banner ersetzen",
+      "tag_invisible": "Unsichtbar",
+      "tag_private": "Privat",
+      "tag_yours": "Ihr Beitrag",
+      "tags": {
+        "discard": "Suche verwerfen",
+        "no_tags": "Dieser Beitrag hat keine Tags",
+        "placeholder": "Tag hinzufügen und Eingabetaste drücken",
+        "tags": "Tags:"
+      },
+      "title": "Beiträge",
+      "tools": "Optionen des Erstellers:",
+      "update": "Beitrag bearbeiten",
+      "visible": "Dieser Beitrag ist sichtbar"
+    },
+    "quotations": {
+      "big_quote": "JETZT ANGEBOT ERHALTEN",
+      "content": "Ihre Nachricht",
+      "create": "Angebot erstellen",
+      "created": "Das Angebot wurde gesendet",
+      "delete": "Angebot löschen",
+      "deleted": "Das Angebot wurde gelöscht",
+      "delete_warning": "Sind Sie sicher, dass Sie dieses Angebot löschen möchten? Dies kann nicht rückgängig gemacht werden.",
+      "form_name": "Ihr Name",
+      "index": "Alle Angebote anzeigen",
+      "list": "Angebotsliste",
+      "name": "Kundenname",
+      "phone": "Telefonnummer:",
+      "request": "Diesen Service anfordern",
+      "subject": "Betreff",
+      "title": "Angebote"
+    }
+  },
+  "forms": {
+    "confirm_password": "Passwort bestätigen:",
+    "current_password": "Aktuelles Passwort:",
+    "email": "E-Mail:",
+    "file_upload": "Datei auswählen",
+    "file_uploaded": "Datei erfolgreich hochgeladen!",
+    "forgot_password": "Ich habe mein Passwort vergessen",
+    "password": "Passwort:",
+    "reset_password": "Passwort zurücksetzen",
+    "submit": "Senden"
+  },
+  "general": {
+    "action": "Aktion",
+    "cancel": "Abbrechen",
+    "created_at": "Erstellt am:",
+    "data_changed": "Die Änderungen wurden erfolgreich durchgeführt.",
+    "default_description": "Keine Beschreibung verfügbar.",
+    "delete": "Löschen",
+    "home": "Startseite",
+    "id": "ID",
+    "locales": "Sprache",
+    "loading": "Lade...",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "member_since": "Mitglied seit:",
+    "message": "Nachricht",
+    "name": "Name",
+    "new": "Neu",
+    "new_password": "Neues Passwort:",
+    "paginate_first": "Erste Seite",
+    "paginate_next": "Nächste Seite",
+    "paginate_prev": "Vorherige Seite",
+    "search": "Suchen...",
+    "updated": "Die Änderungen wurden erfolgreich durchgeführt.",
+    "updated_at": "Aktualisiert am:",
+    "upload_document": "Dokument hochladen",
+    "upload_image": "Bild hochladen",
+    "view": "Ansehen",
+    "welcome": "Willkommen zurück!"
+  }
+}

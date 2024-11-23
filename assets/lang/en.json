@@ -1,0 +1,202 @@
+{
+  "error": {
+    "403": {
+      "default_message": "What are you trying to do?",
+      "default_title": "403: You shouldn't be here"
+    },
+    "404": {
+      "default_message": "Where are you going?!",
+      "default_resource": "We couldn't find the specified resource",
+      "default_title": "404: Whoops!",
+      "specific": {
+        "post": "We couldn't find the specified post.",
+        "role": "We couldn't find the specified role.",
+        "user": "We couldn't find the specified user."
+      }
+    },
+    "409": {
+      "defalt_message": "",
+      "default_title": "409: Conflict",
+      "session_expired": "The session expired, please log in again.",
+      "specific": {
+        "last_admin": "You are the last super-admin left!"
+      }
+    },
+    "422": {
+      "specific": {
+        "role_permissions": "The role must have, at least, one permission."
+      }
+    },
+    "invalid_token": "Login failed. Please try again.",
+    "fatal": "Something wrong happened. Try again later or contact the administrator.",
+    "validation": {
+      "confirm_password": "The passwords don't match",
+      "current_password": "Incorrect current password",
+      "email_404": "We regret to inform you that the email address you have provided does not appear to exist in our database.",
+      "reset_password": "We regret to inform you that your password could not be changed, as the time limit for doing so may have expired. We suggest requesting another password recovery email to proceed."
+    }
+  },
+  "modules": {
+    "users": {
+      "change_password": "Change password",
+      "created": "User created!",
+      "create": "Create user",
+      "delete": "Delete user",
+      "delete_warning": "Are you sure you want to delete this user? It cannot be undone.",
+      "deleted": "The user has been deleted.",
+      "email_verified": "The e-mail has been verified.",
+      "email_verified_failed": "The e-mail couldn't be verified.",
+      "email_verified_failed_text": "The link may have expired. Please try requesting another verification link.",
+      "fp_email_send": "Your password recovery email has been sent.",
+      "index": "View all users",
+      "list": "Users list",
+      "name": "User name:",
+      "password_changed": "The password was successfully changed.",
+      "read": "View user data",
+      "role": "Role:",
+      "role_default": "Select a role",
+      "role_select": "Select the user role:",
+      "title": "Users",
+      "update": "Update user data",
+      "update_self": "Update profile",
+      "user_info": "User information"
+    },
+    "roles": {
+      "create": "Create role",
+      "created": "Role created!",
+      "delete": "Delete role",
+      "delete_warning": "Are you sure you want to delete this role? It cannot be undone.",
+      "deleted": "The role has been deleted.",
+      "description": "Role description:",
+      "index": "View all roles",
+      "list": "Roles list",
+      "name": "Role name:",
+      "new_role": "NEW ROLE",
+      "others": "Others",
+      "read": "View role details",
+      "role_permissions": "Role permissions:",
+      "select_hierarchy": "Drag the role hierarchy (*)",
+      "select_permissions": "Select the role permissions",
+      "title": "Roles",
+      "update": "Update role data"
+    },
+    "services": {
+      "create": "Create service",
+      "created": "Service created!",
+      "delete": "Delete service",
+      "discount": "Service discount",
+      "tax": "Tax",
+      "delete_warning": "Are you sure you want to delete this service? It cannot be undone.",
+      "deleted": "The service has been deleted.",
+      "enable": "Enable",
+      "should_invoice": "Should invoice",
+      "index": "View all services",
+      "list": "Services list",
+      "name": "Service name:",
+      "new_service": "NEW SERVICE",
+      "others": "Others",
+      "read": "View service details",
+      "title": "Services",
+      "update": "Update service data"
+    },
+    "posts": {
+      "author": "Author:",
+      "banner": "Post banner",
+      "check_save_message": "You didn't save the post. Do you want to proceed?",
+      "check_save_ok": "Proceed without saving",
+      "check_save_title": "Warning",
+      "content": "Post content:",
+      "create": "Create posts",
+      "created": "Post created!",
+      "delete": "Delete post",
+      "deleted": "The post has been deleted.",
+      "delete_warning": "Are you sure you want to delete this post? It cannot be undone.",
+      "description": "Brief post description:",
+      "first": "Newest",
+      "index": "View posts",
+      "index_mine": "My posts",
+      "index_private": "Staff posts",
+      "no_recommendations": "No recommendations available",
+      "options": "Visibility options",
+      "post_title": "Post title:",
+      "previous": "Newer",
+      "private": "Post for staff only (private post)",
+      "read_more": "READ MODE...",
+      "recent": "Latest posts",
+      "recommended": "You should read:",
+      "replace_banner_message": "Are you sure you want to replace this post banner?",
+      "replace_banner_ok": "Replace",
+      "replace_banner_title": "Replace banner",
+      "tag_invisible": "Invisible",
+      "tag_private": "Private",
+      "tag_yours": "Yours",
+      "tags": {
+        "discard": "Discard search",
+        "no_tags": "This post doesn't have any tag",
+        "placeholder": "Add a tag and press enter",
+        "tags": "Tags:"
+      },
+      "title": "Posts",
+      "tools": "Creator options:",
+      "update": "Modify post",
+      "visible": "This post is visible"
+    },
+    "quotations": {
+      "big_quote": "QUOTE NOW",
+      "content": "Your message",
+      "create": "Make a quotation",
+      "created": "The quote has been sended",
+      "delete": "Delete a quote",
+      "deleted": "The quote has been deleted",
+      "delete_warning": "Are you sure you want to delete this quote? It cannot be undone.",
+      "form_name": "Your name",
+      "index": "View all quotations",
+      "list": "Quotations list",
+      "name": "Client name",
+      "phone": "Phone number:",
+      "request": "Request this service",
+      "subject": "Subject",
+      "title": "Quotations"
+    }
+  },
+  "forms": {
+    "confirm_password": "Confirm password:",
+    "current_password": "Current password:",
+    "email": "E-mail:",
+    "file_upload": "Select a file",
+    "file_uploaded": "File uploaded successfully!",
+    "forgot_password": "I forgot my password",
+    "password": "Password:",
+    "reset_password": "Reset password",
+    "submit": "Submit"
+  },
+  "general": {
+    "action": "Action",
+    "cancel": "Cancel",
+    "created_at": "Created at:",
+    "data_changed": "The changes were made successfully.",
+    "default_description": "No description available.",
+    "delete": "Delete",
+    "home": "Home",
+    "id": "ID",
+    "locales": "Language",
+    "loading": "Loading...",
+    "login": "Log in",
+    "logout": "Log out",
+    "member_since": "Member since:",
+    "message": "Message",
+    "name": "Name",
+    "new": "New",
+    "new_password": "New password:",
+    "paginate_first": "First page",
+    "paginate_next": "Next page",
+    "paginate_prev": "Previous page",
+    "search": "Search...",
+    "updated": "The changes were made successfully.",
+    "updated_at": "Updated at:",
+    "upload_document": "Upload a document",
+    "upload_image": "Upload an image",
+    "view": "View",
+    "welcome": "Welcome back!"
+  }
+}

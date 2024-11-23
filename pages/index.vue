@@ -3,7 +3,7 @@
 <template>
   <section class="flex justify-center py-8">
     <Card class="">
-      <template #title> Main </template>
+      <template #title> {{ $t('error.403.default_message') }} </template>
     </Card>
   </section>
 </template>
