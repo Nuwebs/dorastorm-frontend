@@ -8,7 +8,11 @@ import {
 export default defineNuxtConfig({
   ssr: false,
   imports: {
-    autoImport: false
+    autoImport: false,
+    scan: false
+  },
+  components: {
+    dirs: []
   },
 
   compatibilityDate: '2024-04-03',
