@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Button } from 'primevue';
+
 interface Props {
   icon: string;
   aLabel: string;

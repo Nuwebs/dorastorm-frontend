@@ -7,6 +7,10 @@ import {
 
 export default defineNuxtConfig({
   ssr: false,
+  imports: {
+    autoImport: false
+  },
+
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   modules: [
