@@ -5,9 +5,14 @@
 </script>
 
 <template>
-  <TheGuestNavbar></TheGuestNavbar>
   <main>
-    <slot></slot>
+    <header>
+      <TheGuestNavbar />
+    </header>
+
+    <section role="main">
+      <slot />
+    </section>
   </main>
 </template>
 
