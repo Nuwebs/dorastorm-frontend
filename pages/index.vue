@@ -4,6 +4,7 @@ import { Card, Button } from 'primevue';
 import { useForm } from 'vee-validate';
 import { object, string } from 'zod';
 import FormText from '~/components/forms/FormText.vue';
+import useAuthStore from '~/stores/auth-store';
 
 const validations = toTypedSchema(
   object({
@@ -11,13 +12,18 @@ const validations = toTypedSchema(
     password: string().min(1)
   })
 );
+const authStore = useAuthStore();
 
-const { isSubmitting, handleSubmit } = useForm({
+const { isSubmitting, handleSubmit, setFieldError } = useForm({
   validationSchema: validations
 });
 
-const submit = handleSubmit((payload) => {
-  alert(JSON.stringify(payload));
+const submit = handleSubmit(async (payload) => {
+  const logged = await authStore.login(payload);
+  if (!logged) {
+    setFieldError('email', 'Error'); // Todo: change
+  }
+  console.log('Logged');
 });
 </script>
 

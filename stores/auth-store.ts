@@ -1,13 +1,15 @@
-// import { getUserInfo } from "~/services/auth-service";
-import ExpiredTokenException from "~/exceptions/ExpiredTokenException";
-import InvalidTokenException from "~/exceptions/InvalidTokenException";
-import * as AuthService from "~/services/auth-service";
-import type { Permission } from "~/services/permission-service";
-import type { DefaultLoginCredentials, JWTResponse } from "~/types/auth";
-import type { LaravelErrorBag } from "~/types/dorastorm";
-import type { User } from "~/types/user";
+import { ref, computed } from 'vue';
+import ExpiredTokenException from '~/exceptions/ExpiredTokenException';
+import InvalidTokenException from '~/exceptions/InvalidTokenException';
+import * as AuthService from '~/services/auth-service';
+import type { Permission } from '~/services/permission-service';
+import type { DefaultLoginCredentials, JWTResponse } from '~/types/auth';
+import type { LaravelErrorBag } from '~/types/dorastorm';
+import type { User } from '~/types/user';
+import { defineStore } from '#imports';
+import apiFetch from '~/utils/api-fetch';
 
-const useAuthStore = defineStore("authStore", () => {
+const useAuthStore = defineStore('authStore', () => {
   const user = ref<User | null>(null);
   const token = ref<string | null>(null);
   const expiresEpoch = ref<number>(-1);
@@ -67,15 +69,15 @@ const useAuthStore = defineStore("authStore", () => {
    */
   async function refreshToken(): Promise<void> {
     const { data, error } = await apiFetch<JWTResponse>({
-      endpoint: AuthService.AUTH_ENDPOINT.REFRESH,
+      endpoint: AuthService.AUTH_ENDPOINT.REFRESH
     });
     if (error) {
       AuthService.cleanSavedKeys();
       $reset();
       if (error.statusCode && error.statusCode === 409) {
-        throw new ExpiredTokenException("");
+        throw new ExpiredTokenException('');
       }
-      throw new InvalidTokenException("");
+      throw new InvalidTokenException('');
     }
     token.value = data!.accessToken;
     expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
@@ -86,9 +88,9 @@ const useAuthStore = defineStore("authStore", () => {
   /**
    * Retrieves user information from the server and updates the auth store.
    */
-  async function getUserInfo(): Promise<void | LaravelErrorBag> {
+  async function getUserInfo(): Promise<LaravelErrorBag | void> {
     const { data, error } = await apiFetch<User, LaravelErrorBag>({
-      endpoint: AuthService.AUTH_ENDPOINT.LOGGED_USER_INFO,
+      endpoint: AuthService.AUTH_ENDPOINT.LOGGED_USER_INFO
     });
     if (error) {
       return error;
@@ -106,11 +108,12 @@ const useAuthStore = defineStore("authStore", () => {
       endpoint: AuthService.AUTH_ENDPOINT.LOGIN,
       auth: false,
       options: {
-        method: "post",
-        body: credentials,
-      },
+        method: 'post',
+        body: credentials
+      }
     });
     if (error) {
+      console.error('There was an error trying to log in.');
       return false;
     }
     token.value = data!.accessToken;
@@ -144,8 +147,8 @@ const useAuthStore = defineStore("authStore", () => {
     const { error } = await apiFetch<void, LaravelErrorBag>({
       endpoint: AuthService.AUTH_ENDPOINT.LOGOUT,
       options: {
-        method: "post",
-      },
+        method: 'post'
+      }
     });
 
     resetAndClean();
@@ -211,7 +214,7 @@ const useAuthStore = defineStore("authStore", () => {
     refreshToken,
     login,
     logout,
-    loadUserData,
+    loadUserData
   };
 });
 

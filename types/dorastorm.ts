@@ -1,9 +1,8 @@
-import type { RouteLocationNormalized } from "vue-router";
-import { FetchError } from "ofetch/node";
-import type { Permission } from "~/services/permission-service";
+import type { RouteLocationNormalized } from 'vue-router';
+import type { Permission } from '~/services/permission-service';
 
 export interface DsRouteMeta extends RouteLocationNormalized {
-  meta: RouteLocationNormalized["meta"] & {
+  meta: RouteLocationNormalized['meta'] & {
     strictPermissions?: boolean;
     permissions?: Permission[];
   };
