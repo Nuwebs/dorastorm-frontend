@@ -1,8 +1,33 @@
+<script setup lang="ts">
+import { onMounted, watch } from 'vue';
+import { Toast, useToast } from 'primevue';
+import useExternalToastStore from './stores/external-toast-store';
+import { useI18n } from '#imports';
+
+const toastStore = useExternalToastStore();
+const toast = useToast();
+const { t } = useI18n();
+
+function renderComposablesToast() {
+  toastStore.processToasts(toast.add, t);
+}
+
+onMounted(() => {
+  renderComposablesToast();
+});
+
+watch(toastStore._toasts, () => {
+  renderComposablesToast();
+});
+</script>
+
 <template>
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <Toast />
 </template>
+
 <style>
 .main-section {
   min-height: 88vh;
