@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import { toTypedSchema } from '@vee-validate/zod';
 import { Card, Button } from 'primevue';
 import { useForm } from 'vee-validate';
@@ -6,13 +7,19 @@ import { object, string } from 'zod';
 import FormText from '~/components/forms/FormText.vue';
 import useAuthStore from '~/stores/auth-store';
 
+definePageMeta({
+  middleware: ['guest-guard']
+});
+
+const authStore = useAuthStore();
+const lp = useLocalePath();
+
 const validations = toTypedSchema(
   object({
     email: string().email().min(1),
     password: string().min(1)
   })
 );
-const authStore = useAuthStore();
 
 const { isSubmitting, handleSubmit, setFieldError } = useForm({
   validationSchema: validations
@@ -23,7 +30,8 @@ const submit = handleSubmit(async (payload) => {
   if (!logged) {
     setFieldError('email', 'Error'); // Todo: change
   }
-  console.log('Logged');
+
+  navigateTo(lp('/home'));
 });
 </script>
 
