@@ -11,7 +11,7 @@ import TheGuestNavbar from '~/components/TheGuestNavbar.vue';
       <TheGuestNavbar />
     </header>
 
-    <section role="main">
+    <section role="main" class="main-section">
       <slot />
     </section>
   </main>
