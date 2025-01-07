@@ -47,3 +47,13 @@ export function availableLocales(): Locale[] {
     name
   }));
 }
+
+/**
+ * ZOD
+ * DS4F uses Zod with the Nuxt ZodI18n module. It requires a map of the locales to the LocaleCode
+ */
+export const ZOD_LOCALES_MAP: { [key: string]: LocaleCode } = {
+  'en-GB': 'en',
+  'es-ES': 'es',
+  'de-DE': 'de'
+} as const;

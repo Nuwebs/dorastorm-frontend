@@ -16,6 +16,7 @@
     "@primevue/themes": "^4.2.1",
     "@vee-validate/zod": "^4.14.7",
     "nuxt": "^3.13.2",
+    "nuxt-zod-i18n": "^1.11.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.1",
     "tailwindcss-primeui": "^0.3.4",

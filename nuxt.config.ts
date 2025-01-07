@@ -2,7 +2,8 @@ import Aura from '@primevue/themes/aura';
 import {
   availableLocales,
   DEFAULT_LOCALE,
-  STRATEGY
+  STRATEGY,
+  ZOD_LOCALES_MAP
 } from './services/i18n-service';
 
 export default defineNuxtConfig({
@@ -20,6 +21,7 @@ export default defineNuxtConfig({
   modules: [
     '@primevue/nuxt-module',
     '@pinia/nuxt',
+    'nuxt-zod-i18n',
     '@nuxtjs/i18n',
     '@nuxt/eslint'
   ],
@@ -38,6 +40,9 @@ export default defineNuxtConfig({
       redirectOn: 'root',
       alwaysRedirect: true
     }
+  },
+  zodI18n: {
+    localeCodesMapping: ZOD_LOCALES_MAP
   },
 
   primevue: {
