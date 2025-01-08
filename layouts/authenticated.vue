@@ -9,7 +9,7 @@ import TheAuthenticatedSidebar from '~/components/TheAuthenticatedSidebar.vue';
     <section class="flex-1 flex flex-col" role="main">
       <TheAuthenticatedNavbar />
 
-      <section class="flex-1 p-2">
+      <section class="flex-1 p-2 overflow-y-auto">
         <slot />
       </section>
     </section>
