@@ -8,6 +8,9 @@ import type { DsMenuItem } from '~/types/menu';
 
 type SidebarStatus = 'collapsed' | 'expanded';
 
+defineProps<{
+  menu: DsMenuItem[];
+}>();
 const emit = defineEmits<{
   collapseStatusChange: [status: SidebarStatus];
 }>();
@@ -36,54 +39,6 @@ async function logout(): Promise<void> {
 
   loggingOut.value = false;
 }
-
-const test: DsMenuItem[] = [
-  {
-    label: 'Dashboard',
-    to: '/home',
-    icon: 'pi pi-home'
-  },
-  {
-    label: 'Settings',
-    icon: 'pi pi-cog',
-    items: [
-      { label: 'Test', to: '/test', icon: 'pi pi-user' },
-      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
-    ]
-  },
-  {
-    label: 'Settings 2',
-    icon: 'pi pi-cog',
-    items: [
-      { label: 'Test', to: '/test', icon: 'pi pi-user' },
-      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
-    ]
-  },
-  {
-    label: 'Settings 3',
-    icon: 'pi pi-cog',
-    items: [
-      { label: 'Test', to: '/test', icon: 'pi pi-user' },
-      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
-    ]
-  },
-  {
-    label: 'Settings 4',
-    icon: 'pi pi-cog',
-    items: [
-      { label: 'Test', to: '/test', icon: 'pi pi-user' },
-      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
-    ]
-  },
-  {
-    label: 'Settings 5',
-    icon: 'pi pi-cog',
-    items: [
-      { label: 'Test', to: '/test', icon: 'pi pi-user' },
-      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
-    ]
-  }
-];
 </script>
 
 <template>
@@ -112,7 +67,7 @@ const test: DsMenuItem[] = [
     <section class="flex-1 overflow-y-auto">
       <slot name="sidebarContent">
         <SidebarItemList
-          :menu="test"
+          :menu="menu"
           :collapsed="isSidebarCollapsed"
           @expand-sidebar="toggleSidebarStatus('expanded')"
         />

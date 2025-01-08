@@ -7,7 +7,10 @@ definePageMeta({
 </script>
 
 <template>
-  <div>Page: home</div>
+  <div>
+    <div class="h-screen bg-red-500">aa</div>
+    <div class="h-screen bg-blue-500">ab</div>
+  </div>
 </template>
 
 <style scoped></style>
