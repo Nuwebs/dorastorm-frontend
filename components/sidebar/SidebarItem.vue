@@ -47,7 +47,7 @@ function handleItemClick(): void {
     >
       <NuxtLink :to="item.to" class="flex items-center">
         <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />
-        <span v-if="!collapsed">{{ item.name }}</span>
+        <span v-if="!collapsed">{{ item.label }}</span>
       </NuxtLink>
       <div v-if="item.items && !collapsed" :class="{ 'ml-2': !collapsed }">
         <i

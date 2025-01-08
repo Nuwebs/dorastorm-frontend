@@ -39,48 +39,48 @@ async function logout(): Promise<void> {
 
 const test: DsMenuItem[] = [
   {
-    name: 'Dashboard',
+    label: 'Dashboard',
     to: '/home',
     icon: 'pi pi-home'
   },
   {
-    name: 'Settings',
+    label: 'Settings',
     icon: 'pi pi-cog',
     items: [
-      { name: 'Test', to: '/test', icon: 'pi pi-user' },
-      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+      { label: 'Test', to: '/test', icon: 'pi pi-user' },
+      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
     ]
   },
   {
-    name: 'Settings 2',
+    label: 'Settings 2',
     icon: 'pi pi-cog',
     items: [
-      { name: 'Test', to: '/test', icon: 'pi pi-user' },
-      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+      { label: 'Test', to: '/test', icon: 'pi pi-user' },
+      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
     ]
   },
   {
-    name: 'Settings 3',
+    label: 'Settings 3',
     icon: 'pi pi-cog',
     items: [
-      { name: 'Test', to: '/test', icon: 'pi pi-user' },
-      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+      { label: 'Test', to: '/test', icon: 'pi pi-user' },
+      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
     ]
   },
   {
-    name: 'Settings 4',
+    label: 'Settings 4',
     icon: 'pi pi-cog',
     items: [
-      { name: 'Test', to: '/test', icon: 'pi pi-user' },
-      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+      { label: 'Test', to: '/test', icon: 'pi pi-user' },
+      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
     ]
   },
   {
-    name: 'Settings 5',
+    label: 'Settings 5',
     icon: 'pi pi-cog',
     items: [
-      { name: 'Test', to: '/test', icon: 'pi pi-user' },
-      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+      { label: 'Test', to: '/test', icon: 'pi pi-user' },
+      { label: 'Level 3', icon: 'pi pi-key', items: [{ label: 'Last' }] }
     ]
   }
 ];

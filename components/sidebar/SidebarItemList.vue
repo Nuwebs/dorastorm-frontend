@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 <template>
   <ul>
-    <li v-for="item in menu" :key="item.name">
+    <li v-for="(item, index) in menu" :key="`sb-${item.label}-${index}`">
       <SidebarItem
         :item="item"
         :collapsed="collapsed"
