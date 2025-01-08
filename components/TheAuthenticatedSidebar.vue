@@ -98,29 +98,30 @@ const test: DsMenuItem[] = [
       :user="authStore.user"
       :sidebar-status-toggle-callback="toggleSidebarStatus"
     >
-      <div
-        class="w-full flex items-center h-20 border-b border-gray-500 p-3"
+      <header
+        class="h-20 w-full flex items-center border-b border-gray-500 p-3"
         :class="{ 'justify-center': isSidebarCollapsed }"
       >
         <div v-if="!isSidebarCollapsed" class="mr-auto">
           {{ authStore.user?.name }}
         </div>
         <Button icon="pi pi-bars" plain @click="handleToggleButton" />
-      </div>
+      </header>
     </slot>
 
-    <slot name="sidebarContent">
-      <SidebarItemList
-        :menu="test"
-        :collapsed="isSidebarCollapsed"
-        class="overflow-y-auto"
-        @expand-sidebar="toggleSidebarStatus('expanded')"
-      />
-    </slot>
+    <section class="flex-1 overflow-y-auto">
+      <slot name="sidebarContent">
+        <SidebarItemList
+          :menu="test"
+          :collapsed="isSidebarCollapsed"
+          @expand-sidebar="toggleSidebarStatus('expanded')"
+        />
+      </slot>
+    </section>
 
     <div class="mt-auto">
       <slot name="sidebarFooter">
-        <div
+        <footer
           class="w-full flex items-center cursor-pointer px-3 py-4 border-t border-gray-500"
           :class="{ 'justify-center': isSidebarCollapsed }"
           @click="logout"
@@ -129,7 +130,7 @@ const test: DsMenuItem[] = [
           <i
             :class="`pi ${loggingOut ? 'pi-spin pi-spinner' : 'pi-sign-out'}`"
           />
-        </div>
+        </footer>
       </slot>
     </div>
   </aside>

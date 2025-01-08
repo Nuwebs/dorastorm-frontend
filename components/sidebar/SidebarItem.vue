@@ -42,7 +42,7 @@ function handleItemClick(): void {
     <div
       :class="`flex items-center p-4 cursor-pointer ${
         collapsed ? 'justify-center' : 'justify-between'
-      }`"
+      } ${isOpen ? 'bg-highlight-emphasis' : 'hover:bg-emphasis'}`"
       @click="handleItemClick"
     >
       <NuxtLink :to="item.to" class="flex items-center">
