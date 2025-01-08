@@ -5,6 +5,7 @@ import TheAuthenticatedMobileBar from '~/components/TheAuthenticatedMobileBar.vu
 import useWindowWidth from '~/composables/useWindowWidth';
 import type { DsMenuItem } from '~/types/menu';
 
+const MOBILE_BP: number = 992;
 const { width } = useWindowWidth();
 
 const testMenu: DsMenuItem[] = [
@@ -57,16 +58,20 @@ const testMenu: DsMenuItem[] = [
 </script>
 
 <template>
-  <main class="flex h-screen">
-    <TheAuthenticatedSidebar v-if="width >= 992" :menu="testMenu" />
-    <section class="flex-1 flex flex-col" role="main">
+  <main class="flex h-screen w-screen">
+    <TheAuthenticatedSidebar v-if="width >= MOBILE_BP" :menu="testMenu" />
+    <section class="flex-1 flex flex-col max-w-full" role="main">
       <TheAuthenticatedNavbar />
 
       <section class="flex-1 p-2 overflow-y-auto">
         <slot />
       </section>
 
-      <TheAuthenticatedMobileBar :menu="testMenu" />
+      <TheAuthenticatedMobileBar
+        v-if="width < MOBILE_BP"
+        :menu="testMenu"
+        class="w-full overflow-x-auto"
+      />
     </section>
   </main>
 </template>

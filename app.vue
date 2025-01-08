@@ -32,4 +32,8 @@ watch(toastStore._toasts, () => {
 .main-section {
   min-height: 88vh;
 }
+
+.mobilebar-drawer-h {
+  min-height: 20rem;
+}
 </style>
