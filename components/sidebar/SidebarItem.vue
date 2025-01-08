@@ -19,13 +19,19 @@ const isAccordionOpen = computed<boolean>(
   () => !props.collapsed && isOpen.value
 );
 
+/**
+ * The handler currently only needs to do something if the item have subitems.
+ * This is because even when the sidebar is collapsed the behavior is the same (navigate to the destination)
+ * If the item has subitems, we need to check if the sidebar is collapsed and change the behaviour based on that.
+ */
 function handleItemClick(): void {
+  if (!props.item.items) return;
+
   if (props.collapsed) {
-    // Expand sidebar first
     emit('expandSidebar');
-  } else if (props.item.items) {
-    // Toggle accordion
-    isOpen.value = !isOpen.value;
+    isOpen.value = true;
+  } else {
+    isOpen.value = !isOpen.value; // Toggle accordion
   }
 }
 </script>
