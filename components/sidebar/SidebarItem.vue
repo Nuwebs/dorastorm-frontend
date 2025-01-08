@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed } from 'vue';
 import SidebarItemList from './SidebarItemList.vue';
 import type { DsMenuItem } from '~/types/menu';
 
@@ -9,17 +9,18 @@ const props = defineProps<{
 }>();
 
 // State of the accordion
-const isOpen = ref(false);
+const isOpen = ref<boolean>(false);
 
-const toggleAccordion = () => {
-  isOpen.value = !isOpen.value;
-};
+// Derived state: Determines whether the accordion should be open
+const isAccordionOpen = computed<boolean>(
+  () => !props.collapsed && isOpen.value
+);
 
-watch(props, (newValue, _) => {
-  if (newValue.collapsed) {
-    isOpen.value = false;
+function toggleAccordion(): void {
+  if (!props.collapsed) {
+    isOpen.value = !isOpen.value;
   }
-});
+}
 </script>
 
 <template>
@@ -31,20 +32,15 @@ watch(props, (newValue, _) => {
       }`"
       @click="item.items ? toggleAccordion() : null"
     >
-      <div class="flex items-center">
+      <NuxtLink :to="item.to" class="flex items-center">
         <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />
-        <template v-if="!collapsed">
-          <NuxtLink v-if="item.to" :to="item.to">
-            {{ item.name }}
-          </NuxtLink>
-          <span v-else>{{ item.name }}</span>
-        </template>
-      </div>
+        <span v-if="!collapsed">{{ item.name }}</span>
+      </NuxtLink>
       <div v-if="item.items && !collapsed" :class="{ 'ml-2': !collapsed }">
         <i
           :class="{
-            'rotate-90': isOpen,
-            'rotate-0': !isOpen
+            'rotate-90': isAccordionOpen,
+            'rotate-0': !isAccordionOpen
           }"
           class="transition-transform pi pi-angle-right"
         />
@@ -52,7 +48,10 @@ watch(props, (newValue, _) => {
     </div>
 
     <!-- Subitems (accordion) -->
-    <div v-if="item.items && isOpen" class="ml-8 border-l border-gray-700">
+    <div
+      v-if="item.items && isAccordionOpen"
+      class="ml-8 border-l border-gray-700"
+    >
       <SidebarItemList :menu="item.items" :collapsed="collapsed" />
     </div>
   </div>

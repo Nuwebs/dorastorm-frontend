@@ -52,6 +52,30 @@ const test: DsMenuItem[] = [
       { name: 'Test', to: '/test', icon: 'pi pi-user' },
       { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
     ]
+  },
+  {
+    name: 'Settings 3',
+    icon: 'pi pi-cog',
+    items: [
+      { name: 'Test', to: '/test', icon: 'pi pi-user' },
+      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+    ]
+  },
+  {
+    name: 'Settings 4',
+    icon: 'pi pi-cog',
+    items: [
+      { name: 'Test', to: '/test', icon: 'pi pi-user' },
+      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+    ]
+  },
+  {
+    name: 'Settings 5',
+    icon: 'pi pi-cog',
+    items: [
+      { name: 'Test', to: '/test', icon: 'pi pi-user' },
+      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+    ]
   }
 ];
 </script>
@@ -80,7 +104,11 @@ const test: DsMenuItem[] = [
     </slot>
 
     <slot name="sidebarContent">
-      <SidebarItemList :menu="test" :collapsed="isSidebarCollapsed" />
+      <SidebarItemList
+        :menu="test"
+        :collapsed="isSidebarCollapsed"
+        class="overflow-y-auto"
+      />
     </slot>
 
     <div class="mt-auto">
