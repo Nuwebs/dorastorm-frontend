@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import TheAuthenticatedNavbar from '~/components/TheAuthenticatedNavbar.vue';
 import TheAuthenticatedSidebar from '~/components/TheAuthenticatedSidebar.vue';
-
-const collapsed = ref<boolean>(false);
 </script>
 
 <template>
   <main class="flex h-screen">
-    <TheAuthenticatedSidebar :is-sidebar-collapsed="collapsed" />
+    <TheAuthenticatedSidebar />
     <section class="flex-1 flex flex-col" role="main">
       <TheAuthenticatedNavbar />
 

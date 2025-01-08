@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import { navigateTo } from '#app';
-import { useLocalePath } from '#imports';
-import { Button } from 'primevue';
 import { ref } from 'vue';
+import { Button } from 'primevue';
 import useAuthStore from '~/stores/auth-store';
-
-defineProps<{
-  isSidebarCollapsed: boolean;
-}>();
+import SidebarItemList from './sidebar/SidebarItemList.vue';
+import { useLocalePath, navigateTo } from '#imports';
+import type { DsMenuItem } from '~/types/menu';
 
 const emit = defineEmits<{
-  sidebarButtonClicked: [];
+  collapseStatusChange: [status: 'collapsed' | 'full'];
 }>();
 
 const authStore = useAuthStore();
 const lp = useLocalePath();
+
+const isSidebarCollapsed = ref<boolean>(false);
 const loggingOut = ref<boolean>(false);
+
+function triggerCollapse(): void {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  emit('collapseStatusChange', isSidebarCollapsed.value ? 'collapsed' : 'full');
+}
 
 async function logout(): Promise<void> {
   if (loggingOut.value) return;
@@ -26,6 +30,30 @@ async function logout(): Promise<void> {
 
   loggingOut.value = false;
 }
+
+const test: DsMenuItem[] = [
+  {
+    name: 'Dashboard',
+    to: '/home',
+    icon: 'pi pi-home'
+  },
+  {
+    name: 'Settings',
+    icon: 'pi pi-cog',
+    items: [
+      { name: 'Test', to: '/test', icon: 'pi pi-user' },
+      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+    ]
+  },
+  {
+    name: 'Settings 2',
+    icon: 'pi pi-cog',
+    items: [
+      { name: 'Test', to: '/test', icon: 'pi pi-user' },
+      { name: 'Level 3', icon: 'pi pi-key', items: [{ name: 'Last' }] }
+    ]
+  }
+];
 </script>
 
 <template>
@@ -35,22 +63,34 @@ async function logout(): Promise<void> {
       isSidebarCollapsed ? 'w-16' : 'w-64'
     ]"
   >
-    <slot name="sidebarHeader" :user="authStore.user">
-      <div class="w-full flex items-center h-20 border-b border-gray-500 p-3">
-        <div class="mr-auto">
+    <slot
+      name="sidebarHeader"
+      :user="authStore.user"
+      :collapse-callback="triggerCollapse"
+    >
+      <div
+        class="w-full flex items-center h-20 border-b border-gray-500 p-3"
+        :class="{ 'justify-center': isSidebarCollapsed }"
+      >
+        <div v-if="!isSidebarCollapsed" class="mr-auto">
           {{ authStore.user?.name }}
         </div>
-        <Button icon="pi pi-bars" plain @click="emit('sidebarButtonClicked')" />
+        <Button icon="pi pi-bars" plain @click="triggerCollapse" />
       </div>
+    </slot>
+
+    <slot name="sidebarContent">
+      <SidebarItemList :menu="test" :collapsed="isSidebarCollapsed" />
     </slot>
 
     <div class="mt-auto">
       <slot name="sidebarFooter">
         <div
           class="w-full flex items-center cursor-pointer px-3 py-4 border-t border-gray-500"
+          :class="{ 'justify-center': isSidebarCollapsed }"
           @click="logout"
         >
-          <div class="mr-auto">Cerrar sesión</div>
+          <div v-if="!isSidebarCollapsed" class="mr-auto">Cerrar sesión</div>
           <i
             :class="`pi ${loggingOut ? 'pi-spin pi-spinner' : 'pi-sign-out'}`"
           />
