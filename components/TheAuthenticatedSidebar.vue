@@ -126,7 +126,9 @@ const test: DsMenuItem[] = [
           :class="{ 'justify-center': isSidebarCollapsed }"
           @click="logout"
         >
-          <div v-if="!isSidebarCollapsed" class="mr-auto">Cerrar sesión</div>
+          <div v-if="!isSidebarCollapsed" class="mr-auto">
+            {{ $t('general.logout') }}
+          </div>
           <i
             :class="`pi ${loggingOut ? 'pi-spin pi-spinner' : 'pi-sign-out'}`"
           />
