@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware((to: DsRouteMeta, _: DsRouteMeta) => {
     return navigateTo(lp('/'));
   }
   if (!to.meta.layout) {
-    setPageLayout('logged-in');
+    setPageLayout('authenticated');
   }
   if (!to.meta.permissions) {
     return;
