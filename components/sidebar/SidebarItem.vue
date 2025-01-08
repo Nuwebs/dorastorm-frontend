@@ -7,6 +7,9 @@ const props = defineProps<{
   item: DsMenuItem;
   collapsed: boolean;
 }>();
+const emit = defineEmits<{
+  expandSidebar: [];
+}>();
 
 // State of the accordion
 const isOpen = ref<boolean>(false);
@@ -16,8 +19,12 @@ const isAccordionOpen = computed<boolean>(
   () => !props.collapsed && isOpen.value
 );
 
-function toggleAccordion(): void {
-  if (!props.collapsed) {
+function handleItemClick(): void {
+  if (props.collapsed) {
+    // Expand sidebar first
+    emit('expandSidebar');
+  } else if (props.item.items) {
+    // Toggle accordion
     isOpen.value = !isOpen.value;
   }
 }
@@ -30,7 +37,7 @@ function toggleAccordion(): void {
       :class="`flex items-center p-4 cursor-pointer ${
         collapsed ? 'justify-center' : 'justify-between'
       }`"
-      @click="item.items ? toggleAccordion() : null"
+      @click="handleItemClick"
     >
       <NuxtLink :to="item.to" class="flex items-center">
         <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />

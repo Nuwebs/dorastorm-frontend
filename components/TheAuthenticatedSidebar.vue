@@ -6,8 +6,10 @@ import SidebarItemList from './sidebar/SidebarItemList.vue';
 import { useLocalePath, navigateTo } from '#imports';
 import type { DsMenuItem } from '~/types/menu';
 
+type SidebarStatus = 'collapsed' | 'expanded';
+
 const emit = defineEmits<{
-  collapseStatusChange: [status: 'collapsed' | 'full'];
+  collapseStatusChange: [status: SidebarStatus];
 }>();
 
 const authStore = useAuthStore();
@@ -16,9 +18,13 @@ const lp = useLocalePath();
 const isSidebarCollapsed = ref<boolean>(false);
 const loggingOut = ref<boolean>(false);
 
-function triggerCollapse(): void {
-  isSidebarCollapsed.value = !isSidebarCollapsed.value;
-  emit('collapseStatusChange', isSidebarCollapsed.value ? 'collapsed' : 'full');
+function toggleSidebarStatus(status: SidebarStatus): void {
+  isSidebarCollapsed.value = status === 'collapsed';
+  emit('collapseStatusChange', status);
+}
+
+function handleToggleButton(): void {
+  toggleSidebarStatus(isSidebarCollapsed.value ? 'expanded' : 'collapsed');
 }
 
 async function logout(): Promise<void> {
@@ -90,7 +96,7 @@ const test: DsMenuItem[] = [
     <slot
       name="sidebarHeader"
       :user="authStore.user"
-      :collapse-callback="triggerCollapse"
+      :sidebar-status-toggle-callback="toggleSidebarStatus"
     >
       <div
         class="w-full flex items-center h-20 border-b border-gray-500 p-3"
@@ -99,7 +105,7 @@ const test: DsMenuItem[] = [
         <div v-if="!isSidebarCollapsed" class="mr-auto">
           {{ authStore.user?.name }}
         </div>
-        <Button icon="pi pi-bars" plain @click="triggerCollapse" />
+        <Button icon="pi pi-bars" plain @click="handleToggleButton" />
       </div>
     </slot>
 
@@ -108,6 +114,7 @@ const test: DsMenuItem[] = [
         :menu="test"
         :collapsed="isSidebarCollapsed"
         class="overflow-y-auto"
+        @expand-sidebar="toggleSidebarStatus('expanded')"
       />
     </slot>
 
