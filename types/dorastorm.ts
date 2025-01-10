@@ -17,7 +17,7 @@ export interface LaravelValidationErrorBag<T> extends LaravelErrorBag {
   errors: Partial<Record<keyof T, string[]>>;
 }
 
-export interface PaginationWrapper<DataT> {
+export interface LaravelPaginationWrapper<DataT> {
   data: DataT[];
   meta: {
     current_page: number;
