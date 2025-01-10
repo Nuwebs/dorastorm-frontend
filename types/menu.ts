@@ -3,6 +3,6 @@ import type { Permission } from '~/services/permission-service';
 
 export type DsMenuItem = MenuItem & {
   to?: string;
-  permissions?: Permission[] | Permission[];
+  permissions?: Permission | Permission[];
   items?: DsMenuItem[];
 };
