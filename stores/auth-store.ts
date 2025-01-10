@@ -2,7 +2,12 @@ import { ref, computed } from 'vue';
 import ExpiredTokenException from '~/exceptions/ExpiredTokenException';
 import InvalidTokenException from '~/exceptions/InvalidTokenException';
 import * as AuthService from '~/services/auth-service';
-import type { Permission } from '~/services/permission-service';
+import {
+  areAllPermissionsInArray,
+  isAnyPermissionInArray,
+  isPermissionInArray,
+  type Permission
+} from '~/services/permission-service';
 import type { DefaultLoginCredentials, JWTResponse } from '~/types/auth';
 import type { LaravelErrorBag } from '~/types/dorastorm';
 import type { User } from '~/types/user';
@@ -39,28 +44,21 @@ const useAuthStore = defineStore('authStore', () => {
     if (!user.value) {
       return false;
     }
-    return user.value.role.permissions.includes(permission);
+    return isPermissionInArray(permission, user.value.role.permissions);
   }
 
   function hasAnyPermission(permissions: Permission[]): boolean {
     if (!user.value) {
       return false;
     }
-    return user.value.role.permissions.some((permission) =>
-      permissions.includes(permission)
-    );
+    return isAnyPermissionInArray(permissions, user.value.role.permissions);
   }
 
-  function hasEveryPermissions(permissions: Permission[]): boolean {
+  function hasAllPermissions(permissions: Permission[]): boolean {
     if (!user.value) {
       return false;
     }
-    for (const permission of permissions) {
-      if (!hasPermission(permission)) {
-        return false;
-      }
-    }
-    return true;
+    return areAllPermissionsInArray(permissions, user.value.role.permissions);
   }
 
   /**
@@ -207,7 +205,7 @@ const useAuthStore = defineStore('authStore', () => {
     getUserRoleHierarchy,
     hasPermission,
     hasAnyPermission,
-    hasEveryPermissions,
+    hasAllPermissions,
 
     refreshUserData,
 
