@@ -15,6 +15,7 @@
     "@pinia/nuxt": "^0.6.1",
     "@primevue/themes": "^4.2.1",
     "@vee-validate/zod": "^4.14.7",
+    "@vortechron/query-builder-ts": "^1.2.0",
     "nuxt": "^3.13.2",
     "nuxt-zod-i18n": "^1.11.4",
     "primeicons": "^7.0.0",
