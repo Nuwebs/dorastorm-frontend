@@ -14,9 +14,6 @@ export type Permission = (typeof PERMISSION)[keyof typeof PERMISSION];
 
 /**
  * Returns true if the Permission is included in the permissions array
- * @param permissionToCheck
- * @param permissionsArray
- * @returns
  */
 export function isPermissionInArray(
   permissionToCheck: Permission,
@@ -27,9 +24,6 @@ export function isPermissionInArray(
 
 /**
  * Returns true if ar least one permission inside permissions to check is included the permissions array
- * @param permissionsToCheck
- * @param permissionsArray
- * @returns
  */
 export function isAnyPermissionInArray(
   permissionsToCheck: Permission[],
@@ -42,9 +36,6 @@ export function isAnyPermissionInArray(
 
 /**
  * Returns true if all permissions inside the permissions to check array are included in the permissions array
- * @param permissionsToCheck
- * @param permissionsArray
- * @returns
  */
 export function areAllPermissionsInArray(
   permissionsToCheck: Permission[],
