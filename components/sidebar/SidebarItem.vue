@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import SidebarItemList from './SidebarItemList.vue';
-import type { DsMenuItem } from '~/types/menu';
+import type { MenuItem } from 'primevue/menuitem';
 
 const props = defineProps<{
-  item: DsMenuItem;
+  item: MenuItem;
   collapsed: boolean;
 }>();
 const emit = defineEmits<{

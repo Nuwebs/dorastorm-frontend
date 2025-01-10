@@ -4,12 +4,12 @@ import { Button } from 'primevue';
 import useAuthStore from '~/stores/auth-store';
 import SidebarItemList from './sidebar/SidebarItemList.vue';
 import { useLocalePath, navigateTo } from '#imports';
-import type { DsMenuItem } from '~/types/menu';
+import type { MenuItem } from 'primevue/menuitem';
 
 type SidebarStatus = 'collapsed' | 'expanded';
 
 defineProps<{
-  menu: DsMenuItem[];
+  menu: MenuItem[];
 }>();
 const emit = defineEmits<{
   collapseStatusChange: [status: SidebarStatus];

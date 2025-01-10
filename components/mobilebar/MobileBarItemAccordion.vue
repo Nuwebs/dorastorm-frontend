@@ -5,10 +5,10 @@ import {
   AccordionHeader,
   AccordionContent
 } from 'primevue';
-import type { DsMenuItem } from '~/types/menu';
+import type { MenuItem } from 'primevue/menuitem';
 
 defineProps<{
-  item: DsMenuItem;
+  item: MenuItem;
 }>();
 
 const emit = defineEmits<{

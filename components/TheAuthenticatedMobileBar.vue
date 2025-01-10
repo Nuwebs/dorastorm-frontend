@@ -2,16 +2,16 @@
 import { ref } from 'vue';
 import { Drawer } from 'primevue';
 import MobileBarItemAccordion from './mobilebar/MobileBarItemAccordion.vue';
-import type { DsMenuItem } from '~/types/menu';
+import type { MenuItem } from 'primevue/menuitem';
 
 defineProps<{
-  menu: DsMenuItem[];
+  menu: MenuItem[];
 }>();
 
 const drawerVisible = ref<boolean>(false);
-const selectedItem = ref<DsMenuItem | null>(null);
+const selectedItem = ref<MenuItem | null>(null);
 
-function handleClick(item: DsMenuItem): void {
+function handleClick(item: MenuItem): void {
   if (!item.items) return;
 
   selectedItem.value = item;
