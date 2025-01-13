@@ -1,3 +1,4 @@
+import type { DataTableFilterMetaData } from 'primevue';
 import type { RouteLocationNormalized } from 'vue-router';
 import type { Permission } from '~/services/permission-service';
 
@@ -29,3 +30,6 @@ export interface LaravelPaginationWrapper<DataT> {
     total: number;
   };
 }
+
+// PrimeVue Related
+export type FilterObject = Record<string, DataTableFilterMetaData>;
