@@ -1,4 +1,5 @@
-import type { UseFetchOptions } from "#app";
+import type { UseFetchOptions } from '#app';
+import type { FetchError } from 'ofetch/node';
 
 interface BaseApiFetch {
   endpoint: string;
@@ -7,7 +8,7 @@ interface BaseApiFetch {
 
 export type UtilFetchOptions<ResponseT> = Omit<
   UseFetchOptions<ResponseT>,
-  "key" | "watch" | "$fetch"
+  'key' | 'watch' | '$fetch'
 >;
 
 export interface ApiFetchUtil<ResponseT> extends BaseApiFetch {
@@ -16,4 +17,9 @@ export interface ApiFetchUtil<ResponseT> extends BaseApiFetch {
 
 export interface ApiFetchComposable<ResponseT> extends BaseApiFetch {
   options?: UseFetchOptions<ResponseT>;
+}
+
+export interface FetchedResponse<ResponseT, ErrorT> {
+  data: ResponseT | null;
+  error: FetchError<ErrorT> | null;
 }

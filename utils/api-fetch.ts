@@ -1,13 +1,8 @@
 import { navigateTo } from '#app';
+import type { ApiFetchUtil, FetchedResponse } from '~/types/fetch';
 import type { FetchError } from 'ofetch/node';
-import type { ApiFetchUtil } from '~/types/fetch';
 import { utilOptions } from './api-fetch-options';
 import useAuthStore from '~/stores/auth-store';
-
-interface FetchedResponse<ResponseT, ErrorT> {
-  data: ResponseT | null;
-  error: FetchError<ErrorT> | null;
-}
 
 async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   endpoint,
