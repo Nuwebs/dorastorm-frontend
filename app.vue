@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { Toast, useToast } from 'primevue';
+import { Toast, useToast, ConfirmDialog } from 'primevue';
 import useExternalToastStore from './stores/external-toast-store';
 import { useI18n } from '#imports';
 
@@ -26,6 +26,7 @@ watch(toastStore._toasts, () => {
     <NuxtPage />
   </NuxtLayout>
   <Toast />
+  <ConfirmDialog />
 </template>
 
 <style>
