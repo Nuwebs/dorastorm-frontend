@@ -11,11 +11,7 @@ export type GenericServiceQuery<ServiceEndpoint = unknown> = Omit<
 export interface ModelService<ServiceEndpoint = unknown, Model = unknown> {
   query(): GenericServiceQuery<ServiceEndpoint>;
 
-  findById?<ErrorT = unknown>(
-    modelId: number
-  ): Promise<FetchedResponse<Model, ErrorT>>;
+  findById?(modelId: number): Promise<FetchedResponse<Model, unknown>>;
 
-  deleteById?<ReturnT = unknown, ErrorT = unknown>(
-    modelId: number
-  ): Promise<FetchedResponse<ReturnT, ErrorT>>;
+  deleteById?(modelId: number): Promise<FetchedResponse<unknown, unknown>>;
 }

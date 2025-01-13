@@ -27,11 +27,18 @@ export class UserService implements ModelService<UserEndpoint, User> {
     });
   }
 
-  public findById<ErrorT = unknown>(
-    modelId: number
-  ): Promise<FetchedResponse<User, ErrorT>> {
-    return apiFetch<User, ErrorT>({
+  public findById(modelId: number): Promise<FetchedResponse<User, unknown>> {
+    return apiFetch<User, unknown>({
       endpoint: this.endpoint + `/${modelId}`
+    });
+  }
+
+  public deleteById(modelId: number): Promise<FetchedResponse<void, null>> {
+    return apiFetch<void, null>({
+      endpoint: this.endpoint + `/${modelId}`,
+      options: {
+        method: 'DELETE'
+      }
     });
   }
 }
