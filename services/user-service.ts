@@ -1,7 +1,9 @@
 import { QueryBuilder } from '@vortechron/query-builder-ts';
+import type { LaravelValidationErrorBag } from '~/types/dorastorm';
 import type { FetchedResponse } from '~/types/fetch';
+import type { Role } from '~/types/role';
 import type { GenericServiceQuery, ModelService } from '~/types/service';
-import type { User } from '~/types/user';
+import type { NewUserFromAdmin, User } from '~/types/user';
 import apiFetch from '~/utils/api-fetch';
 
 const USER_ENDPOINT = '/users' as const;
@@ -38,6 +40,26 @@ export class UserService implements ModelService<UserEndpoint, User> {
       endpoint: this.endpoint + `/${modelId}`,
       options: {
         method: 'DELETE'
+      }
+    });
+  }
+
+  public getRolesBelow(): Promise<FetchedResponse<Role[], unknown>> {
+    return apiFetch<Role[], unknown>({
+      endpoint: this.endpoint + '/roles-below'
+    });
+  }
+
+  public create(
+    payload: NewUserFromAdmin
+  ): Promise<
+    FetchedResponse<User, LaravelValidationErrorBag<NewUserFromAdmin>>
+  > {
+    return apiFetch<User, LaravelValidationErrorBag<NewUserFromAdmin>>({
+      endpoint: this.endpoint,
+      options: {
+        method: 'POST',
+        body: payload
       }
     });
   }

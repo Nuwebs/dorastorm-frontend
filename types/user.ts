@@ -1,4 +1,4 @@
-import type { Role } from "./role";
+import type { Role } from './role';
 
 export interface NewUser {
   name: string;
@@ -7,8 +7,12 @@ export interface NewUser {
   password_confirmation: string;
 }
 
+export interface NewUserFromAdmin extends NewUser {
+  role_id: number;
+}
+
 export interface BaseUser
-  extends Omit<NewUser, "password" | "password_confirmation"> {
+  extends Omit<NewUser, 'password' | 'password_confirmation'> {
   id: number;
   created_at: string;
 }
