@@ -4,7 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { Card, Button } from 'primevue';
 import { useForm } from 'vee-validate';
 import { object, string } from 'zod';
-import FormText from '~/components/forms/FormText.vue';
+import FormText from '~/components/form/FormText.vue';
 import useAuthStore from '~/stores/auth-store';
 
 definePageMeta({
