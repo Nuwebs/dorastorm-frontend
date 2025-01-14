@@ -11,14 +11,8 @@ type UserEndpoint = typeof USER_ENDPOINT;
 type UserServiceQuery = GenericServiceQuery<UserEndpoint>;
 
 export class UserService implements ModelService<UserEndpoint, User> {
-  private endpoint: string;
-
-  constructor() {
-    this.endpoint = USER_ENDPOINT;
-  }
-
   public query() {
-    return new QueryBuilder(this.endpoint) as UserServiceQuery;
+    return new QueryBuilder(USER_ENDPOINT) as UserServiceQuery;
   }
 
   public async index(customQuery?: UserServiceQuery) {
@@ -31,13 +25,13 @@ export class UserService implements ModelService<UserEndpoint, User> {
 
   public findById(modelId: number): Promise<FetchedResponse<User, unknown>> {
     return apiFetch<User, unknown>({
-      endpoint: this.endpoint + `/${modelId}`
+      endpoint: USER_ENDPOINT + `/${modelId}`
     });
   }
 
   public deleteById(modelId: number): Promise<FetchedResponse<void, null>> {
     return apiFetch<void, null>({
-      endpoint: this.endpoint + `/${modelId}`,
+      endpoint: USER_ENDPOINT + `/${modelId}`,
       options: {
         method: 'DELETE'
       }
@@ -46,7 +40,7 @@ export class UserService implements ModelService<UserEndpoint, User> {
 
   public getRolesBelow(): Promise<FetchedResponse<Role[], unknown>> {
     return apiFetch<Role[], unknown>({
-      endpoint: this.endpoint + '/roles-below'
+      endpoint: USER_ENDPOINT + '/roles-below'
     });
   }
 
@@ -56,7 +50,7 @@ export class UserService implements ModelService<UserEndpoint, User> {
     FetchedResponse<User, LaravelValidationErrorBag<NewUserFromAdmin>>
   > {
     return apiFetch<User, LaravelValidationErrorBag<NewUserFromAdmin>>({
-      endpoint: this.endpoint,
+      endpoint: USER_ENDPOINT,
       options: {
         method: 'POST',
         body: payload
