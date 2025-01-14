@@ -3,7 +3,7 @@ import type { LaravelValidationErrorBag } from '~/types/dorastorm';
 import type { FetchedResponse } from '~/types/fetch';
 import type { Role } from '~/types/role';
 import type { GenericServiceQuery, ModelService } from '~/types/service';
-import type { NewUserFromAdmin, User } from '~/types/user';
+import type { NewUserFromAdmin, UpdateUser, User } from '~/types/user';
 import apiFetch from '~/utils/api-fetch';
 
 const USER_ENDPOINT = '/users' as const;
@@ -53,6 +53,19 @@ export class UserService implements ModelService<UserEndpoint, User> {
       endpoint: USER_ENDPOINT,
       options: {
         method: 'POST',
+        body: payload
+      }
+    });
+  }
+
+  public update(
+    modelId: number,
+    payload: UpdateUser
+  ): Promise<FetchedResponse<User, LaravelValidationErrorBag<UpdateUser>>> {
+    return apiFetch<User, LaravelValidationErrorBag<NewUserFromAdmin>>({
+      endpoint: USER_ENDPOINT + `/${modelId}`,
+      options: {
+        method: 'PATCH',
         body: payload
       }
     });

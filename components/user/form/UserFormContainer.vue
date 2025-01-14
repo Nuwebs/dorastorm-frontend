@@ -55,9 +55,12 @@ const validationSchema = object({
   ...(includeRoleFields && ROLE_FIELD)
 });
 
-let formInitialData: BaseUser | undefined = undefined;
+let formInitialData: (BaseUser & { role_id: number }) | undefined = undefined;
 if (props.initialData) {
-  formInitialData = { ...props.initialData };
+  formInitialData = {
+    ...props.initialData,
+    role_id: props.initialData.role.id
+  };
 }
 
 const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({

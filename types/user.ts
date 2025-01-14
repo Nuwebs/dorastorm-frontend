@@ -11,6 +11,11 @@ export interface NewUserFromAdmin extends NewUser {
   role_id: number;
 }
 
+export type UpdateUser = Omit<
+  NewUserFromAdmin,
+  'password' | 'password_confirmation'
+>;
+
 export interface BaseUser
   extends Omit<NewUser, 'password' | 'password_confirmation'> {
   id: number;
