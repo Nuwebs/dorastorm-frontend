@@ -8,6 +8,7 @@ import {
 
 export default defineNuxtConfig({
   ssr: false,
+  spaLoadingTemplate: true,
   imports: {
     autoImport: false,
     scan: false

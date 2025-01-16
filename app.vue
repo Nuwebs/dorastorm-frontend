@@ -22,6 +22,7 @@ watch(toastStore._toasts, () => {
 </script>
 
 <template>
+  <NuxtLoadingIndicator />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
