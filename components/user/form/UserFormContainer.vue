@@ -108,7 +108,16 @@ const submit = handleSubmit(async (payload) => {
     <UserFormBasicFields />
     <UserFormPassword v-if="includePasswordFields" />
     <UserFormRole v-if="includeRoleFields" />
-    <Button type="submit" :loading="isSubmitting" label="Crear" class="mt-3" />
+    <Button
+      type="submit"
+      :loading="isSubmitting"
+      :label="
+        mode === MODE.UPDATE
+          ? $t('modules.users.update')
+          : $t('modules.users.create')
+      "
+      class="mt-3"
+    />
   </form>
 </template>
 
