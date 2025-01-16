@@ -83,7 +83,6 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
 });
 
 const submit = handleSubmit(async (payload) => {
-  console.log(props.submitHandler);
   const { data, error } = await props.submitHandler(payload);
   const typedError = error as FetchError<
     LaravelValidationErrorBag<typeof payload>

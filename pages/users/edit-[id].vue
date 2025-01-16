@@ -2,7 +2,8 @@
 import { createError, definePageMeta, useI18n, useRoute } from '#imports';
 import { UserService } from '~/services/user-service';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
-import type { UpdateUser } from '~/types/user';
+import type { UpdateUser, User } from '~/types/user';
+import useAuthStore from '~/stores/auth-store';
 
 definePageMeta({
   middleware: ['auth-guard']
@@ -10,6 +11,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const route = useRoute();
+const authStore = useAuthStore();
 
 const userService = new UserService();
 
@@ -26,6 +28,12 @@ if (error || data === null) {
 async function submitHandler(payload: UpdateUser) {
   return userService.update(Number(route.params.id), payload);
 }
+
+function handleSuccess(user: User): void {
+  if (user.id === authStore.user?.id) {
+    authStore.user = user;
+  }
+}
 </script>
 
 <template>
@@ -33,6 +41,7 @@ async function submitHandler(payload: UpdateUser) {
     mode="update"
     :initial-data="data"
     :submit-handler="submitHandler"
+    @success="(payload) => handleSuccess(payload as User)"
   />
 </template>
 
