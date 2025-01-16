@@ -97,10 +97,11 @@ onMounted(async () => {
           </div>
         </div>
       </template>
-      <template #expansion>
-        <p>main</p>
+      <!-- Use this commented code if you will require extra information -->
+      <!-- <template #expansion="{ data }: { data: User }">
+        
       </template>
-      <Column expander />
+      <Column expander /> -->
       <Column field="id" :header="$t('general.id')" />
       <Column field="name" :header="$t('modules.users.name')" />
       <Column field="role.name" :header="$t('modules.users.role')" />
