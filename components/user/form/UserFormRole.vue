@@ -22,7 +22,7 @@ onMounted(async () => {
 <template>
   <FormSelect
     name="role_id"
-    label="Rol"
+    :label="$t('modules.users.role')"
     :options="roles"
     option-value="id"
     option-label="name"

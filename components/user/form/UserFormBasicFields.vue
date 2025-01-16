@@ -4,8 +4,8 @@ import FormText from '~/components/form/FormText.vue';
 
 <template>
   <div>
-    <FormText name="name" label="Nombre" type="text" />
-    <FormText name="email" label="Email" type="email" />
+    <FormText name="name" :label="$t('modules.users.name')" type="text" />
+    <FormText name="email" :label="$t('forms.email')" type="email" />
   </div>
 </template>
 

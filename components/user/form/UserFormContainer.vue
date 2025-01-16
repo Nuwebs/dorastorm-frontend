@@ -17,6 +17,7 @@ import type { BaseUser, User } from '~/types/user';
 import type { FetchedResponse } from '~/types/fetch';
 import type { FetchError } from 'ofetch/node';
 import type { LaravelValidationErrorBag } from '~/types/dorastorm';
+import { useI18n } from '#imports';
 
 /**
  * Basic
@@ -43,6 +44,8 @@ const emit = defineEmits<{
   success: [data: unknown];
   error: [error: FetchError<LaravelValidationErrorBag<unknown>>];
 }>();
+
+const { t } = useI18n();
 
 const { userCan } = useCachedPermissions([PERMISSION.USERS_UPDATE]);
 const includePasswordFields = props.mode !== MODE.UPDATE;
@@ -71,7 +74,7 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
       : validationSchema.refine(
           (data) => data.password === data.password_confirmation,
           {
-            message: 'Las contraseñas no funcan',
+            message: t('error.validation.confirm_password'),
             path: ['password_confirmation']
           }
         )

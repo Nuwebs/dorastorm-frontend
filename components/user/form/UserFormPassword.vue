@@ -4,10 +4,10 @@ import FormText from '~/components/form/FormText.vue';
 
 <template>
   <div>
-    <FormText name="password" label="Contraseña" type="password" />
+    <FormText name="password" :label="$t('forms.password')" type="password" />
     <FormText
       name="password_confirmation"
-      label="Confirmar contraseña"
+      :label="$t('forms.confirm_password')"
       type="password"
     />
   </div>
