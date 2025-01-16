@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useConfirm, useI18n } from '#imports';
-import { ref } from 'vue';
 
 const props = defineProps<{
-  deletionCallback(): Promise<boolean>;
+  loading?: boolean;
   confirmDialog: {
     header: string;
     message: string;
   };
 }>();
+const emit = defineEmits<{
+  deletionConfirmed: [];
+  deletionCanceled: [];
+}>();
 
-const loading = ref<boolean>(false);
 const confirm = useConfirm();
 const { t } = useI18n();
 
@@ -23,14 +25,9 @@ function showConfirmDialog(): void {
     acceptIcon: 'pi pi-trash',
     acceptLabel: t('general.delete'),
     rejectLabel: t('general.cancel'),
-    accept: () => handleDelete()
+    accept: () => emit('deletionConfirmed'),
+    reject: () => emit('deletionCanceled')
   });
-}
-
-async function handleDelete(): Promise<void> {
-  loading.value = true;
-  await props.deletionCallback();
-  loading.value = false;
 }
 </script>
 
