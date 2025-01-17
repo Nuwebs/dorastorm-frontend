@@ -1,3 +1,5 @@
+import type { RolePermissionGroup } from '~/types/role';
+
 export const PERMISSION = {
   USERS_CREATE: 'users-create',
   USERS_READ: 'users-read',
@@ -47,4 +49,26 @@ export function areAllPermissionsInArray(
     }
   }
   return true;
+}
+
+export function getPermissionsGroups(permissions: Permission[]) {
+  return permissions.reduce(
+    (acc: RolePermissionGroup[], permission: Permission) => {
+      const module = permission.split('-')[0];
+      const existingModule = acc.find(
+        (m: RolePermissionGroup) => m.module === module
+      );
+
+      if (existingModule) {
+        existingModule.permissions.push(permission);
+      } else {
+        acc.push({
+          module,
+          permissions: [permission]
+        });
+      }
+      return acc;
+    },
+    []
+  );
 }
