@@ -24,6 +24,7 @@ function handleSuccess(): void {
 <template>
   <UserFormContainer
     mode="admin"
+    class="container"
     :submit-handler="uS.create"
     @success="handleSuccess"
   />

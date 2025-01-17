@@ -53,6 +53,7 @@ function handleSuccess(user: User): void {
     mode="update"
     :initial-data="data"
     :submit-handler="submitHandler"
+    class="container"
     @success="(payload) => handleSuccess(payload as User)"
   />
 </template>

@@ -68,7 +68,7 @@ const submit = handleSubmit(async (payload) => {
 </script>
 
 <template>
-  <form @submit="submit">
+  <form class="container" @submit="submit">
     <FormText
       name="current_password"
       :label="$t('forms.current_password')"
