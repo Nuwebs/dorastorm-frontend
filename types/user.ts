@@ -25,3 +25,9 @@ export interface BaseUser
 export interface User extends BaseUser {
   role: Role;
 }
+
+export interface ChangeUserPassword {
+  password: string;
+  password_confirmation: string;
+  current_password: string;
+}

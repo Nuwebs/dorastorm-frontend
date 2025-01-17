@@ -21,6 +21,11 @@ export default function useAuthenticatedContextMenu() {
         label: t('modules.users.update_self'),
         icon: 'pi pi-pencil',
         command: () => navigateTo(lp(`/users/edit-${user?.id}`))
+      },
+      {
+        label: t('modules.users.change_password'),
+        icon: 'pi pi-key',
+        command: () => navigateTo(lp(`/users/change-password`))
       }
     ];
   });
