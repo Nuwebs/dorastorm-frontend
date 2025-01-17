@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { createError, definePageMeta, useI18n, useRoute } from '#imports';
+import {
+  createError,
+  definePageMeta,
+  useI18n,
+  useRoute,
+  useToast
+} from '#imports';
 import { UserService } from '~/services/user-service';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
 import type { UpdateUser, User } from '~/types/user';
@@ -11,6 +17,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const route = useRoute();
+const toast = useToast();
 const authStore = useAuthStore();
 
 const userService = new UserService();
@@ -33,6 +40,11 @@ function handleSuccess(user: User): void {
   if (user.id === authStore.user?.id) {
     authStore.user = user;
   }
+  toast.add({
+    severity: 'success',
+    detail: t('general.updated'),
+    life: 10000
+  });
 }
 </script>
 
