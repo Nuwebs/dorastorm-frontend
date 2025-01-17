@@ -58,7 +58,7 @@ export class UserService implements ModelService<UserEndpoint, User> {
     });
   }
 
-  public update(
+  public updateById(
     modelId: number,
     payload: UpdateUser
   ): Promise<FetchedResponse<User, LaravelValidationErrorBag<UpdateUser>>> {

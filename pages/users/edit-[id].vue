@@ -26,7 +26,7 @@ if (error || data === null) {
 }
 
 async function submitHandler(payload: UpdateUser) {
-  return userService.update(Number(route.params.id), payload);
+  return userService.updateById(Number(route.params.id), payload);
 }
 
 function handleSuccess(user: User): void {
