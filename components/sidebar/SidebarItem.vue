@@ -45,10 +45,10 @@ function handleItemClick(): void {
       } ${isOpen ? 'bg-highlight-emphasis' : 'hover:bg-emphasis'}`"
       @click="handleItemClick"
     >
-      <NuxtLink :to="item.to" class="flex items-center">
+      <NuxtLinkLocale :to="item.to" class="flex items-center">
         <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />
         <span v-if="!collapsed">{{ item.label }}</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
       <div v-if="item.items && !collapsed" :class="{ 'ml-2': !collapsed }">
         <i
           :class="{
