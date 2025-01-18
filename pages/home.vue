@@ -8,8 +8,8 @@ definePageMeta({
 
 <template>
   <div>
-    <div class="h-screen bg-red-500">aa</div>
-    <div class="h-screen bg-blue-500">ab</div>
+    <div class="h-screen bg-red-500">Demo content RED</div>
+    <div class="h-screen bg-blue-500">Demo content BLUE</div>
   </div>
 </template>
 

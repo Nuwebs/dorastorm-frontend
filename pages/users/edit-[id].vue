@@ -49,13 +49,15 @@ function handleSuccess(user: User): void {
 </script>
 
 <template>
-  <UserFormContainer
-    mode="update"
-    :initial-data="data"
-    :submit-handler="submitHandler"
-    class="container"
-    @success="(payload) => handleSuccess(payload as User)"
-  />
+  <section class="container">
+    <h1>{{ $t('modules.users.update') }}</h1>
+    <UserFormContainer
+      mode="update"
+      :initial-data="data"
+      :submit-handler="submitHandler"
+      @success="(payload) => handleSuccess(payload as User)"
+    />
+  </section>
 </template>
 
 <style scoped></style>

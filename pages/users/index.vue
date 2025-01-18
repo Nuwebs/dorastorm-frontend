@@ -59,9 +59,7 @@ onMounted(async () => {
 </script>
 <template>
   <section class="container">
-    <h1 class="mt-0">
-      {{ $t('modules.users.list') }}
-    </h1>
+    <h1>{{ $t('modules.users.list') }}</h1>
     <DataTable
       v-model:expanded-rows="expanded"
       v-model:filters="filters"

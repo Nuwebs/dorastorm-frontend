@@ -62,7 +62,14 @@ async function submitHandler(): Promise<boolean> {
 </script>
 
 <template>
-  <RoleFormContainer v-model="data" updating :submit-handler="submitHandler" />
+  <section class="container">
+    <h1>{{ $t('modules.roles.create') }}</h1>
+    <RoleFormContainer
+      v-model="data"
+      updating
+      :submit-handler="submitHandler"
+    />
+  </section>
 </template>
 
 <style scoped></style>

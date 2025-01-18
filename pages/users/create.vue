@@ -22,12 +22,14 @@ function handleSuccess(): void {
 </script>
 
 <template>
-  <UserFormContainer
-    mode="admin"
-    class="container"
-    :submit-handler="uS.create"
-    @success="handleSuccess"
-  />
+  <section class="container">
+    <h1>{{ $t('modules.users.create') }}</h1>
+    <UserFormContainer
+      mode="admin"
+      :submit-handler="uS.create"
+      @success="handleSuccess"
+    />
+  </section>
 </template>
 
 <style scoped></style>

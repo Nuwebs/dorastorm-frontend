@@ -69,6 +69,7 @@ const submit = handleSubmit(async (payload) => {
 
 <template>
   <form class="container" @submit="submit">
+    <h1>{{ $t('modules.users.change_password') }}</h1>
     <FormText
       name="current_password"
       :label="$t('forms.current_password')"

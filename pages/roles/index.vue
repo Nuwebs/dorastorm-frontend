@@ -60,7 +60,7 @@ onMounted(async () => {
 </script>
 <template>
   <section class="container">
-    <h1 class="mt-0">
+    <h1>
       {{ $t('modules.roles.list') }}
     </h1>
     <DataTable
