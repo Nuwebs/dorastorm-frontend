@@ -108,7 +108,14 @@ onMounted(async () => {
       <Column field="email" :header="$t('forms.email')" />
       <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
         <template #body="{ data }: { data: User }">
-          <UserDeleteButton :user="data" @deleted="handleUserDeleted" />
+          <UserDeleteButton
+            v-if="
+              userCan(PERMISSION.USERS_UPDATE) &&
+              roleCan(data.role.hierarchy, true)
+            "
+            :user="data"
+            @deleted="handleUserDeleted"
+          />
           <ButtonActionUpdate
             v-if="
               userCan(PERMISSION.USERS_UPDATE) &&
