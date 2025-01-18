@@ -22,4 +22,29 @@ export class RoleService implements ModelService<RoleEndpoint, Role> {
       }
     });
   }
+
+  public findById(modelId: number) {
+    return apiFetch<Role, unknown>({
+      endpoint: ROLE_ENDPOINT + `/${modelId}`
+    });
+  }
+
+  public updateById(modelId: number, payload: NewRole) {
+    return apiFetch<Role, LaravelValidationErrorBag<NewRole>>({
+      endpoint: ROLE_ENDPOINT + `/${modelId}`,
+      options: {
+        method: 'PATCH',
+        body: payload
+      }
+    });
+  }
+
+  public deleteById(modelId: number) {
+    return apiFetch<void, null>({
+      endpoint: ROLE_ENDPOINT + `/${modelId}`,
+      options: {
+        method: 'DELETE'
+      }
+    });
+  }
 }
