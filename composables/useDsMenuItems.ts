@@ -1,11 +1,9 @@
-import { computed, ref } from 'vue';
 import useAuthStore from '~/stores/auth-store';
 import type { Permission } from '~/services/permission-service';
 import type { MenuItem } from 'primevue/menuitem';
 import type { DsMenuItem } from '~/types/menu';
 
-export default function useDsMenuItems(items: DsMenuItem[]) {
-  const dsMenuItems = ref<DsMenuItem[]>(items);
+export default function useDsMenuItems() {
   const { hasPermission, hasAnyPermission } = useAuthStore();
 
   function processMenuItems(
@@ -42,12 +40,12 @@ export default function useDsMenuItems(items: DsMenuItem[]) {
     }, []);
   }
 
-  const processed = computed<MenuItem[]>(() => {
-    return processMenuItems(dsMenuItems.value, hasPermission, hasAnyPermission);
-  });
+  function parse(items: DsMenuItem[]) {
+    return processMenuItems(items, hasPermission, hasAnyPermission);
+  }
 
   return {
-    processed,
-    processMenuItems
+    parse,
+    parser: processMenuItems
   };
 }

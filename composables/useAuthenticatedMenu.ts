@@ -1,13 +1,13 @@
 import { computed } from 'vue';
 import { useI18n } from '#imports';
-import type { DsMenuItem } from '~/types/menu';
 import useDsMenuItems from './useDsMenuItems';
 import { PERMISSION } from '~/services/permission-service';
 
 export default function useAuthenticatedMenu() {
   const { t } = useI18n();
+  const { parse } = useDsMenuItems();
 
-  const raw = computed<DsMenuItem[]>(() => {
+  const raw = computed(() => {
     return [
       {
         label: t('modules.users.title'),
@@ -60,7 +60,10 @@ export default function useAuthenticatedMenu() {
     ];
   });
 
-  const { processed } = useDsMenuItems(raw.value);
+  // Use `raw` in `useDsMenuItems` and recompute when `raw` changes
+  const processed = computed(() => {
+    return parse(raw.value);
+  });
 
   return {
     raw,
