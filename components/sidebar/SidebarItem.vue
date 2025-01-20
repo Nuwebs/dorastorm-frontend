@@ -39,16 +39,17 @@ function handleItemClick(): void {
 <template>
   <div>
     <!-- Main item -->
-    <div
+    <NuxtLinkLocale
+      :to="item.items ? undefined : item.to"
       :class="`flex items-center p-4 cursor-pointer ${
         collapsed ? 'justify-center' : 'justify-between'
       } ${isOpen ? 'bg-highlight-emphasis' : 'hover:bg-emphasis'}`"
       @click="handleItemClick"
     >
-      <NuxtLinkLocale :to="item.to" class="flex items-center">
+      <div class="flex items-center">
         <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />
         <span v-if="!collapsed">{{ item.label }}</span>
-      </NuxtLinkLocale>
+      </div>
       <div v-if="item.items && !collapsed" :class="{ 'ml-2': !collapsed }">
         <i
           :class="{
@@ -58,7 +59,7 @@ function handleItemClick(): void {
           class="transition-transform pi pi-angle-right"
         />
       </div>
-    </div>
+    </NuxtLinkLocale>
 
     <!-- Subitems (accordion) -->
     <div
