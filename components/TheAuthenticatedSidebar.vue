@@ -44,7 +44,7 @@ async function logout(): Promise<void> {
 <template>
   <aside
     :class="[
-      'bg-surface-100 border-r border-gray-500 flex flex-col transition-all duration-300',
+      'border-r border-gray-500 flex flex-col transition-all duration-300',
       isSidebarCollapsed ? 'w-16' : 'w-64'
     ]"
   >

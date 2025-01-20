@@ -9,10 +9,7 @@ defineProps<{
 
 <template>
   <nav class="h-20 z-10 border-b border-gray-500">
-    <Menubar
-      class="py-4 px-5 h-full rounded-none border-none bg-surface-100"
-      :model="content"
-    >
+    <Menubar class="py-4 px-5 h-full rounded-none border-none" :model="content">
       <template #start>
         <div class="flex align-items-center">
           <slot name="start">
