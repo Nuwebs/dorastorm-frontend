@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { DataTable, type DataTablePageEvent } from 'primevue';
+import Button from 'primevue/button';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
+import { ref } from 'vue';
 import { definePageMeta, onMounted } from '#imports';
-import { PERMISSION } from '~/services/permission-service';
+import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
+import RoleDataRow from '~/components/role/RoleDataRow.vue';
+import RoleDeleteButton from '~/components/role/RoleDeleteButton.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import useLaravelLazyPagination from '~/composables/useLaravelLazyPagination';
-import RoleDataRow from '~/components/role/RoleDataRow.vue';
-import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
-import RoleDeleteButton from '~/components/role/RoleDeleteButton.vue';
-import type { Role } from '~/types/role';
+import { PERMISSION } from '~/services/permission-service';
 import { RoleService } from '~/services/role-service';
+import type { Role } from '~/types/role';
 
 definePageMeta({
   middleware: ['auth-guard'],

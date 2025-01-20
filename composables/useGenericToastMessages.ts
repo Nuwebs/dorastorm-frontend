@@ -1,5 +1,5 @@
-import { useI18n } from '#imports';
 import type { ToastMessageOptions } from 'primevue';
+import { useI18n } from '#imports';
 
 export default function useGenericToastMessages() {
   const { t } = useI18n();

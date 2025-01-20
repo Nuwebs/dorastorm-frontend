@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { DsMenuItem } from '~/types/menu';
 import SidebarItem from './SidebarItem.vue';
+import type { DsMenuItem } from '~/types/menu';
 
 defineProps<{
   menu: DsMenuItem[];

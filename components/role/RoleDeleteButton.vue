@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import ButtonActionDelete from '../button/action/ButtonActionDelete.vue';
 import { useI18n, useToast } from '#imports';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
-import type { Role } from '~/types/role';
 import { RoleService } from '~/services/role-service';
+import type { Role } from '~/types/role';
 
 const props = defineProps<{
   role: Role;

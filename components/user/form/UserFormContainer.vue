@@ -1,23 +1,23 @@
 <script setup lang="ts">
+import { toTypedSchema } from '@vee-validate/zod';
+import type { FetchError } from 'ofetch/node';
 import { Button } from 'primevue';
+import { useForm } from 'vee-validate';
+import { object } from 'zod';
+import { useI18n } from '#imports';
 import UserFormBasicFields from '~/components/user/form/UserFormBasicFields.vue';
 import UserFormPassword from '~/components/user/form/UserFormPassword.vue';
 import UserFormRole from '~/components/user/form/UserFormRole.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import { PERMISSION } from '~/services/permission-service';
-import { object } from 'zod';
+import type { LaravelValidationErrorBag } from '~/types/dorastorm';
+import type { FetchedResponse } from '~/types/fetch';
+import type { BaseUser, User } from '~/types/user';
 import {
   BASIC_FIELDS,
   PASSWORDS_FIELDS,
   ROLE_FIELD
 } from '~/utils/schemas/user';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
-import type { BaseUser, User } from '~/types/user';
-import type { FetchedResponse } from '~/types/fetch';
-import type { FetchError } from 'ofetch/node';
-import type { LaravelValidationErrorBag } from '~/types/dorastorm';
-import { useI18n } from '#imports';
 
 /**
  * Basic

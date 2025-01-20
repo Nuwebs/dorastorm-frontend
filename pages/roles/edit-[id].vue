@@ -6,10 +6,10 @@ import {
   useRoute,
   useToast
 } from '#imports';
-import { PERMISSION } from '~/services/permission-service';
-import { RoleService } from '~/services/role-service';
 import RoleFormContainer from '~/components/role/form/RoleFormContainer.vue';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { PERMISSION } from '~/services/permission-service';
+import { RoleService } from '~/services/role-service';
 
 definePageMeta({
   middleware: ['auth-guard'],

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import NavbarButtonBase from './NavbarButtonBase.vue';
 import { ContextMenu } from 'primevue';
 import type { MenuItem } from 'primevue/menuitem';
+import { ref } from 'vue';
+import NavbarButtonBase from './NavbarButtonBase.vue';
 
 interface Props {
   options: MenuItem[];

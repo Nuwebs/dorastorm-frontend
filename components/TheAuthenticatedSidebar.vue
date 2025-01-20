@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Button } from 'primevue';
-import useAuthStore from '~/stores/auth-store';
+import type { MenuItem } from 'primevue/menuitem';
+import { ref } from 'vue';
 import SidebarItemList from './sidebar/SidebarItemList.vue';
 import { useLocalePath, navigateTo } from '#imports';
-import type { MenuItem } from 'primevue/menuitem';
+import useAuthStore from '~/stores/auth-store';
 
 type SidebarStatus = 'collapsed' | 'expanded';
 

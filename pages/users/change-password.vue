@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { definePageMeta, useI18n, useToast } from '#imports';
-import { useForm } from 'vee-validate';
-import { UserService } from '~/services/user-service';
-import { object, string } from 'zod';
-import { PASSWORDS_FIELDS } from '~/utils/schemas/user';
-import UserFormPassword from '~/components/user/form/UserFormPassword.vue';
-import FormText from '~/components/form/FormText.vue';
+import { toTypedSchema } from '@vee-validate/zod';
 import { Button } from 'primevue';
+import { useForm } from 'vee-validate';
+import { object, string } from 'zod';
+import { definePageMeta, useI18n, useToast } from '#imports';
+import FormText from '~/components/form/FormText.vue';
+import UserFormPassword from '~/components/user/form/UserFormPassword.vue';
+import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { UserService } from '~/services/user-service';
 import useAuthStore from '~/stores/auth-store';
 import type { ChangeUserPassword } from '~/types/user';
-import { toTypedSchema } from '@vee-validate/zod';
-import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { PASSWORDS_FIELDS } from '~/utils/schemas/user';
 
 definePageMeta({
   middleware: ['auth-guard']

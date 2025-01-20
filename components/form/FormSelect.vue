@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T = number, OptionsT = number">
-import { useField, ErrorMessage } from 'vee-validate';
 import { Select } from 'primevue';
+import { useField, ErrorMessage } from 'vee-validate';
 
 const props = defineProps<{
   name: string;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { MenuItem } from 'primevue/menuitem';
 import { ref, computed } from 'vue';
 import SidebarItemList from './SidebarItemList.vue';
-import type { MenuItem } from 'primevue/menuitem';
 
 const props = defineProps<{
   item: MenuItem;

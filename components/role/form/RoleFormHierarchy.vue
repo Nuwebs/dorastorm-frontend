@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from '#imports';
-import useAuthStore from '~/stores/auth-store';
-import { UserService } from '~/services/user-service';
+import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { UserService } from '~/services/user-service';
+import useAuthStore from '~/stores/auth-store';
 
 interface Props {
   modelValue: number;

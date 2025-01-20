@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import TheAuthenticatedMobileBar from '~/components/TheAuthenticatedMobileBar.vue';
 import TheAuthenticatedNavbar from '~/components/TheAuthenticatedNavbar.vue';
 import TheAuthenticatedSidebar from '~/components/TheAuthenticatedSidebar.vue';
-import TheAuthenticatedMobileBar from '~/components/TheAuthenticatedMobileBar.vue';
-import useWindowWidth from '~/composables/useWindowWidth';
 import useAuthenticatedMenu from '~/composables/useAuthenticatedMenu';
+import useWindowWidth from '~/composables/useWindowWidth';
 
 const MOBILE_BP: number = 992;
 const { width } = useWindowWidth();

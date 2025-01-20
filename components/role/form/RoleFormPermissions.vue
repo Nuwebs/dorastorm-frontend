@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
 import { useField, ErrorMessage } from 'vee-validate';
+import { ref, watch, computed } from 'vue';
 import FormCheckboxValue from '~/components/form/FormCheckboxValue.vue';
-import useAuthStore from '~/stores/auth-store';
 import { getPermissionsGroups } from '~/services/permission-service';
+import useAuthStore from '~/stores/auth-store';
 import type { RolePermissionGroup } from '~/types/role';
 
 const props = defineProps<{

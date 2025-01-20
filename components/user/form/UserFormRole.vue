@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { UserService } from '~/services/user-service';
 import FormSelect from '~/components/form/FormSelect.vue';
+import { UserService } from '~/services/user-service';
 import type { Role } from '~/types/role';
 
 const loading = ref<boolean>(false);

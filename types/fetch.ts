@@ -1,5 +1,5 @@
-import type { UseFetchOptions } from '#app';
 import type { FetchError } from 'ofetch/node';
+import type { UseFetchOptions } from '#app';
 
 interface BaseApiFetch {
   endpoint: string;

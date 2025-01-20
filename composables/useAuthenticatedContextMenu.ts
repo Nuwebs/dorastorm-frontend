@@ -1,8 +1,8 @@
 import { computed } from 'vue';
 import useLocaleSwitchMenu from './useLocaleSwitchMenu';
 import { navigateTo, useI18n, useLocalePath } from '#imports';
-import type { DsMenuItem } from '~/types/menu';
 import useAuthStore from '~/stores/auth-store';
+import type { DsMenuItem } from '~/types/menu';
 
 export default function useAuthenticatedContextMenu() {
   const localeMenu = useLocaleSwitchMenu();

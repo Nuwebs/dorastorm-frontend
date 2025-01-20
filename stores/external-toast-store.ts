@@ -1,6 +1,6 @@
+import type { ToastMessageOptions } from 'primevue/toast';
 import { ref } from 'vue';
 import { defineStore } from '#imports';
-import type { ToastMessageOptions } from 'primevue/toast';
 
 type ToastFunction = (payload: ToastMessageOptions) => void;
 type TFunction = (key: string | number) => string;

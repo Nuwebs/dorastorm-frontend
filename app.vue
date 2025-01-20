@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
 import { Toast, useToast, ConfirmDialog } from 'primevue';
+import { onMounted, watch } from 'vue';
 import useExternalToastStore from './stores/external-toast-store';
 import { useI18n } from '#imports';
 

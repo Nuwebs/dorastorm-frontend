@@ -6,10 +6,10 @@ import {
   useRoute,
   useToast
 } from '#imports';
-import { UserService } from '~/services/user-service';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
-import type { UpdateUser, User } from '~/types/user';
+import { UserService } from '~/services/user-service';
 import useAuthStore from '~/stores/auth-store';
+import type { UpdateUser, User } from '~/types/user';
 
 definePageMeta({
   middleware: ['auth-guard']

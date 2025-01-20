@@ -1,6 +1,6 @@
 import { computed } from 'vue';
-import { useI18n } from '#imports';
 import useDsMenuItems from './useDsMenuItems';
+import { useI18n } from '#imports';
 import { PERMISSION } from '~/services/permission-service';
 
 export default function useAuthenticatedMenu() {

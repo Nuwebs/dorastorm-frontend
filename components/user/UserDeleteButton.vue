@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ButtonActionDelete from '../button/action/ButtonActionDelete.vue';
-import { UserService } from '~/services/user-service';
-import type { User } from '~/types/user';
 import { useI18n, useToast } from '#imports';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { UserService } from '~/services/user-service';
+import type { User } from '~/types/user';
 
 const props = defineProps<{
   user: User;

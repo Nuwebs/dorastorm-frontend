@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Drawer } from 'primevue';
-import MobileBarItemAccordion from './mobilebar/MobileBarItemAccordion.vue';
 import type { MenuItem } from 'primevue/menuitem';
+import { ref } from 'vue';
+import MobileBarItemAccordion from './mobilebar/MobileBarItemAccordion.vue';
 
 defineProps<{
   menu: MenuItem[];

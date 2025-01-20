@@ -1,5 +1,5 @@
-import { navigateTo, useSwitchLocalePath } from '#imports';
 import type { MenuItem } from 'primevue/menuitem';
+import { navigateTo, useSwitchLocalePath } from '#imports';
 import { LOCALES, type LocaleCode } from '~/services/i18n-service';
 
 export default function useLocaleSwitchMenu(): MenuItem[] {

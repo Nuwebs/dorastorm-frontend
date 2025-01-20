@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { clearError, type NuxtError } from '#app';
 import { Button } from 'primevue';
+import { clearError, type NuxtError } from '#app';
 
 defineProps({
   error: Object as () => NuxtError

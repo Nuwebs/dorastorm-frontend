@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { toTypedSchema } from '@vee-validate/zod';
 import Button from 'primevue/button';
 import { useForm } from 'vee-validate';
+import { ref } from 'vue';
+import { array, object, string } from 'zod';
+import RoleFormHierarchy from './RoleFormHierarchy.vue';
+import RoleFormPermissions from './RoleFormPermissions.vue';
 import FormText from '~/components/form/FormText.vue';
 import FormTextArea from '~/components/form/FormTextArea.vue';
-import RoleFormPermissions from './RoleFormPermissions.vue';
-import RoleFormHierarchy from './RoleFormHierarchy.vue';
-import { array, object, string } from 'zod';
 import type { NewRole, Role } from '~/types/role';
-import { toTypedSchema } from '@vee-validate/zod';
 
 interface Props {
   modelValue: Role | NewRole;

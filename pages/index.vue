@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import { toTypedSchema } from '@vee-validate/zod';
 import { Card, Button } from 'primevue';
 import { useForm } from 'vee-validate';
 import { object, string } from 'zod';
+import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import FormText from '~/components/form/FormText.vue';
 import useAuthStore from '~/stores/auth-store';
 

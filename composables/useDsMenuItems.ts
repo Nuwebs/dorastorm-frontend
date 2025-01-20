@@ -1,6 +1,6 @@
-import useAuthStore from '~/stores/auth-store';
-import type { Permission } from '~/services/permission-service';
 import type { MenuItem } from 'primevue/menuitem';
+import type { Permission } from '~/services/permission-service';
+import useAuthStore from '~/stores/auth-store';
 import type { DsMenuItem } from '~/types/menu';
 
 export default function useDsMenuItems() {

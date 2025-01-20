@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { definePageMeta, useI18n, useToast } from '#imports';
-import { PERMISSION } from '~/services/permission-service';
-import type { NewRole } from '~/types/role';
-import { RoleService } from '~/services/role-service';
-import useGenericToastMessages from '~/composables/useGenericToastMessages';
 import RoleFormContainer from '~/components/role/form/RoleFormContainer.vue';
+import useGenericToastMessages from '~/composables/useGenericToastMessages';
+import { PERMISSION } from '~/services/permission-service';
+import { RoleService } from '~/services/role-service';
+import type { NewRole } from '~/types/role';
 
 definePageMeta({
   middleware: ['auth-guard'],

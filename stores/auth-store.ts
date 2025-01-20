@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue';
+import { defineStore } from '#imports';
 import ExpiredTokenException from '~/exceptions/ExpiredTokenException';
 import InvalidTokenException from '~/exceptions/InvalidTokenException';
 import * as AuthService from '~/services/auth-service';
@@ -11,7 +12,6 @@ import {
 import type { DefaultLoginCredentials, JWTResponse } from '~/types/auth';
 import type { LaravelErrorBag } from '~/types/dorastorm';
 import type { User } from '~/types/user';
-import { defineStore } from '#imports';
 import apiFetch from '~/utils/api-fetch';
 
 const useAuthStore = defineStore('authStore', () => {

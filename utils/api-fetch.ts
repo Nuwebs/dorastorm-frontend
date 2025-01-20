@@ -1,8 +1,8 @@
-import { navigateTo } from '#app';
-import type { ApiFetchUtil, FetchedResponse } from '~/types/fetch';
 import type { FetchError } from 'ofetch/node';
 import { utilOptions } from './api-fetch-options';
+import { navigateTo } from '#app';
 import useAuthStore from '~/stores/auth-store';
+import type { ApiFetchUtil, FetchedResponse } from '~/types/fetch';
 
 async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   endpoint,

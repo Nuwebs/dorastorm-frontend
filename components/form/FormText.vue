@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useField, ErrorMessage } from 'vee-validate';
 import { InputText } from 'primevue';
+import { useField, ErrorMessage } from 'vee-validate';
 
 const props = defineProps<{
   name: string;
