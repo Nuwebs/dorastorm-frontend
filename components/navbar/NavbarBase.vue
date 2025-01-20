@@ -1,10 +1,20 @@
+<script setup lang="ts">
+import type { MenuItem } from 'primevue/menuitem';
+import { Menubar } from 'primevue';
+
+defineProps<{
+  content?: MenuItem[];
+}>();
+</script>
+
 <template>
-  <nav class="shadow-1 navbar">
-    <Menubar class="py-3 px-6 h-full surface-section" :model="content">
+  <nav class="h-20 z-10 border-b border-gray-500">
+    <Menubar class="py-4 px-5 h-full rounded-none border-none" :model="content">
       <template #start>
         <div class="flex align-items-center">
-          <h3 class="my-0 mr-4">Dorastorm</h3>
-          <slot name="start" />
+          <slot name="start">
+            <div class="font-semibold">DSF 4</div>
+          </slot>
         </div>
       </template>
       <template #end>
@@ -14,21 +24,4 @@
   </nav>
 </template>
 
-<script setup lang="ts">
-import Menubar from 'primevue/menubar';
-import { MenuItem } from 'primevue/menuitem';
-
-defineProps<{
-  content?: MenuItem[];
-}>();
-</script>
-<style scoped>
-.p-menubar {
-  border: 0;
-}
-
-.navbar {
-  height: 12vh;
-  z-index: 10;
-}
-</style>
+<style scoped></style>

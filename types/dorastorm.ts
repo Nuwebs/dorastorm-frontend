@@ -1,52 +1,6 @@
-import { FilterMatchModeOptions } from 'primevue/api';
-import { MenuItem } from 'primevue/menuitem';
-import { RouteLocationNormalized } from 'vue-router';
-import Permission from '~/utils/permissions';
-
-export interface NewRole {
-  hierarchy: number;
-  name: string;
-  description: string;
-  permissions: Permission[];
-}
-
-export interface Role extends NewRole {
-  id: number;
-  created_at: string;
-  modified_at: string;
-}
-
-export interface RolePermissionGroup {
-  module: string;
-  permissions: Permission[];
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-  role: Role;
-}
-
-export interface NewQuotation {
-  subject: string;
-  phone: string;
-  name: string;
-  email: string;
-  content: string;
-}
-
-export interface Quotation extends NewQuotation {
-  id: number;
-  created_at: string;
-  modified_at: string;
-}
-
-export interface DsLoginCredentials {
-  email: string;
-  password: string;
-}
+import type { DataTableFilterMetaData } from 'primevue';
+import type { RouteLocationNormalized } from 'vue-router';
+import type { Permission } from '~/services/permission-service';
 
 export interface DsRouteMeta extends RouteLocationNormalized {
   meta: RouteLocationNormalized['meta'] & {
@@ -55,34 +9,16 @@ export interface DsRouteMeta extends RouteLocationNormalized {
   };
 }
 
-export type DsMenuItem = MenuItem & {
-  permissions?: Permission | Permission[];
-  items?: DsMenuItem | undefined;
-};
-
 // Error related
-export interface DsValidationErrorBag<T> {
+export interface LaravelErrorBag {
   message: string;
+}
+
+export interface LaravelValidationErrorBag<T> extends LaravelErrorBag {
   errors: Partial<Record<keyof T, string[]>>;
 }
 
-// DataTable
-export type DataTableColumn = {
-  fieldName: string;
-  header: string;
-  sortable?: boolean;
-};
-
-export type Filter<T> = {
-  value: T[keyof T] | null;
-  matchMode: FilterMatchModeOptions[keyof FilterMatchModeOptions];
-};
-
-export type DataTableFilter<T = any> = {
-  [key: string]: Filter<T>;
-};
-
-export interface PaginationWrapper<DataT> {
+export interface LaravelPaginationWrapper<DataT> {
   data: DataT[];
   meta: {
     current_page: number;
@@ -94,3 +30,6 @@ export interface PaginationWrapper<DataT> {
     total: number;
   };
 }
+
+// PrimeVue Related
+export type FilterObject = Record<string, DataTableFilterMetaData>;

@@ -1,49 +1,38 @@
+import Aura from '@primevue/themes/aura';
 import {
-  getLocatedRouteRules,
-  LOCALES,
+  availableLocales,
   DEFAULT_LOCALE,
-  STRATEGY
-} from './services/i18n';
-// https://nuxt.com/docs/api/configuration/nuxt-config
+  STRATEGY,
+  ZOD_LOCALES_MAP
+} from './services/i18n-service';
+
 export default defineNuxtConfig({
-  css: [
-    '/assets/styles/ds.css',
-    '/assets/styles/fonts.css',
-    'primevue/resources/primevue.css',
-    'primeflex/primeflex.css',
-    'primeicons/primeicons.css',
-    '/assets/styles/containers.css'
-  ],
-  build: {
-    transpile: ['primevue']
-  },
-  routeRules: {
-    ...getLocatedRouteRules()
-  },
+  ssr: false,
+  spaLoadingTemplate: true,
   imports: {
-    autoImport: false
+    autoImport: false,
+    scan: false
   },
+  components: {
+    dirs: []
+  },
+
+  compatibilityDate: '2024-04-03',
+  devtools: { enabled: true },
   modules: [
+    '@primevue/nuxt-module',
     '@pinia/nuxt',
-    '@vee-validate/nuxt',
+    'nuxt-zod-i18n',
     '@nuxtjs/i18n',
-    '@nuxtjs/eslint-module'
+    '@nuxt/eslint'
   ],
-  runtimeConfig: {
-    public: {
-      backendURL: process.env.backendURL || 'http://localhost:8000',
-      authEndpoints: {
-        login: '/login',
-        refresh: '/token',
-        logout: '/logout',
-        me: '/me'
-      }
-    }
-  },
+  css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
+
   i18n: {
     lazy: true,
+    restructureDir: false,
     langDir: 'assets/lang',
-    locales: LOCALES,
+    locales: availableLocales(),
     defaultLocale: DEFAULT_LOCALE,
     strategy: STRATEGY,
     detectBrowserLanguage: {
@@ -51,6 +40,37 @@ export default defineNuxtConfig({
       cookieKey: 'ds_i18n',
       redirectOn: 'root',
       alwaysRedirect: true
+    }
+  },
+  zodI18n: {
+    localeCodesMapping: ZOD_LOCALES_MAP
+  },
+
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: '.ds-dark-mode',
+          cssLayer: {
+            name: 'primevue',
+            order: 'tailwind-base, primevue, tailwind-utilities'
+          }
+        }
+      }
+    }
+  },
+
+  runtimeConfig: {
+    public: {
+      backendURL: process.env.backendURL || 'http://localhost:8000'
+    }
+  },
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {}
     }
   }
 });

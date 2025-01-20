@@ -1,18 +1,10 @@
-<template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
-  <Toast />
-</template>
-
 <script setup lang="ts">
-import Toast from 'primevue/toast';
 import { onMounted, watch } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import useComposablesToastStore from './stores/composablesToastStore';
+import { Toast, useToast, ConfirmDialog } from 'primevue';
+import useExternalToastStore from './stores/external-toast-store';
 import { useI18n } from '#imports';
 
-const toastStore = useComposablesToastStore();
+const toastStore = useExternalToastStore();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -28,26 +20,22 @@ watch(toastStore._toasts, () => {
   renderComposablesToast();
 });
 </script>
+
+<template>
+  <NuxtLoadingIndicator />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+  <Toast />
+  <ConfirmDialog />
+</template>
+
 <style>
-body {
-  margin: 0;
-  background-color: var(--surface-ground);
+.main-section {
+  min-height: 88vh;
 }
 
-.nlink {
-  text-decoration: none;
-  color: var(--text-color);
-  transition: color 0.3s ease-in-out;
-  border-bottom: 2px solid transparent;
-}
-
-.nlink:hover {
-  color: var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
-}
-
-.p-component-overlay {
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
+.mobilebar-drawer-h {
+  min-height: 20rem;
 }
 </style>

@@ -1,21 +1,6 @@
-<template>
-  <div class="mb-2">
-    <label :for="name">{{ label }}</label>
-    <Textarea
-      v-model="value"
-      class="w-full block"
-      :name="name"
-      :class="{ 'p-invalid': errorMessage }"
-      :rows="props.rows"
-    />
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
 <script setup lang="ts">
-import Textarea from 'primevue/textarea';
-import { toRef } from 'vue';
-import { useField } from 'vee-validate';
+import { Textarea } from 'primevue';
+import { useField, ErrorMessage } from 'vee-validate';
 
 interface Props {
   name: string;
@@ -29,11 +14,31 @@ const props = withDefaults(defineProps<Props>(), {
   autoResize: false
 });
 
-const { errorMessage, value } = useField<string>(
-  toRef(props, 'name'),
+const { value, errorMessage } = useField<typeof props.modelValue>(
+  props.name,
   undefined,
   {
     syncVModel: true
   }
 );
 </script>
+
+<template>
+  <div>
+    <slot name="label">
+      <label :for="name" class="block">{{ label }}</label>
+    </slot>
+    <Textarea
+      v-model="value"
+      :name="name"
+      :rows="props.rows"
+      :invalid="errorMessage !== undefined"
+      class="w-full block"
+    />
+    <slot name="errorMessage" :error-message-bag="errorMessage">
+      <ErrorMessage :name="name" class="text-red-400" />
+    </slot>
+  </div>
+</template>
+
+<style scoped></style>

@@ -1,39 +1,39 @@
-<template>
-  <div class="mb-2">
-    <label :for="name">{{ label }}</label>
-    <div class="p-inputgroup flex-1">
-      <span v-if="icon" class="p-inputgroup-addon"><i :class="icon" /></span>
-      <InputText
-        v-model="value"
-        :name="name"
-        :type="type"
-        :placeholder="placeholder ? placeholder : undefined"
-        :class="{ 'p-invalid': errorMessage }"
-      />
-    </div>
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
 <script setup lang="ts">
-import { toRef } from 'vue';
-import { useField } from 'vee-validate';
-import InputText from 'primevue/inputtext';
+import { useField, ErrorMessage } from 'vee-validate';
+import { InputText } from 'primevue';
 
 const props = defineProps<{
   name: string;
   label: string;
-  type: string;
-  placeholder?: string;
-  icon?: string;
-  modelValue?: string;
+  modelValue?: string | null;
+  type: 'text' | 'password' | 'email';
 }>();
 
-const { errorMessage, value } = useField<string>(
-  toRef(props, 'name'),
+const { value, errorMessage } = useField<typeof props.modelValue>(
+  props.name,
   undefined,
   {
     syncVModel: true
   }
 );
 </script>
+
+<template>
+  <div>
+    <slot name="label">
+      <label :for="name" class="block">{{ label }}</label>
+    </slot>
+    <InputText
+      v-model="value"
+      :title="name"
+      class="w-full"
+      :type="type"
+      :invalid="errorMessage !== undefined"
+    />
+    <slot name="errorMessage" :error-message-bag="errorMessage">
+      <ErrorMessage :name="name" class="text-red-400" />
+    </slot>
+  </div>
+</template>
+
+<style scoped></style>

@@ -1,26 +1,6 @@
-<template>
-  <div class="mb-2">
-    <label :for="name">{{ label }}</label>
-    <Dropdown
-      v-model="value"
-      class="w-full"
-      :name="name"
-      :options="options"
-      :option-label="optionLabel"
-      :option-value="optionValue"
-      :loading="loading"
-      :placeholder="loading ? $t('general.loading') : placeholder"
-      :class="{ 'p-invalid': errorMessage }"
-      :filter="!!filter"
-    />
-    <ErrorMessage :name="name" class="p-error" />
-  </div>
-</template>
-
-<script setup lang="ts" generic="T = number, OptionsT = number[]">
-import { toRef } from 'vue';
-import { useField } from 'vee-validate';
-import Dropdown from 'primevue/dropdown';
+<script setup lang="ts" generic="T = number, OptionsT = number">
+import { useField, ErrorMessage } from 'vee-validate';
+import { Select } from 'primevue';
 
 const props = defineProps<{
   name: string;
@@ -34,7 +14,34 @@ const props = defineProps<{
   filter?: boolean;
 }>();
 
-const { errorMessage, value } = useField<T>(toRef(props, 'name'), undefined, {
-  syncVModel: true
-});
+const { value, errorMessage } = useField<typeof props.modelValue>(
+  props.name,
+  undefined,
+  {
+    syncVModel: true
+  }
+);
 </script>
+
+<template>
+  <div>
+    <label :for="name">{{ label }}</label>
+    <Select
+      v-model="value"
+      :name="name"
+      :options="options"
+      :option-label="optionLabel"
+      :option-value="optionValue"
+      :loading="loading"
+      :placeholder="loading ? $t('general.loading') : placeholder"
+      :class="{ 'p-invalid': errorMessage }"
+      :filter="!!filter"
+      class="w-full"
+    />
+    <slot name="errorMessage" :error-message-bag="errorMessage">
+      <ErrorMessage :name="name" class="text-red-400" />
+    </slot>
+  </div>
+</template>
+
+<style scoped></style>
