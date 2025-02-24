@@ -1,21 +1,19 @@
-import { QueryBuilder } from '@vortechron/query-builder-ts';
+import { BaseService } from '~/services/base-service';
 import type { LaravelValidationErrorBag } from '~/types/dorastorm';
-import type { NewRole, Role } from '~/types/role';
-import type { GenericServiceQuery, ModelService } from '~/types/service';
+import type { FetchedResponse } from '~/types/fetch';
+import type { Role, NewRole } from '~/types/role';
 import apiFetch from '~/utils/api-fetch';
 
 const ROLE_ENDPOINT = '/roles' as const;
-type RoleEndpoint = typeof ROLE_ENDPOINT;
-type RoleServiceQuery = GenericServiceQuery<RoleEndpoint>;
 
-export class RoleService implements ModelService<RoleEndpoint, Role> {
-  public query() {
-    return new QueryBuilder(ROLE_ENDPOINT) as RoleServiceQuery;
-  }
+export class RoleService extends BaseService<Role> {
+  protected endpoint = ROLE_ENDPOINT;
 
-  public create(payload: NewRole) {
+  public async create(
+    payload: NewRole
+  ): Promise<FetchedResponse<Role, LaravelValidationErrorBag<NewRole>>> {
     return apiFetch<Role, LaravelValidationErrorBag<NewRole>>({
-      endpoint: ROLE_ENDPOINT,
+      endpoint: this.endpoint,
       options: {
         method: 'POST',
         body: payload
@@ -23,27 +21,15 @@ export class RoleService implements ModelService<RoleEndpoint, Role> {
     });
   }
 
-  public findById(modelId: number) {
-    return apiFetch<Role, unknown>({
-      endpoint: ROLE_ENDPOINT + `/${modelId}`
-    });
-  }
-
-  public updateById(modelId: number, payload: NewRole) {
+  public async updateById(
+    id: number,
+    payload: NewRole
+  ): Promise<FetchedResponse<Role, LaravelValidationErrorBag<NewRole>>> {
     return apiFetch<Role, LaravelValidationErrorBag<NewRole>>({
-      endpoint: ROLE_ENDPOINT + `/${modelId}`,
+      endpoint: `${this.endpoint}/${id}`,
       options: {
         method: 'PATCH',
         body: payload
-      }
-    });
-  }
-
-  public deleteById(modelId: number) {
-    return apiFetch<void, null>({
-      endpoint: ROLE_ENDPOINT + `/${modelId}`,
-      options: {
-        method: 'DELETE'
       }
     });
   }

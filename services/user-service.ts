@@ -1,61 +1,27 @@
-import { QueryBuilder } from '@vortechron/query-builder-ts';
+import { BaseService } from '~/services/base-service';
 import type { LaravelValidationErrorBag } from '~/types/dorastorm';
 import type { FetchedResponse } from '~/types/fetch';
 import type { Role } from '~/types/role';
-import type { GenericServiceQuery, ModelService } from '~/types/service';
 import type {
-  ChangeUserPassword,
+  User,
   NewUserFromAdmin,
   UpdateUser,
-  User
+  ChangeUserPassword
 } from '~/types/user';
 import apiFetch from '~/utils/api-fetch';
 
 const USER_ENDPOINT = '/users' as const;
-type UserEndpoint = typeof USER_ENDPOINT;
-type UserServiceQuery = GenericServiceQuery<UserEndpoint>;
 
-export class UserService implements ModelService<UserEndpoint, User> {
-  public query() {
-    return new QueryBuilder(USER_ENDPOINT) as UserServiceQuery;
-  }
+export class UserService extends BaseService<User> {
+  protected endpoint = USER_ENDPOINT;
 
-  public async index(customQuery?: UserServiceQuery) {
-    const queryObj: UserServiceQuery = customQuery || this.query();
-
-    return apiFetch<User>({
-      endpoint: queryObj.build()
-    });
-  }
-
-  public findById(modelId: number): Promise<FetchedResponse<User, unknown>> {
-    return apiFetch<User, unknown>({
-      endpoint: USER_ENDPOINT + `/${modelId}`
-    });
-  }
-
-  public deleteById(modelId: number): Promise<FetchedResponse<void, null>> {
-    return apiFetch<void, null>({
-      endpoint: USER_ENDPOINT + `/${modelId}`,
-      options: {
-        method: 'DELETE'
-      }
-    });
-  }
-
-  public getRolesBelow(): Promise<FetchedResponse<Role[], unknown>> {
-    return apiFetch<Role[], unknown>({
-      endpoint: USER_ENDPOINT + '/roles-below'
-    });
-  }
-
-  public create(
+  public async create(
     payload: NewUserFromAdmin
   ): Promise<
     FetchedResponse<User, LaravelValidationErrorBag<NewUserFromAdmin>>
   > {
     return apiFetch<User, LaravelValidationErrorBag<NewUserFromAdmin>>({
-      endpoint: USER_ENDPOINT,
+      endpoint: this.endpoint,
       options: {
         method: 'POST',
         body: payload
@@ -63,12 +29,12 @@ export class UserService implements ModelService<UserEndpoint, User> {
     });
   }
 
-  public updateById(
-    modelId: number,
+  public async updateById(
+    id: number,
     payload: UpdateUser
   ): Promise<FetchedResponse<User, LaravelValidationErrorBag<UpdateUser>>> {
-    return apiFetch<User, LaravelValidationErrorBag<NewUserFromAdmin>>({
-      endpoint: USER_ENDPOINT + `/${modelId}`,
+    return apiFetch<User, LaravelValidationErrorBag<UpdateUser>>({
+      endpoint: `${this.endpoint}/${id}`,
       options: {
         method: 'PATCH',
         body: payload
@@ -76,13 +42,24 @@ export class UserService implements ModelService<UserEndpoint, User> {
     });
   }
 
-  public changePasswordById(modelId: number, payload: ChangeUserPassword) {
+  public async changePasswordById(
+    id: number,
+    payload: ChangeUserPassword
+  ): Promise<
+    FetchedResponse<void, LaravelValidationErrorBag<ChangeUserPassword>>
+  > {
     return apiFetch<void, LaravelValidationErrorBag<ChangeUserPassword>>({
-      endpoint: USER_ENDPOINT + `/${modelId}/password`,
+      endpoint: `${this.endpoint}/${id}/password`,
       options: {
         method: 'PATCH',
         body: payload
       }
+    });
+  }
+
+  public async getRolesBelow(): Promise<FetchedResponse<Role[], unknown>> {
+    return apiFetch<Role[], unknown>({
+      endpoint: `${this.endpoint}/rolesbelow`
     });
   }
 }
