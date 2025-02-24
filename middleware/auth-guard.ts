@@ -27,7 +27,7 @@ export default defineNuxtRouteMiddleware((to: DsRouteMeta, _: DsRouteMeta) => {
     return;
   }
   const checker = to.meta.strictPermissions
-    ? authStore.hasEveryPermissions
+    ? authStore.hasAllPermissions
     : authStore.hasAnyPermission;
   if (!checker(to.meta.permissions)) {
     return navigateTo(lp('/home'));
