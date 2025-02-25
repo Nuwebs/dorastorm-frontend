@@ -78,9 +78,8 @@ const useAuthStore = defineStore('authStore', () => {
       throw new InvalidTokenException('');
     }
     token.value = data!.accessToken;
-    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
+    user.value = AuthService.decodeToken(token.value).user;
     AuthService.saveToken(token.value);
-    AuthService.saveExpiresEpoch(expiresEpoch.value);
   }
 
   /**
@@ -98,9 +97,6 @@ const useAuthStore = defineStore('authStore', () => {
     AuthService.saveUser(user.value);
   }
 
-  /**
-   * Logs in a user with provided credentials and updates the auth store.
-   */
   async function login(credentials: DefaultLoginCredentials): Promise<boolean> {
     const { data, error } = await apiFetch<JWTResponse>({
       endpoint: AuthService.AUTH_ENDPOINT.LOGIN,
@@ -110,20 +106,15 @@ const useAuthStore = defineStore('authStore', () => {
         body: credentials
       }
     });
+
     if (error) {
       console.error('There was an error trying to log in.');
       return false;
     }
+
     token.value = data!.accessToken;
-
-    const failed = await getUserInfo();
-    if (failed) {
-      return false;
-    }
-
-    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
+    user.value = AuthService.decodeToken(token.value).user; // Set user from token
     AuthService.saveToken(token.value);
-    AuthService.saveExpiresEpoch(expiresEpoch.value);
 
     return true;
   }
@@ -156,10 +147,20 @@ const useAuthStore = defineStore('authStore', () => {
     }
   }
 
+  function loadUserData() {
+    const lsToken = localStorage.getItem('ds-jwt');
+    if (lsToken) {
+      token.value = lsToken;
+      user.value = AuthService.decodeToken(token.value).user; // Set user from stored token
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Loads user data from localStorage into the auth store.
    */
-  function loadUserData(): void {
+  function _loadUserData(): void {
     isAppBooted.value = true;
     const lsToken = AuthService.isPotentiallyLoggedIn();
     if (lsToken === false) {
