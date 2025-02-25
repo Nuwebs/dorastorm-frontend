@@ -19,52 +19,37 @@ const useAuthStore = defineStore('authStore', () => {
   const token = ref<string | null>(null);
   const expiresEpoch = ref<number>(-1);
   const isAppBooted = ref<boolean>(false);
-  const isUpdating = ref<boolean>(false);
-  const isUserRefreshed = ref<boolean>(false);
 
   const isLoggedIn = computed<boolean>(() => {
     return user.value !== null;
   });
 
   const getPermissions = computed<string[] | null>(() => {
-    if (!user.value) {
-      return null;
-    }
+    if (!user.value) return null;
     return user.value.role.permissions;
   });
 
   const getUserRoleHierarchy = computed<number | null>(() => {
-    if (!user.value) {
-      return null;
-    }
+    if (!user.value) return null;
     return user.value.role.hierarchy;
   });
 
   function hasPermission(permission: Permission): boolean {
-    if (!user.value) {
-      return false;
-    }
+    if (!user.value) return false;
     return isPermissionInArray(permission, user.value.role.permissions);
   }
 
   function hasAnyPermission(permissions: Permission[]): boolean {
-    if (!user.value) {
-      return false;
-    }
+    if (!user.value) return false;
     return isAnyPermissionInArray(permissions, user.value.role.permissions);
   }
 
   function hasAllPermissions(permissions: Permission[]): boolean {
-    if (!user.value) {
-      return false;
-    }
+    if (!user.value) return false;
     return areAllPermissionsInArray(permissions, user.value.role.permissions);
   }
 
-  /**
-   * Refreshes the DS JWT token and updates localStorage with new values.
-   * Throws exceptions if the token refresh fails.
-   */
+  /** Refreshes the JWT token and updates localStorage. */
   async function refreshToken(): Promise<void> {
     const { data, error } = await apiFetch<JWTResponse>({
       endpoint: AuthService.AUTH_ENDPOINT.REFRESH
@@ -79,32 +64,16 @@ const useAuthStore = defineStore('authStore', () => {
     }
     token.value = data!.accessToken;
     user.value = AuthService.decodeToken(token.value).user;
+    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
     AuthService.saveToken(token.value);
-  }
-
-  /**
-   * Retrieves user information from the server and updates the auth store.
-   */
-  async function getUserInfo(): Promise<LaravelErrorBag | void> {
-    const { data, error } = await apiFetch<User, LaravelErrorBag>({
-      endpoint: AuthService.AUTH_ENDPOINT.LOGGED_USER_INFO
-    });
-    if (error) {
-      return error;
-    }
-
-    user.value = data!;
-    AuthService.saveUser(user.value);
+    AuthService.saveExpiresEpoch(expiresEpoch.value);
   }
 
   async function login(credentials: DefaultLoginCredentials): Promise<boolean> {
     const { data, error } = await apiFetch<JWTResponse>({
       endpoint: AuthService.AUTH_ENDPOINT.LOGIN,
       auth: false,
-      options: {
-        method: 'post',
-        body: credentials
-      }
+      options: { method: 'post', body: credentials }
     });
 
     if (error) {
@@ -113,8 +82,10 @@ const useAuthStore = defineStore('authStore', () => {
     }
 
     token.value = data!.accessToken;
-    user.value = AuthService.decodeToken(token.value).user; // Set user from token
+    user.value = AuthService.decodeToken(token.value).user;
+    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
     AuthService.saveToken(token.value);
+    AuthService.saveExpiresEpoch(expiresEpoch.value);
 
     return true;
   }
@@ -124,10 +95,7 @@ const useAuthStore = defineStore('authStore', () => {
     AuthService.cleanSavedKeys();
   }
 
-  /**
-   * Logs out a user and clears authentication data. If the fastCall param is sent
-   * it removes the token from the app but does not inform the backend.
-   */
+  /** Logs out the user, optionally skipping backend notification. */
   async function logout(
     fastCall: boolean = false
   ): Promise<void | LaravelErrorBag> {
@@ -135,57 +103,23 @@ const useAuthStore = defineStore('authStore', () => {
 
     const { error } = await apiFetch<void, LaravelErrorBag>({
       endpoint: AuthService.AUTH_ENDPOINT.LOGOUT,
-      options: {
-        method: 'post'
-      }
+      options: { method: 'post' }
     });
 
     resetAndClean();
-
-    if (error) {
-      return error;
-    }
+    if (error) return error;
   }
 
   function loadUserData() {
     const lsToken = localStorage.getItem('ds-jwt');
-    if (lsToken) {
+    const lsExpiresEpoch = localStorage.getItem('expiresEpoch');
+    if (lsToken && lsExpiresEpoch) {
       token.value = lsToken;
-      user.value = AuthService.decodeToken(token.value).user; // Set user from stored token
+      user.value = AuthService.decodeToken(token.value).user;
+      expiresEpoch.value = Number(lsExpiresEpoch);
       return true;
     }
     return false;
-  }
-
-  /**
-   * Loads user data from localStorage into the auth store.
-   */
-  function _loadUserData(): void {
-    isAppBooted.value = true;
-    const lsToken = AuthService.isPotentiallyLoggedIn();
-    if (lsToken === false) {
-      return AuthService.cleanSavedKeys();
-    }
-    const lsUser = AuthService.getUserData();
-    if (lsUser === false) {
-      return AuthService.cleanSavedKeys();
-    }
-
-    const lsExpiresEpoch = AuthService.getExpiresEpoch();
-
-    token.value = lsToken as string;
-    user.value = lsUser as User;
-    expiresEpoch.value = lsExpiresEpoch;
-  }
-
-  async function refreshUserData(): Promise<void> {
-    if (isUpdating.value) {
-      return;
-    }
-    isUpdating.value = true;
-    isUserRefreshed.value = true;
-    await getUserInfo();
-    isUpdating.value = false;
   }
 
   function $reset(): void {
@@ -200,16 +134,11 @@ const useAuthStore = defineStore('authStore', () => {
     expiresEpoch,
     isAppBooted,
     isLoggedIn,
-    isUserRefreshed,
-
     getPermissions,
     getUserRoleHierarchy,
     hasPermission,
     hasAnyPermission,
     hasAllPermissions,
-
-    refreshUserData,
-
     refreshToken,
     login,
     logout,
