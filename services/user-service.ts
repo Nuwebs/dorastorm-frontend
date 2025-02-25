@@ -59,7 +59,7 @@ export class UserService extends BaseService<User> {
 
   public async getRolesBelow(): Promise<FetchedResponse<Role[], unknown>> {
     return apiFetch<Role[], unknown>({
-      endpoint: `${this.endpoint}/rolesbelow`
+      endpoint: `${this.endpoint}/roles-below`
     });
   }
 }
