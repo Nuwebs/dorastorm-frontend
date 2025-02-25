@@ -10,13 +10,18 @@ export default defineNuxtRouteMiddleware(async () => {
 
   const authStore = useAuthStore();
   if (!authStore.isAppBooted) {
-    authStore.loadUserData();
+    const hasToken = authStore.loadUserData();
+    if (hasToken) {
+      // Refresh token on app boot if it’s valid
+      await authStore.refreshIfValid();
+    }
     authStore.isAppBooted = true;
   }
 
   if (!authStore.isLoggedIn) return;
 
-  if (isTokenExpired(authStore.expiresEpoch)) {
+  // Refresh if token is about to expire (e.g., within 30 seconds)
+  if (isTokenExpired(authStore.expiresEpoch - 30)) {
     if (!(await tryRefreshToken(authStore.refreshToken))) return;
   }
 });

@@ -65,8 +65,21 @@ const useAuthStore = defineStore('authStore', () => {
     token.value = data!.accessToken;
     const decoded = AuthService.decodeToken(token.value);
     user.value = decoded.user;
-    expiresEpoch.value = decoded.exp; // Use exp from JWT
+    expiresEpoch.value = decoded.exp;
     AuthService.saveToken(token.value);
+  }
+
+  /** Refreshes the token if it’s still valid (not expired). Returns true if refreshed, false if not. */
+  async function refreshIfValid(): Promise<boolean> {
+    if (!token.value || AuthService.isTokenExpired(expiresEpoch.value)) {
+      return false; // Don’t attempt refresh if token is missing or expired
+    }
+    try {
+      await refreshToken();
+      return true;
+    } catch {
+      return false; // Silently fail if refresh isn’t possible (e.g., network issue)
+    }
   }
 
   async function login(credentials: DefaultLoginCredentials): Promise<boolean> {
@@ -84,7 +97,7 @@ const useAuthStore = defineStore('authStore', () => {
     token.value = data!.accessToken;
     const decoded = AuthService.decodeToken(token.value);
     user.value = decoded.user;
-    expiresEpoch.value = decoded.exp; // Use exp from JWT
+    expiresEpoch.value = decoded.exp;
     AuthService.saveToken(token.value);
 
     return true;
@@ -95,7 +108,6 @@ const useAuthStore = defineStore('authStore', () => {
     AuthService.cleanSavedKeys();
   }
 
-  /** Logs out the user, optionally skipping backend notification. */
   async function logout(
     fastCall: boolean = false
   ): Promise<void | LaravelErrorBag> {
@@ -116,7 +128,7 @@ const useAuthStore = defineStore('authStore', () => {
       token.value = lsToken;
       const decoded = AuthService.decodeToken(token.value);
       user.value = decoded.user;
-      expiresEpoch.value = decoded.exp; // Use exp from JWT
+      expiresEpoch.value = decoded.exp;
       return true;
     }
     return false;
@@ -140,6 +152,7 @@ const useAuthStore = defineStore('authStore', () => {
     hasAnyPermission,
     hasAllPermissions,
     refreshToken,
+    refreshIfValid,
     login,
     logout,
     loadUserData
