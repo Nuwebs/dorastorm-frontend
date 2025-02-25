@@ -14,18 +14,9 @@ export function saveToken(token: string): void {
   localStorage.setItem('ds-jwt', token);
 }
 
-export function saveExpiresEpoch(expiresEpoch: number): void {
-  localStorage.setItem('expiresEpoch', String(expiresEpoch));
-}
-
 export function isPotentiallyLoggedIn(): boolean | string {
   const token = localStorage.getItem('ds-jwt');
   return token !== null ? token : false;
-}
-
-export function getExpiresEpoch(): number {
-  const expiresEpoch = localStorage.getItem('expiresEpoch');
-  return expiresEpoch !== null ? Number(expiresEpoch) : -1;
 }
 
 export function getActualEpoch(): number {
@@ -34,19 +25,15 @@ export function getActualEpoch(): number {
 
 export function cleanSavedKeys(): void {
   localStorage.removeItem('ds-jwt');
-  localStorage.removeItem('expiresEpoch');
-  localStorage.removeItem('user'); // Keep for backward compatibility
-}
-
-export function calculateExpireEpoch(expiresIn: number): number {
-  return getActualEpoch() + expiresIn - 30;
+  localStorage.removeItem('expiresEpoch'); // Clean up old data
+  localStorage.removeItem('user'); // Clean up old data
 }
 
 export function isTokenExpired(expiresEpoch: number): boolean {
   const epoch = getActualEpoch();
-  return epoch >= expiresEpoch;
+  return epoch >= expiresEpoch - 30; // Refresh 30 seconds early
 }
 
-export function decodeToken(token: string): { user: User } {
-  return jwtDecode(token);
+export function decodeToken(token: string): { user: User; exp: number } {
+  return jwtDecode<{ user: User; exp: number }>(token);
 }

@@ -63,10 +63,10 @@ const useAuthStore = defineStore('authStore', () => {
       throw new InvalidTokenException('');
     }
     token.value = data!.accessToken;
-    user.value = AuthService.decodeToken(token.value).user;
-    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
+    const decoded = AuthService.decodeToken(token.value);
+    user.value = decoded.user;
+    expiresEpoch.value = decoded.exp; // Use exp from JWT
     AuthService.saveToken(token.value);
-    AuthService.saveExpiresEpoch(expiresEpoch.value);
   }
 
   async function login(credentials: DefaultLoginCredentials): Promise<boolean> {
@@ -82,10 +82,10 @@ const useAuthStore = defineStore('authStore', () => {
     }
 
     token.value = data!.accessToken;
-    user.value = AuthService.decodeToken(token.value).user;
-    expiresEpoch.value = AuthService.calculateExpireEpoch(data!.expiresIn);
+    const decoded = AuthService.decodeToken(token.value);
+    user.value = decoded.user;
+    expiresEpoch.value = decoded.exp; // Use exp from JWT
     AuthService.saveToken(token.value);
-    AuthService.saveExpiresEpoch(expiresEpoch.value);
 
     return true;
   }
@@ -112,11 +112,11 @@ const useAuthStore = defineStore('authStore', () => {
 
   function loadUserData() {
     const lsToken = localStorage.getItem('ds-jwt');
-    const lsExpiresEpoch = localStorage.getItem('expiresEpoch');
-    if (lsToken && lsExpiresEpoch) {
+    if (lsToken) {
       token.value = lsToken;
-      user.value = AuthService.decodeToken(token.value).user;
-      expiresEpoch.value = Number(lsExpiresEpoch);
+      const decoded = AuthService.decodeToken(token.value);
+      user.value = decoded.user;
+      expiresEpoch.value = decoded.exp; // Use exp from JWT
       return true;
     }
     return false;
