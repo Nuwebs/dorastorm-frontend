@@ -123,7 +123,7 @@ const useAuthStore = defineStore('authStore', () => {
   }
 
   function loadUserData() {
-    const lsToken = localStorage.getItem('ds-jwt');
+    const lsToken = AuthService.getToken();
     if (lsToken) {
       token.value = lsToken;
       const decoded = AuthService.decodeToken(token.value);

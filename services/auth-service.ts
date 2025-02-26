@@ -8,15 +8,16 @@ export const AUTH_ENDPOINT = {
   LOGGED_USER_INFO: '/me'
 } as const;
 
+const JWT_KEY = 'ds-jwt';
+
 export type AuthEndpoint = (typeof AUTH_ENDPOINT)[keyof typeof AUTH_ENDPOINT];
 
 export function saveToken(token: string): void {
-  localStorage.setItem('ds-jwt', token);
+  localStorage.setItem(JWT_KEY, token);
 }
 
-export function isPotentiallyLoggedIn(): boolean | string {
-  const token = localStorage.getItem('ds-jwt');
-  return token !== null ? token : false;
+export function getToken(): string | null {
+  return localStorage.getItem(JWT_KEY);
 }
 
 export function getActualEpoch(): number {
@@ -24,7 +25,7 @@ export function getActualEpoch(): number {
 }
 
 export function cleanSavedKeys(): void {
-  localStorage.removeItem('ds-jwt');
+  localStorage.removeItem(JWT_KEY);
   localStorage.removeItem('expiresEpoch'); // Clean up old data
   localStorage.removeItem('user'); // Clean up old data
 }
