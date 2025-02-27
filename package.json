@@ -21,6 +21,7 @@
     "jwt-decode": "^4.0.0",
     "nuxt": "^3.13.2",
     "nuxt-zod-i18n": "^1.11.5",
+    "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.1",
     "tailwindcss-primeui": "^0.3.4",

@@ -6,8 +6,6 @@ import useAuthStore from '~/stores/auth-store';
 import useExternalToastStore from '~/stores/external-toast-store';
 
 export default defineNuxtRouteMiddleware(async () => {
-  if (!import.meta.client) return;
-
   const authStore = useAuthStore();
   if (!authStore.isAppBooted) {
     const hasToken = authStore.loadUserData();

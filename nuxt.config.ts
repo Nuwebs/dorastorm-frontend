@@ -7,7 +7,7 @@ import {
 } from './services/i18n-service';
 
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   spaLoadingTemplate: true,
   imports: {
     autoImport: false,
