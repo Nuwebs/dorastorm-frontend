@@ -1,6 +1,8 @@
 import { QueryBuilder } from '@vortechron/query-builder-ts';
 import { useNuxtApp } from '#app';
+import type { FetchedResponse } from '~/types/fetch';
 import type { GenericServiceQuery } from '~/types/service';
+import handleFetchCall from '~/utils/handle-fetch-call';
 
 export abstract class BaseService<T> {
   protected abstract endpoint: string;
@@ -8,6 +10,12 @@ export abstract class BaseService<T> {
 
   constructor() {
     this.api = useNuxtApp().$api;
+  }
+
+  public async handledCall<ErrorT = unknown, ResponseT = unknown>(
+    promise: Promise<ResponseT>
+  ): Promise<FetchedResponse<ResponseT, ErrorT>> {
+    return handleFetchCall<ResponseT, ErrorT>(promise);
   }
 
   public query(): GenericServiceQuery<typeof this.endpoint> {

@@ -1,6 +1,6 @@
-import type { FetchError } from 'ofetch/node';
+import handleFetchCall from './handle-fetch-call';
 import { useNuxtApp } from '#app';
-import type { ApiFetchUtil, FetchedResponse } from '~/types/fetch';
+import type { ApiFetchUtil } from '~/types/fetch';
 
 async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   endpoint,
@@ -8,21 +8,13 @@ async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   options = {}
 }: ApiFetchUtil<ResponseT>) {
   const api = useNuxtApp().$api;
-  // Set up the default response
-  const response: FetchedResponse<ResponseT, ErrorT> = {
-    data: null,
-    error: null
-  };
 
-  try {
-    response.data = await api(endpoint, {
+  return handleFetchCall<ResponseT, ErrorT>(
+    api(endpoint, {
       ...options,
       noAuth: noAuth
-    } as object);
-  } catch (error: unknown) {
-    response.error = error as FetchError<ErrorT>;
-  }
-  return response;
+    } as object)
+  );
 }
 
 export default apiFetch;
