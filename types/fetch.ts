@@ -3,7 +3,7 @@ import type { UseFetchOptions } from '#app';
 
 interface BaseApiFetch {
   endpoint: string;
-  auth?: boolean;
+  noAuth?: boolean;
 }
 
 export type UtilFetchOptions<ResponseT> = Omit<

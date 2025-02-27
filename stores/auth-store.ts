@@ -85,7 +85,7 @@ const useAuthStore = defineStore('authStore', () => {
   async function login(credentials: DefaultLoginCredentials): Promise<boolean> {
     const { data, error } = await apiFetch<JWTResponse>({
       endpoint: AuthService.AUTH_ENDPOINT.LOGIN,
-      auth: false,
+      noAuth: true,
       options: { method: 'post', body: credentials }
     });
 
