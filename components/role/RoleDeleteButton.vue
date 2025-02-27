@@ -13,6 +13,7 @@ const emit = defineEmits<{
   deleted: [role: Role];
 }>();
 
+const service = new RoleService();
 const loading = ref<boolean>(false);
 const toast = useToast();
 const { t } = useI18n();
@@ -22,7 +23,9 @@ const { getGeneric403Message, getGeneric404Message, getGenericErrorMessage } =
 async function handleRoleDeleted(): Promise<void> {
   if (loading.value) return;
   loading.value = true;
-  const { error } = await new RoleService().deleteById(props.role.id);
+  const { error } = await service.handledCall(
+    service.deleteById(props.role.id)
+  );
   loading.value = false;
 
   if (error) {

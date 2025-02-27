@@ -2,6 +2,7 @@
 import {
   createError,
   definePageMeta,
+  useAsyncData,
   useI18n,
   useRoute,
   useToast
@@ -22,9 +23,11 @@ const authStore = useAuthStore();
 
 const userService = new UserService();
 
-const { data, error } = await userService.findById(Number(route.params.id));
+const { data, error } = await useAsyncData(() =>
+  userService.findById(Number(route.params.id))
+);
 
-if (error || data === null) {
+if (error.value || data.value === null) {
   throw createError({
     statusCode: 404,
     statusMessage: t('error.404.specific.user'),
@@ -53,7 +56,7 @@ function handleSuccess(user: User): void {
     <h1>{{ $t('modules.users.update') }}</h1>
     <UserFormContainer
       mode="update"
-      :initial-data="data"
+      :initial-data="data!"
       :submit-handler="submitHandler"
       @success="(payload) => handleSuccess(payload as User)"
     />

@@ -13,6 +13,7 @@ const emit = defineEmits<{
   deleted: [user: User];
 }>();
 
+const service = new UserService();
 const loading = ref<boolean>(false);
 const toast = useToast();
 const { t } = useI18n();
@@ -22,7 +23,9 @@ const { getGeneric403Message, getGeneric404Message, getGenericErrorMessage } =
 async function handleUserDelete(): Promise<void> {
   if (loading.value) return;
   loading.value = true;
-  const { error } = await new UserService().deleteById(props.user.id);
+  const { error } = await service.handledCall(
+    service.deleteById(props.user.id)
+  );
   loading.value = false;
 
   if (error) {

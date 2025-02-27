@@ -2,6 +2,7 @@
 import {
   createError,
   definePageMeta,
+  useAsyncData,
   useI18n,
   useRoute,
   useToast
@@ -24,9 +25,11 @@ const { getGeneric403Message, getGenericErrorMessage } =
 
 const service = new RoleService();
 
-const { data, error } = await service.findById(Number(route.params.id));
+const { data, error } = await useAsyncData(() =>
+  service.findById(Number(route.params.id))
+);
 
-if (error || data === null) {
+if (error.value || data.value === null) {
   throw createError({
     statusCode: 404,
     statusMessage: t('error.404.specific.role'),
@@ -35,7 +38,9 @@ if (error || data === null) {
 }
 
 async function submitHandler(): Promise<boolean> {
-  const { error } = await service.updateById(data!.id, data!);
+  const { error } = await service.handledCall(
+    service.updateById(data.value!.id, data.value!)
+  );
 
   if (error === null) {
     toast.add({
@@ -65,7 +70,7 @@ async function submitHandler(): Promise<boolean> {
   <section class="container">
     <h1>{{ $t('modules.roles.create') }}</h1>
     <RoleFormContainer
-      v-model="data"
+      v-model="data!"
       updating
       :submit-handler="submitHandler"
     />

@@ -11,8 +11,8 @@ import UserFormRole from '~/components/user/form/UserFormRole.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import { PERMISSION } from '~/services/permission-service';
 import type { LaravelValidationErrorBag } from '~/types/dorastorm';
-import type { FetchedResponse } from '~/types/fetch';
-import type { BaseUser, User } from '~/types/user';
+import type { BaseUser, NewUser, UpdateUser, User } from '~/types/user';
+import handleFetchCall from '~/utils/handle-fetch-call';
 import {
   BASIC_FIELDS,
   PASSWORDS_FIELDS,
@@ -37,7 +37,7 @@ type Mode = (typeof MODE)[keyof typeof MODE];
 const props = defineProps<{
   mode: Mode;
   initialData?: User;
-  submitHandler(payload: unknown): Promise<FetchedResponse<unknown, unknown>>;
+  submitHandler(payload: NewUser | UpdateUser): Promise<User>;
 }>();
 
 const emit = defineEmits<{
@@ -83,17 +83,18 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
 });
 
 const submit = handleSubmit(async (payload) => {
-  const { data, error } = await props.submitHandler(payload);
-  const typedError = error as FetchError<
-    LaravelValidationErrorBag<typeof payload>
-  >;
-  if (typedError) {
-    if (typedError.data) {
-      for (const [key, value] of Object.entries(typedError.data.errors)) {
+  // The following TS as NewUser is just to stop TS from yelling, but this may have to be refactorized...again...
+  const { data, error } = await handleFetchCall<
+    User,
+    LaravelValidationErrorBag<User>
+  >(props.submitHandler(payload as NewUser));
+  if (error) {
+    if (error.data) {
+      for (const [key, value] of Object.entries(error.data.errors)) {
         setFieldError(key, value);
       }
     } else {
-      emit('error', typedError);
+      emit('error', error);
     }
     return;
   }
