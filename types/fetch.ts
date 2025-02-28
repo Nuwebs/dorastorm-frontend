@@ -1,4 +1,4 @@
-import type { FetchError } from 'ofetch/node';
+import type { FetchError, FetchOptions } from 'ofetch/node';
 import type { UseFetchOptions } from '#app';
 
 interface BaseApiFetch {
@@ -22,4 +22,9 @@ export interface ApiFetchComposable<ResponseT> extends BaseApiFetch {
 export interface FetchedResponse<ResponseT, ErrorT> {
   data: ResponseT | null;
   error: FetchError<ErrorT> | null;
+}
+
+// Extend FetchOptions to include noAuth
+export interface CustomFetchOptions extends FetchOptions {
+  noAuth?: boolean;
 }

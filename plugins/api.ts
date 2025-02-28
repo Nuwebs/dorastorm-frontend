@@ -1,4 +1,4 @@
-import type { FetchOptions, FetchResponse } from 'ofetch'; // Import FetchOptions from ofetch
+import type { FetchResponse } from 'ofetch'; // Import FetchOptions from ofetch
 import {
   defineNuxtPlugin,
   navigateTo,
@@ -6,11 +6,7 @@ import {
   useRuntimeConfig
 } from '#app';
 import useAuthStore from '~/stores/auth-store';
-
-// Extend FetchOptions to include noAuth
-interface CustomFetchOptions extends FetchOptions {
-  noAuth?: boolean;
-}
+import type { CustomFetchOptions } from '~/types/fetch';
 
 export default defineNuxtPlugin({
   setup() {
