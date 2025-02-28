@@ -13,8 +13,10 @@ const JWT_KEY = 'ds-jwt';
 
 export type AuthEndpoint = (typeof AUTH_ENDPOINT)[keyof typeof AUTH_ENDPOINT];
 
-export function saveToken(token: string): void {
-  const cookie = useCookie(JWT_KEY, { maxAge: 60 * 60, httpOnly: false });
+export type JWTPayload = { user: User; exp: number; iat: number };
+
+export function saveToken(token: string, maxAge: number): void {
+  const cookie = useCookie(JWT_KEY, { maxAge: maxAge, httpOnly: false });
   cookie.value = token;
 }
 
@@ -37,6 +39,6 @@ export function isTokenExpired(expiresEpoch: number): boolean {
   return epoch >= expiresEpoch - 30; // Refresh 30 seconds early
 }
 
-export function decodeToken(token: string): { user: User; exp: number } {
-  return jwtDecode<{ user: User; exp: number }>(token);
+export function decodeToken(token: string): JWTPayload {
+  return jwtDecode<JWTPayload>(token);
 }
