@@ -1,12 +1,12 @@
 import handleFetchCall from './handle-fetch-call';
 import { useNuxtApp } from '#app';
-import type { ApiFetchUtil } from '~/types/fetch';
+import type { ApiFetch, UtilFetchOptions } from '~/types/fetch';
 
 async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   endpoint,
   noAuth,
   options = {}
-}: ApiFetchUtil<ResponseT>) {
+}: ApiFetch<ResponseT, UtilFetchOptions<ResponseT>>) {
   const api = useNuxtApp().$api;
 
   return handleFetchCall<ResponseT, ErrorT>(

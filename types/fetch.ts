@@ -11,20 +11,17 @@ export type UtilFetchOptions<ResponseT> = Omit<
   'key' | 'watch' | '$fetch'
 >;
 
-export interface ApiFetchUtil<ResponseT> extends BaseApiFetch {
-  options?: UtilFetchOptions<ResponseT>;
+// Combine ApiFetchUtil and ApiFetchComposable under one generic type
+export interface ApiFetch<ResponseT, OptionsT = UseFetchOptions<ResponseT>>
+  extends BaseApiFetch {
+  options?: OptionsT;
 }
 
-export interface ApiFetchComposable<ResponseT> extends BaseApiFetch {
-  options?: UseFetchOptions<ResponseT>;
-}
-
-export interface FetchedResponse<ResponseT, ErrorT> {
+// Use default generic for ErrorT to avoid repetition
+export interface FetchedResponse<ResponseT, ErrorT = unknown> {
   data: ResponseT | null;
   error: FetchError<ErrorT> | null;
 }
 
-// Extend FetchOptions to include noAuth
-export interface CustomFetchOptions extends FetchOptions {
-  noAuth?: boolean;
-}
+// Instead of CustomFetchOptions, use intersection type
+export type CustomFetchOptions = FetchOptions & { noAuth?: boolean };
