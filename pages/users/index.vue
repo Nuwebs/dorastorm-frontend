@@ -4,7 +4,7 @@ import Button from 'primevue/button';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
-import { definePageMeta, onMounted } from '#imports';
+import { definePageMeta } from '#imports';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
 import UserDeleteButton from '~/components/user/UserDeleteButton.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
@@ -22,40 +22,26 @@ const { userCan, roleCan, userIsAllowed } = useCachedPermissions([
   PERMISSION.USERS_UPDATE,
   PERMISSION.USERS_DELETE
 ]);
-const userService = new UserService();
+
+const service = new UserService();
 const {
   paginationData,
   filters,
   loading,
   totalResults,
-  toPage,
   resultsPerPage,
   currentPage,
+  search,
   calculatePageAfterNItemsDeletion
-} = useLaravelLazyPagination<User>({
+} = await useLaravelLazyPagination<User>(service, {
   global: { value: '', matchMode: 'contains' }
 });
 
 const expanded = ref<User[]>([]);
 
-async function loadData(page: number): Promise<void> {
-  const res = await toPage(userService.query(), page);
-  if (res) {
-    return;
-  }
-}
-
 async function handleUserDeleted(): Promise<void> {
-  await loadData(calculatePageAfterNItemsDeletion());
+  search(calculatePageAfterNItemsDeletion());
 }
-
-async function search(page: number = 1) {
-  await toPage(userService.query(), page);
-}
-
-onMounted(async () => {
-  await loadData(1);
-});
 </script>
 <template>
   <section class="container">
@@ -65,7 +51,7 @@ onMounted(async () => {
       v-model:filters="filters"
       :loading="loading"
       lazy
-      :value="paginationData"
+      :value="paginationData?.data"
       paginator
       :total-records="totalResults"
       :rows="resultsPerPage"
