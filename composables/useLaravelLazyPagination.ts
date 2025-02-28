@@ -1,23 +1,52 @@
 import type { QueryBuilder } from '@vortechron/query-builder-ts';
-import { ref, type Ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useAsyncData, useNuxtApp } from '#app';
+import type { BaseService } from '~/services/base-service';
 import type { FilterObject, LaravelPaginationWrapper } from '~/types/dorastorm';
-import type { UtilFetchOptions } from '~/types/fetch';
-import apiFetch from '~/utils/api-fetch';
+import type { CustomFetchOptions } from '~/types/fetch';
 
-/**
- * This composable is experimental.
- * It is only compatible with the SPA fetcher
- */
-export default function useLaravelLazyPagination<DataT>(
+export default async function useLaravelLazyPagination<DataT = unknown>(
+  service: BaseService<DataT>,
   filterObj: FilterObject = {},
-  options: UtilFetchOptions<LaravelPaginationWrapper<DataT>> = {}
+  options: CustomFetchOptions = {}
 ) {
-  const paginationData = ref<DataT[]>([]) as Ref<DataT[]>;
-  const loading = ref<boolean>(false);
   const currentPage = ref<number>(1);
-  const totalResults = ref<number>(0);
-  const resultsPerPage = ref<number>(0);
   const filters = ref<FilterObject>(filterObj);
+
+  const fetcher = useNuxtApp().$api;
+
+  const { data, error, status, refresh } = await useAsyncData(() =>
+    fetcher<LaravelPaginationWrapper<DataT>>(buildQuery(), options as object)
+  );
+
+  const totalResults = computed<number>(() => {
+    if (data.value === null) return 0;
+    return data.value.meta.total;
+  });
+
+  const resultsPerPage = computed<number>(() => {
+    if (data.value === null) return 0;
+    return data.value.meta.per_page;
+  });
+
+  const loading = computed<boolean>(() => {
+    return status.value === 'pending';
+  });
+
+  function buildQuery(): string {
+    let resultQuery: QueryBuilder = service.query();
+    for (const [filter, value] of Object.entries(filters.value)) {
+      if (value.value) {
+        resultQuery = resultQuery.filter(filter, value.value);
+      }
+    }
+    return resultQuery.page(currentPage.value).build();
+  }
+
+  async function search(page?: number) {
+    currentPage.value = page ? page : 1;
+    await refresh();
+  }
 
   function calculatePageAfterNItemsDeletion(removedItems: number = 1): number {
     if (removedItems < 0) {
@@ -38,46 +67,17 @@ export default function useLaravelLazyPagination<DataT>(
     return Math.min(currentPage.value, maxPage);
   }
 
-  function applyFilters(query: QueryBuilder): QueryBuilder {
-    let resultQuery: QueryBuilder = query;
-    for (const [filter, value] of Object.entries(filters.value)) {
-      if (value.value) {
-        resultQuery = resultQuery.filter(filter, value.value);
-      }
-    }
-    return resultQuery;
-  }
-
-  async function toPage(query: QueryBuilder, page: number = 1) {
-    loading.value = true;
-
-    const { data, error } = await apiFetch<LaravelPaginationWrapper<DataT>>({
-      endpoint: applyFilters(query).page(page).build(),
-      options
-    });
-
-    loading.value = false;
-
-    if (error) {
-      return error;
-    }
-
-    paginationData.value = data!.data;
-    currentPage.value = data!.meta.current_page;
-    totalResults.value = data!.meta.total;
-    resultsPerPage.value = data!.meta.per_page;
-  }
-
   return {
-    paginationData,
-    loading,
     filters,
     currentPage,
-    totalResults,
-    resultsPerPage,
+    search,
+    calculatePageAfterNItemsDeletion,
 
-    toPage,
-    applyFilters,
-    calculatePageAfterNItemsDeletion
+    paginationData: data,
+    error,
+    loading,
+
+    totalResults,
+    resultsPerPage
   };
 }

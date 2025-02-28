@@ -1,10 +1,22 @@
 import { QueryBuilder } from '@vortechron/query-builder-ts';
+import { useNuxtApp } from '#app';
 import type { FetchedResponse } from '~/types/fetch';
 import type { GenericServiceQuery } from '~/types/service';
-import apiFetch from '~/utils/api-fetch';
+import handleFetchCall from '~/utils/handle-fetch-call';
 
 export abstract class BaseService<T> {
   protected abstract endpoint: string;
+  protected api: typeof $fetch;
+
+  constructor() {
+    this.api = useNuxtApp().$api;
+  }
+
+  public async handledCall<ErrorT = unknown, ResponseT = unknown>(
+    promise: Promise<ResponseT>
+  ): Promise<FetchedResponse<ResponseT, ErrorT>> {
+    return handleFetchCall<ResponseT, ErrorT>(promise);
+  }
 
   public query(): GenericServiceQuery<typeof this.endpoint> {
     return new QueryBuilder(this.endpoint) as GenericServiceQuery<
@@ -14,23 +26,17 @@ export abstract class BaseService<T> {
 
   public async index(
     customQuery?: GenericServiceQuery<typeof this.endpoint>
-  ): Promise<FetchedResponse<T[], unknown>> {
+  ): Promise<T[]> {
     const queryObj = customQuery || this.query();
-    return apiFetch<T[]>({
-      endpoint: queryObj.build()
-    });
+
+    return this.api<T[]>(queryObj.build());
   }
 
-  public async findById(id: number): Promise<FetchedResponse<T, unknown>> {
-    return apiFetch<T>({
-      endpoint: `${this.endpoint}/${id}`
-    });
+  public async findById(id: number): Promise<T> {
+    return this.api<T>(`${this.endpoint}/${id}`);
   }
 
-  public async deleteById(id: number): Promise<FetchedResponse<void, null>> {
-    return apiFetch<void, null>({
-      endpoint: `${this.endpoint}/${id}`,
-      options: { method: 'DELETE' }
-    });
+  public async deleteById(id: number): Promise<void> {
+    return this.api<void>(`${this.endpoint}/${id}`, { method: 'DELETE' });
   }
 }

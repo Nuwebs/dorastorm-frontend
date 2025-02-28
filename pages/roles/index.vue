@@ -4,7 +4,7 @@ import Button from 'primevue/button';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
-import { definePageMeta, onMounted } from '#imports';
+import { definePageMeta } from '#imports';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
 import RoleDataRow from '~/components/role/RoleDataRow.vue';
 import RoleDeleteButton from '~/components/role/RoleDeleteButton.vue';
@@ -29,34 +29,19 @@ const {
   filters,
   loading,
   totalResults,
-  toPage,
   resultsPerPage,
   currentPage,
+  search,
   calculatePageAfterNItemsDeletion
-} = useLaravelLazyPagination<Role>({
+} = await useLaravelLazyPagination<Role>(service, {
   global: { value: '', matchMode: 'contains' }
 });
 
 const expanded = ref<Role[]>([]);
 
-async function loadData(page: number): Promise<void> {
-  const res = await toPage(service.query(), page);
-  if (res) {
-    return;
-  }
-}
-
 async function handleRoleDeleted(): Promise<void> {
-  await loadData(calculatePageAfterNItemsDeletion());
+  search(calculatePageAfterNItemsDeletion());
 }
-
-async function search(page: number = 1) {
-  await toPage(service.query(), page);
-}
-
-onMounted(async () => {
-  await loadData(1);
-});
 </script>
 <template>
   <section class="container">
@@ -68,7 +53,7 @@ onMounted(async () => {
       v-model:filters="filters"
       :loading="loading"
       lazy
-      :value="paginationData"
+      :value="paginationData?.data"
       paginator
       :total-records="totalResults"
       :rows="resultsPerPage"

@@ -3,16 +3,13 @@ import TheAuthenticatedMobileBar from '~/components/TheAuthenticatedMobileBar.vu
 import TheAuthenticatedNavbar from '~/components/TheAuthenticatedNavbar.vue';
 import TheAuthenticatedSidebar from '~/components/TheAuthenticatedSidebar.vue';
 import useAuthenticatedMenu from '~/composables/useAuthenticatedMenu';
-import useWindowWidth from '~/composables/useWindowWidth';
 
-const MOBILE_BP: number = 992;
-const { width } = useWindowWidth();
 const { processed } = useAuthenticatedMenu();
 </script>
 
 <template>
   <main class="flex h-screen w-screen">
-    <TheAuthenticatedSidebar v-if="width >= MOBILE_BP" :menu="processed" />
+    <TheAuthenticatedSidebar :menu="processed" class="hidden md:flex" />
     <section class="flex-1 flex flex-col max-w-full" role="main">
       <TheAuthenticatedNavbar />
 
@@ -21,9 +18,8 @@ const { processed } = useAuthenticatedMenu();
       </section>
 
       <TheAuthenticatedMobileBar
-        v-if="width < MOBILE_BP"
         :menu="processed"
-        class="w-full overflow-x-auto"
+        class="w-full overflow-x-auto md:hidden"
       />
     </section>
   </main>

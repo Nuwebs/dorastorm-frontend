@@ -3,6 +3,7 @@ import { definePageMeta, useI18n, useToast } from '#imports';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
 import { PERMISSION } from '~/services/permission-service';
 import { UserService } from '~/services/user-service';
+import type { NewUserFromAdmin } from '~/types/user';
 
 definePageMeta({
   middleware: ['auth-guard'],
@@ -19,6 +20,10 @@ function handleSuccess(): void {
     detail: t('modules.users.created')
   });
 }
+
+function submitHandler(payload: NewUserFromAdmin) {
+  return uS.store(payload);
+}
 </script>
 
 <template>
@@ -26,7 +31,7 @@ function handleSuccess(): void {
     <h1>{{ $t('modules.users.create') }}</h1>
     <UserFormContainer
       mode="admin"
-      :submit-handler="uS.create"
+      :submit-handler="submitHandler"
       @success="handleSuccess"
     />
   </section>

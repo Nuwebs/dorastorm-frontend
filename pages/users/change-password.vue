@@ -9,6 +9,7 @@ import UserFormPassword from '~/components/user/form/UserFormPassword.vue';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
 import { UserService } from '~/services/user-service';
 import useAuthStore from '~/stores/auth-store';
+import type { LaravelValidationErrorBag } from '~/types/dorastorm';
 import type { ChangeUserPassword } from '~/types/user';
 import { PASSWORDS_FIELDS } from '~/utils/schemas/user';
 
@@ -39,7 +40,9 @@ const { isSubmitting, handleSubmit, setFieldError, resetForm } = useForm({
 
 const submit = handleSubmit(async (payload) => {
   if (!user) return;
-  const { error } = await userService.changePasswordById(user.id, payload);
+  const { error } = await userService.handledCall<
+    LaravelValidationErrorBag<ChangeUserPassword>
+  >(userService.changePasswordById(user.id, payload));
 
   if (error === null) {
     resetForm();

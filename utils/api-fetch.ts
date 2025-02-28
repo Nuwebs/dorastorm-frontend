@@ -1,40 +1,20 @@
-import type { FetchError } from 'ofetch/node';
-import { utilOptions } from './api-fetch-options';
-import { navigateTo } from '#app';
-import useAuthStore from '~/stores/auth-store';
-import type { ApiFetchUtil, FetchedResponse } from '~/types/fetch';
+import handleFetchCall from './handle-fetch-call';
+import { useNuxtApp } from '#app';
+import type { ApiFetch, UtilFetchOptions } from '~/types/fetch';
 
 async function apiFetch<ResponseT = unknown, ErrorT = unknown>({
   endpoint,
-  auth = true,
+  noAuth,
   options = {}
-}: ApiFetchUtil<ResponseT>) {
-  const { logout } = useAuthStore();
+}: ApiFetch<ResponseT, UtilFetchOptions<ResponseT>>) {
+  const api = useNuxtApp().$api;
 
-  // Set up the default response
-  const response: FetchedResponse<ResponseT, ErrorT> = {
-    data: null,
-    error: null
-  };
-  const cOptions = utilOptions(auth, options);
-
-  try {
-    response.data = await $fetch<ResponseT>(endpoint, {
-      ...(cOptions as object),
-      // Response hook for errors
-      async onResponseError({ response }) {
-        // If the response is Unauthorized the user isn't logged in
-        // So it's forcerfully logged out and redirected to the login route.
-        if (response.status === 401) {
-          await logout(true);
-          await navigateTo('/');
-        }
-      }
-    });
-  } catch (error: unknown) {
-    response.error = error as FetchError<ErrorT>;
-  }
-  return response;
+  return handleFetchCall<ResponseT, ErrorT>(
+    api(endpoint, {
+      ...options,
+      noAuth: noAuth
+    } as object)
+  );
 }
 
 export default apiFetch;

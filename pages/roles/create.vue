@@ -16,6 +16,7 @@ const toast = useToast();
 const { getGeneric403Message, getGenericErrorMessage } =
   useGenericToastMessages();
 const { t } = useI18n();
+const service = new RoleService();
 const newRole = ref<NewRole>({
   name: '',
   description: '',
@@ -24,7 +25,7 @@ const newRole = ref<NewRole>({
 });
 
 async function submitHandler(): Promise<boolean> {
-  const { error } = await new RoleService().create(newRole.value);
+  const { error } = await service.handledCall(service.store(newRole.value));
 
   if (error === null) {
     toast.add({

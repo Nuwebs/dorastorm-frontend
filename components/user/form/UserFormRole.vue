@@ -1,29 +1,21 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { createError, useAsyncData } from '#app';
 import FormSelect from '~/components/form/FormSelect.vue';
 import { UserService } from '~/services/user-service';
-import type { Role } from '~/types/role';
 
-const loading = ref<boolean>(false);
-const roles = ref<Role[]>([]);
+const service = new UserService();
+const { data: roles, error } = useAsyncData(() => service.getRolesBelow());
 
-onMounted(async () => {
-  loading.value = true;
-  const { data, error } = await new UserService().getRolesBelow();
-  if (error) {
-    return;
-  }
-  loading.value = false;
-
-  roles.value = data!;
-});
+if (error.value) {
+  throw createError({ statusCode: 403 });
+}
 </script>
 
 <template>
   <FormSelect
     name="role_id"
     :label="$t('modules.users.role')"
-    :options="roles"
+    :options="roles!"
     option-value="id"
     option-label="name"
     filter
