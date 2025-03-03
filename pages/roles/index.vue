@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { DataTable, type DataTablePageEvent } from 'primevue';
-import Button from 'primevue/button';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
 import { definePageMeta } from '#imports';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';

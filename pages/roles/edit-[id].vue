@@ -4,10 +4,10 @@ import {
   definePageMeta,
   useAsyncData,
   useI18n,
-  useRoute,
-  useToast
+  useRoute
 } from '#imports';
 import RoleFormContainer from '~/components/role/form/RoleFormContainer.vue';
+import { useToast } from '~/components/ui/toast';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
 import { PERMISSION } from '~/services/permission-service';
 import { RoleService } from '~/services/role-service';
@@ -19,7 +19,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const route = useRoute();
-const toast = useToast();
+const { toast } = useToast();
 const { getGeneric403Message, getGenericErrorMessage } =
   useGenericToastMessages();
 
@@ -43,20 +43,19 @@ async function submitHandler(): Promise<boolean> {
   );
 
   if (error === null) {
-    toast.add({
-      severity: 'success',
-      detail: t('general.updated'),
-      life: 10000
+    toast({
+      variant: 'success',
+      description: t('general.updated')
     });
     return true;
   }
 
   switch (error.statusCode) {
     case 403:
-      toast.add(getGeneric403Message());
+      toast(getGeneric403Message());
       return false;
     default:
-      toast.add(
+      toast(
         getGenericErrorMessage(
           `Error ${error.statusCode} -> ${error.statusMessage}`
         )

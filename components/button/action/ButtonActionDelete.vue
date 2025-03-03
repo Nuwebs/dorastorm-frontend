@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { Trash2 } from 'lucide-vue-next';
 import { useConfirm, useI18n } from '#imports';
+import UiButton from '~/components/ui/button/UiButton.vue';
 
 const props = defineProps<{
   loading?: boolean;
@@ -32,15 +34,14 @@ function showConfirmDialog(): void {
 </script>
 
 <template>
-  <Button
-    icon="pi pi-trash"
-    text
-    rounded
-    aria-label="Delete"
-    severity="danger"
+  <UiButton
     :loading="loading"
+    variant="destructive"
+    aria-label="Delete"
     @click="showConfirmDialog"
-  />
+  >
+    <Trash2 />
+  </UiButton>
 </template>
 
 <style scoped></style>

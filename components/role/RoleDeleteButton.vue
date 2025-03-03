@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ButtonActionDelete from '../button/action/ButtonActionDelete.vue';
-import { useI18n, useToast } from '#imports';
+import { useToast } from '../ui/toast/use-toast';
+import { useI18n } from '#imports';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
 import { RoleService } from '~/services/role-service';
 import type { Role } from '~/types/role';
@@ -15,7 +16,7 @@ const emit = defineEmits<{
 
 const service = new RoleService();
 const loading = ref<boolean>(false);
-const toast = useToast();
+const { toast } = useToast();
 const { t } = useI18n();
 const { getGeneric403Message, getGeneric404Message, getGenericErrorMessage } =
   useGenericToastMessages();
@@ -31,25 +32,28 @@ async function handleRoleDeleted(): Promise<void> {
   if (error) {
     switch (error.statusCode) {
       case 403:
-        return toast.add(getGeneric403Message());
+        toast(getGeneric403Message());
+        return;
       case 404:
-        return toast.add(getGeneric404Message());
+        toast(getGeneric404Message());
+        return;
       case 422:
-        return toast.add({
-          severity: 'error',
-          summary: 'Role in use',
-          detail: 'There are users using this role.'
+        toast({
+          variant: 'destructive',
+          title: 'Role in use',
+          description: 'There are users using this role.'
         });
+        return;
       default:
-        return toast.add(getGenericErrorMessage());
+        toast(getGenericErrorMessage());
+        return;
     }
   }
 
-  toast.add({
-    severity: 'success',
-    summary: props.role.name,
-    detail: t('modules.roles.deleted'),
-    life: 10000
+  toast({
+    variant: 'success',
+    title: props.role.name,
+    description: t('modules.roles.deleted')
   });
   return emit('deleted', props.role);
 }

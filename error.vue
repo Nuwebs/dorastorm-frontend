@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from 'primevue';
+import UiButton from './components/ui/button/UiButton.vue';
 import { clearError, type NuxtError } from '#app';
 
 defineProps({
@@ -28,12 +28,9 @@ const handleError = () => clearError({ redirect: '/' });
         <p v-else class="text-gray-600 mt-2">
           {{ $t('error.fatal') }}
         </p>
-        <Button
-          :label="$t('general.home')"
-          severity="danger"
-          class="mt-6"
-          @click="handleError"
-        />
+        <UiButton variant="destructive" class="mt-6" @click="handleError">
+          {{ $t('general.home') }}
+        </UiButton>
       </div>
     </div>
   </NuxtLayout>

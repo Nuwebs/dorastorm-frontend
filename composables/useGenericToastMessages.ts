@@ -1,32 +1,30 @@
-import type { ToastMessageOptions } from 'primevue';
 import { useI18n } from '#imports';
+import type { Toast } from '~/components/ui/toast/use-toast';
 
 export default function useGenericToastMessages() {
   const { t } = useI18n();
 
-  function getGeneric404Message(): ToastMessageOptions {
+  function getGeneric404Message(): Toast {
     return {
-      severity: 'error',
-      summary: t('error.404.default_title'),
-      detail: t('error.404.default_resource'),
-      life: 10000
+      variant: 'destructive',
+      title: t('error.404.default_title'),
+      description: t('error.404.default_resource')
     };
   }
 
-  function getGeneric403Message(): ToastMessageOptions {
+  function getGeneric403Message(): Toast {
     return {
-      severity: 'error',
-      summary: t('error.403.default_title'),
-      detail: t('error.403.default_message'),
-      life: 10000
+      variant: 'destructive',
+      title: t('error.403.default_title'),
+      description: t('error.403.default_message')
     };
   }
 
-  function getGenericErrorMessage(detailedError?: string): ToastMessageOptions {
+  function getGenericErrorMessage(descriptionedError?: string): Toast {
     return {
-      severity: 'error',
-      summary: t('error.fatal'),
-      detail: detailedError
+      variant: 'destructive',
+      title: t('error.fatal'),
+      description: descriptionedError
     };
   }
 

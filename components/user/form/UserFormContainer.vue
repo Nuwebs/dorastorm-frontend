@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
 import type { FetchError } from 'ofetch/node';
-import { Button } from 'primevue';
 import { useForm } from 'vee-validate';
 import { object } from 'zod';
 import { useI18n } from '#imports';
+import UiButton from '~/components/ui/button/UiButton.vue';
 import UserFormBasicFields from '~/components/user/form/UserFormBasicFields.vue';
 import UserFormPassword from '~/components/user/form/UserFormPassword.vue';
 import UserFormRole from '~/components/user/form/UserFormRole.vue';
@@ -109,16 +109,13 @@ const submit = handleSubmit(async (payload) => {
     <UserFormBasicFields />
     <UserFormPassword v-if="includePasswordFields" />
     <UserFormRole v-if="includeRoleFields" />
-    <Button
-      type="submit"
-      :loading="isSubmitting"
-      :label="
+    <UiButton class="mt-" type="submit" :loading="isSubmitting">
+      {{
         mode === MODE.UPDATE
           ? $t('modules.users.update')
           : $t('modules.users.create')
-      "
-      class="mt-3"
-    />
+      }}
+    </UiButton>
   </form>
 </template>
 

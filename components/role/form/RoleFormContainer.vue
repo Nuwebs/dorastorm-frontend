@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
-import Button from 'primevue/button';
 import { useForm } from 'vee-validate';
 import { ref } from 'vue';
 import { array, object, string } from 'zod';
@@ -8,6 +7,7 @@ import RoleFormHierarchy from './RoleFormHierarchy.vue';
 import RoleFormPermissions from './RoleFormPermissions.vue';
 import FormText from '~/components/form/FormText.vue';
 import FormTextArea from '~/components/form/FormTextArea.vue';
+import UiButton from '~/components/ui/button/UiButton.vue';
 import type { NewRole, Role } from '~/types/role';
 
 interface Props {
@@ -69,12 +69,9 @@ const submit = handleSubmit(async () => {
           />
         </div>
       </div>
-      <Button
-        :loading="isSubmitting"
-        :label="$t('forms.submit')"
-        type="submit"
-        class="mt-3"
-      />
+      <UiButton :loading="isSubmitting" type="submit" class="mt-3">
+        {{ $t('forms.submit') }}
+      </UiButton>
     </form>
   </div>
 </template>

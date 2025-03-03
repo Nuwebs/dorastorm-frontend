@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { definePageMeta, useI18n, useToast } from '#imports';
+import { definePageMeta, useI18n } from '#imports';
 import RoleFormContainer from '~/components/role/form/RoleFormContainer.vue';
+import { useToast } from '~/components/ui/toast';
 import useGenericToastMessages from '~/composables/useGenericToastMessages';
 import { PERMISSION } from '~/services/permission-service';
 import { RoleService } from '~/services/role-service';
@@ -12,7 +13,7 @@ definePageMeta({
   permissions: [PERMISSION.ROLES_CREATE]
 });
 
-const toast = useToast();
+const { toast } = useToast();
 const { getGeneric403Message, getGenericErrorMessage } =
   useGenericToastMessages();
 const { t } = useI18n();
@@ -28,20 +29,19 @@ async function submitHandler(): Promise<boolean> {
   const { error } = await service.handledCall(service.store(newRole.value));
 
   if (error === null) {
-    toast.add({
-      severity: 'success',
-      detail: t('modules.roles.created'),
-      life: 10000
+    toast({
+      variant: 'success',
+      description: t('modules.roles.created')
     });
     return true;
   }
 
   switch (error.statusCode) {
     case 403:
-      toast.add(getGeneric403Message());
+      toast(getGeneric403Message());
       return false;
     default:
-      toast.add(
+      toast(
         getGenericErrorMessage(
           `Error ${error.statusCode} -> ${error.statusMessage}`
         )

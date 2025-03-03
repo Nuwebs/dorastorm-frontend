@@ -4,9 +4,9 @@ import {
   definePageMeta,
   useAsyncData,
   useI18n,
-  useRoute,
-  useToast
+  useRoute
 } from '#imports';
+import { useToast } from '~/components/ui/toast';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
 import { UserService } from '~/services/user-service';
 import useAuthStore from '~/stores/auth-store';
@@ -18,7 +18,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const route = useRoute();
-const toast = useToast();
+const { toast } = useToast();
 const authStore = useAuthStore();
 
 const userService = new UserService();
@@ -43,10 +43,9 @@ function handleSuccess(user: User): void {
   if (user.id === authStore.user?.id) {
     authStore.user = user;
   }
-  toast.add({
-    severity: 'success',
-    detail: t('general.updated'),
-    life: 10000
+  toast({
+    variant: 'success',
+    description: t('general.updated')
   });
 }
 </script>

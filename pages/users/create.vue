@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { definePageMeta, useI18n, useToast } from '#imports';
+import { definePageMeta, useI18n } from '#imports';
+import { useToast } from '~/components/ui/toast';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
 import { PERMISSION } from '~/services/permission-service';
 import { UserService } from '~/services/user-service';
@@ -10,14 +11,14 @@ definePageMeta({
   permissions: [PERMISSION.USERS_CREATE]
 });
 
-const toast = useToast();
+const { toast } = useToast();
 const { t } = useI18n();
 const uS = new UserService();
 
 function handleSuccess(): void {
-  toast.add({
-    severity: 'success',
-    detail: t('modules.users.created')
+  toast({
+    variant: 'success',
+    description: t('modules.users.created')
   });
 }
 
