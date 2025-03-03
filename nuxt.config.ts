@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
 
   shadcn: {
-    prefix: '',
+    prefix: 'Ui',
     componentDir: './components/ui'
   },
 
