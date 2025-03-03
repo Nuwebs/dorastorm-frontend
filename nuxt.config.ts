@@ -1,4 +1,3 @@
-import Aura from '@primevue/themes/aura';
 import {
   availableLocales,
   DEFAULT_LOCALE,
@@ -38,21 +37,6 @@ export default defineNuxtConfig({
   },
   zodI18n: {
     localeCodesMapping: ZOD_LOCALES_MAP
-  },
-
-  primevue: {
-    options: {
-      theme: {
-        preset: Aura,
-        options: {
-          darkModeSelector: '.ds-dark-mode',
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities'
-          }
-        }
-      }
-    }
   },
 
   runtimeConfig: {
