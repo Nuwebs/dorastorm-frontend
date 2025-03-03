@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/eslint'
   ],
+
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
 
   i18n: {
