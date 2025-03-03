@@ -23,10 +23,16 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-zod-i18n',
     '@nuxtjs/i18n',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
+    'shadcn-nuxt'
   ],
 
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
+
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui'
+  },
 
   i18n: {
     lazy: true,
