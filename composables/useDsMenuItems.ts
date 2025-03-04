@@ -1,4 +1,3 @@
-import type { MenuItem } from 'primevue/menuitem';
 import type { Permission } from '~/services/permission-service';
 import useAuthStore from '~/stores/auth-store';
 import type { DsMenuItem } from '~/types/menu';
@@ -10,8 +9,8 @@ export default function useDsMenuItems() {
     dsMenuItems: DsMenuItem[],
     hasPermission: (permission: Permission) => boolean,
     hasAnyPermission: (permissions: Permission[]) => boolean
-  ): MenuItem[] {
-    return dsMenuItems.reduce<MenuItem[]>((processedMenuItems, menuItem) => {
+  ): DsMenuItem[] {
+    return dsMenuItems.reduce<DsMenuItem[]>((processedMenuItems, menuItem) => {
       // If the menuItem does not have permissions, we can safely add it
       if (!menuItem.permissions) {
         processedMenuItems.push(menuItem);

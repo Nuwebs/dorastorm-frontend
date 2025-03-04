@@ -6,7 +6,7 @@ import NavbarBase from './navbar/NavbarBase.vue';
 <template>
   <NavbarBase :content="[]">
     <template #end>
-      <NavbarButtonOptions :options="[]" />
+      <NavbarButtonOptions :options="{}" />
     </template>
   </NavbarBase>
 </template>

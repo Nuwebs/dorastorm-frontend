@@ -1,27 +1,43 @@
 <script setup lang="ts">
-import { Menubar } from 'primevue';
-import type { MenuItem } from 'primevue/menuitem';
+import NavbarMenuItem from './NavbarMenuItem.vue';
+import UiNavigationMenu from '../ui/navigation-menu/UiNavigationMenu.vue';
+import UiNavigationMenuItem from '../ui/navigation-menu/UiNavigationMenuItem.vue';
+import UiNavigationMenuLink from '../ui/navigation-menu/UiNavigationMenuLink.vue';
+import UiNavigationMenuList from '../ui/navigation-menu/UiNavigationMenuList.vue';
+import type { DsMenuItem } from '~/types/menu';
 
 defineProps<{
-  content?: MenuItem[];
+  content?: DsMenuItem[];
 }>();
 </script>
 
 <template>
-  <nav class="h-20 z-10 border-b border-gray-500">
-    <Menubar class="py-4 px-5 h-full rounded-none border-none" :model="content">
-      <template #start>
-        <div class="flex align-items-center">
-          <slot name="start">
-            <div class="font-semibold">DSF 4</div>
-          </slot>
+  <UiNavigationMenu
+    class="h-[12vh] z-10 items-center px-4 border-b border-gray-500"
+  >
+    <div class="w-full">
+      <UiNavigationMenuList>
+        <slot name="start">
+          <UiNavigationMenuItem>
+            <UiNavigationMenuLink as="div" class="font-semibold mr-4">
+              DS4F
+            </UiNavigationMenuLink>
+          </UiNavigationMenuItem>
+        </slot>
+
+        <NavbarMenuItem
+          v-for="(item, index) in content"
+          :key="`base-${index}-${item.label}`"
+          :item="item"
+        />
+        <slot />
+
+        <div class="ml-auto">
+          <slot name="end" />
         </div>
-      </template>
-      <template #end>
-        <slot name="end" />
-      </template>
-    </Menubar>
-  </nav>
+      </UiNavigationMenuList>
+    </div>
+  </UiNavigationMenu>
 </template>
 
 <style scoped></style>
