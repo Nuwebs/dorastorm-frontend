@@ -5,7 +5,12 @@ import { object, string } from 'zod';
 import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import FormText from '~/components/form/FormText.vue';
 import UiButton from '~/components/ui/button/UiButton.vue';
-import { UiCard, UiCardTitle, UiCardContent } from '~/components/ui/card';
+import {
+  UiCard,
+  UiCardTitle,
+  UiCardHeader,
+  UiCardContent
+} from '~/components/ui/card';
 import useAuthStore from '~/stores/auth-store';
 
 definePageMeta({
@@ -39,12 +44,14 @@ const submit = handleSubmit(async (payload) => {
 <template>
   <section class="flex justify-center py-8">
     <UiCard class="w-2/3 md:w-1/3">
-      <UiCardTitle>
-        {{ $t('general.login') }}
-      </UiCardTitle>
+      <UiCardHeader>
+        <UiCardTitle class="text-center">
+          {{ $t('general.login') }}
+        </UiCardTitle>
+      </UiCardHeader>
       <UiCardContent>
         <form @submit="submit">
-          <!-- <FormText
+          <FormText
             name="email"
             :label="$t('forms.email')"
             type="email"
@@ -55,7 +62,7 @@ const submit = handleSubmit(async (payload) => {
             :label="$t('forms.password')"
             type="password"
             class="mb-4"
-          /> -->
+          />
           <UiButton type="submit" :loading="isSubmitting" class="w-full">
             {{ $t('forms.submit') }}
           </UiButton>

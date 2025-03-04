@@ -6,6 +6,7 @@ export default withNuxt({
     semi: [2, 'always'],
     'vue/require-default-prop': 'off',
     '@typescript-eslint/no-invalid-void-type': 'off',
+    'vue/html-self-closing': 'off',
     'import/order': [
       'error',
       {
