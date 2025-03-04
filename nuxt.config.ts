@@ -20,7 +20,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
-    'shadcn-nuxt',
     '@pinia/nuxt',
     'nuxt-zod-i18n',
     '@nuxtjs/i18n',
@@ -28,11 +27,6 @@ export default defineNuxtConfig({
   ],
 
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
-
-  shadcn: {
-    prefix: 'Ui',
-    componentDir: './components/ui'
-  },
 
   i18n: {
     lazy: true,

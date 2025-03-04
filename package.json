@@ -27,7 +27,6 @@
     "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
     "reka-ui": "^2.0.2",
-    "shadcn-nuxt": "^1.0.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.14.7",
