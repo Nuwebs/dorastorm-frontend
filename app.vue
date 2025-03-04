@@ -13,6 +13,10 @@ import { Toaster } from './components/ui/toast';
 </template>
 
 <style>
+.header-section {
+  height: 12vh;
+}
+
 .main-section {
   min-height: 88vh;
 }

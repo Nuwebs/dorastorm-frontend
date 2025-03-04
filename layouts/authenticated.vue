@@ -19,7 +19,7 @@ const { processed } = useAuthenticatedMenu();
 
       <TheAuthenticatedMobileBar
         :menu="processed"
-        class="w-full overflow-x-auto md:hidden"
+        class="w-full overflow-x-auto"
       />
     </section>
   </main>

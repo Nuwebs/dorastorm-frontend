@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { Drawer } from 'primevue';
-import type { MenuItem } from 'primevue/menuitem';
 import { ref } from 'vue';
 import MobileBarItemAccordion from './mobilebar/MobileBarItemAccordion.vue';
+import {
+  UiDrawer,
+  UiDrawerContent,
+  UiDrawerHeader,
+  UiDrawerTitle
+} from './ui/drawer';
+import type { DsMenuItem } from '~/types/menu';
 
 defineProps<{
-  menu: MenuItem[];
+  menu: DsMenuItem[];
 }>();
 
 const drawerVisible = ref<boolean>(false);
-const selectedItem = ref<MenuItem | null>(null);
+const selectedItem = ref<DsMenuItem | null>(null);
 
-function handleClick(item: MenuItem): void {
+function handleClick(item: DsMenuItem): void {
   if (!item.items) return;
 
   selectedItem.value = item;
@@ -20,6 +25,12 @@ function handleClick(item: MenuItem): void {
 
 function handleNavigated(): void {
   drawerVisible.value = false;
+  selectedItem.value = null;
+}
+
+function handleCloseAnimation(): void {
+  // Do nothing if the drawer is opened
+  if (drawerVisible.value) return;
   selectedItem.value = null;
 }
 </script>
@@ -36,7 +47,23 @@ function handleNavigated(): void {
       <i :class="item.icon" />
       <div>{{ item.label }}</div>
     </NuxtLink>
-    <Drawer
+    <UiDrawer
+      :open="drawerVisible"
+      direction="bottom"
+      @update:open="(payload: boolean) => drawerVisible = payload"
+      @animation-end="handleCloseAnimation()"
+    >
+      <UiDrawerContent>
+        <UiDrawerHeader>
+          <UiDrawerTitle class="text-center">
+            {{ String(selectedItem?.label) ?? 'Error' }}
+          </UiDrawerTitle>
+        </UiDrawerHeader>
+
+        <div class="mt-2 px-4">// Content</div>
+      </UiDrawerContent>
+    </UiDrawer>
+    <!-- <Drawer
       v-model:visible="drawerVisible"
       position="bottom"
       :header="String(selectedItem?.label) ?? 'Error'"
@@ -49,6 +76,6 @@ function handleNavigated(): void {
         @navigated="handleNavigated"
       />
       <p v-else>Error</p>
-    </Drawer>
+    </Drawer> -->
   </section>
 </template>

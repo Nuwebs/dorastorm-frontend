@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { Button } from 'primevue';
-import type { MenuItem } from 'primevue/menuitem';
+import { Menu } from 'lucide-vue-next';
 import { ref } from 'vue';
 import SidebarItemList from './sidebar/SidebarItemList.vue';
+import UiButton from './ui/button/UiButton.vue';
 import { useLocalePath, navigateTo } from '#imports';
 import useAuthStore from '~/stores/auth-store';
+import type { DsMenuItem } from '~/types/menu';
 
 type SidebarStatus = 'collapsed' | 'expanded';
 
 defineProps<{
-  menu: MenuItem[];
+  menu: DsMenuItem[];
 }>();
 const emit = defineEmits<{
   collapseStatusChange: [status: SidebarStatus];
@@ -54,13 +55,15 @@ async function logout(): Promise<void> {
       :sidebar-status-toggle-callback="toggleSidebarStatus"
     >
       <header
-        class="h-20 w-full flex items-center border-b border-gray-500 p-3"
+        class="header-section w-full flex items-center border-b border-gray-500 p-3"
         :class="{ 'justify-center': isSidebarCollapsed }"
       >
         <div v-if="!isSidebarCollapsed" class="mr-auto">
           {{ authStore.user?.name }}
         </div>
-        <Button icon="pi pi-bars" plain @click="handleToggleButton" />
+        <UiButton variant="outline" size="icon" @click="handleToggleButton">
+          <Menu />
+        </UiButton>
       </header>
     </slot>
 

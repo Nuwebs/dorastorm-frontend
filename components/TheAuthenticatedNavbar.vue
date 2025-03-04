@@ -11,7 +11,12 @@ const { processed } = useAuthenticatedContextMenu();
       <div />
     </template>
     <template #end>
-      <NavbarButtonOptions :options="processed" />
+      <NavbarButtonOptions
+        :options="{
+          label: 'temp',
+          items: processed
+        }"
+      />
     </template>
   </NavbarBase>
 </template>

@@ -13,7 +13,7 @@ defineProps<{
 
 <template>
   <UiNavigationMenu
-    class="h-[12vh] z-10 items-center px-4 border-b border-gray-500"
+    class="header-section z-10 items-center px-4 border-b border-gray-500"
   >
     <div class="w-full">
       <UiNavigationMenuList>
