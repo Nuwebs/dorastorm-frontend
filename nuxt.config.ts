@@ -16,15 +16,15 @@ export default defineNuxtConfig({
     dirs: []
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-11-04',
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
     '@pinia/nuxt',
     'nuxt-zod-i18n',
     '@nuxtjs/i18n',
-    '@nuxt/eslint',
-    'shadcn-nuxt'
+    '@nuxt/eslint'
   ],
 
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
