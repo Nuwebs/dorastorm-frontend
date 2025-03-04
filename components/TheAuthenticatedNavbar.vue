@@ -13,7 +13,7 @@ const { processed } = useAuthenticatedContextMenu();
     <template #end>
       <NavbarButtonOptions
         :options="{
-          label: 'temp',
+          icon: 'pi pi-cog text-lg',
           items: processed
         }"
       />

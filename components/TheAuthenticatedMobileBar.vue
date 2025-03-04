@@ -25,7 +25,6 @@ function handleClick(item: DsMenuItem): void {
 
 function handleNavigated(): void {
   drawerVisible.value = false;
-  selectedItem.value = null;
 }
 
 function handleCloseAnimation(): void {
@@ -60,22 +59,15 @@ function handleCloseAnimation(): void {
           </UiDrawerTitle>
         </UiDrawerHeader>
 
-        <div class="mt-2 px-4">// Content</div>
+        <div class="mt-2 px-4 pb-6">
+          <MobileBarItemAccordion
+            v-if="selectedItem"
+            :item="selectedItem"
+            @navigated="handleNavigated"
+          />
+          <p v-else>Error</p>
+        </div>
       </UiDrawerContent>
     </UiDrawer>
-    <!-- <Drawer
-      v-model:visible="drawerVisible"
-      position="bottom"
-      :header="String(selectedItem?.label) ?? 'Error'"
-      class="mobilebar-drawer-h"
-      @hide="selectedItem = null"
-    >
-      <MobileBarItemAccordion
-        v-if="selectedItem"
-        :item="selectedItem"
-        @navigated="handleNavigated"
-      />
-      <p v-else>Error</p>
-    </Drawer> -->
   </section>
 </template>

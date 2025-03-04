@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  Accordion,
-  AccordionPanel,
-  AccordionHeader,
-  AccordionContent
-} from 'primevue';
-import type { MenuItem } from 'primevue/menuitem';
+  UiAccordion,
+  UiAccordionItem,
+  UiAccordionContent,
+  UiAccordionTrigger
+} from '../ui/accordion';
+import type { DsMenuItem } from '~/types/menu';
 
 defineProps<{
-  item: MenuItem;
+  item: DsMenuItem;
 }>();
 
 const emit = defineEmits<{
@@ -17,33 +17,33 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Accordion :value="0">
-    <AccordionPanel
+  <UiAccordion type="single" collapsible>
+    <UiAccordionItem
       v-for="(subitem, index) in item.items"
       :key="`dr-${subitem.label}-${index}`"
-      :value="index"
+      :value="`dr-${subitem.label}-${index}`"
+      class="mb-2"
     >
       <template v-if="subitem.items">
-        <AccordionHeader>{{ subitem.label }}</AccordionHeader>
-        <AccordionContent>
+        <UiAccordionTrigger>{{ subitem.label }}</UiAccordionTrigger>
+        <UiAccordionContent>
           <MobileBarItemAccordion
             :item="subitem"
+            class="pl-4"
             @navigated="emit('navigated')"
           />
-        </AccordionContent>
+        </UiAccordionContent>
       </template>
-      <NuxtLink
+      <NuxtLinkLocale
         v-else
         :to="subitem.to"
         class="font-semibold font-lg text mb-2"
         @click="emit('navigated')"
       >
-        <AccordionHeader :pt="{ toggleicon: { class: '!hidden' } }">
-          {{ subitem.label }}
-        </AccordionHeader>
-      </NuxtLink>
-    </AccordionPanel>
-  </Accordion>
+        {{ subitem.label }}
+      </NuxtLinkLocale>
+    </UiAccordionItem>
+  </UiAccordion>
 </template>
 
 <style scoped></style>
