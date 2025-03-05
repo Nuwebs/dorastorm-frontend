@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Textarea } from 'primevue';
 import { useField, ErrorMessage } from 'vee-validate';
+import UiTextarea from '../ui/textarea/UiTextarea.vue';
 
 interface Props {
   name: string;
@@ -28,12 +28,11 @@ const { value, errorMessage } = useField<typeof props.modelValue>(
     <slot name="label">
       <label :for="name" class="block">{{ label }}</label>
     </slot>
-    <Textarea
+    <UiTextarea
       v-model="value"
       :name="name"
       :rows="props.rows"
       :invalid="errorMessage !== undefined"
-      class="w-full block"
     />
     <slot name="errorMessage" :error-message-bag="errorMessage">
       <ErrorMessage :name="name" class="text-red-400" />
