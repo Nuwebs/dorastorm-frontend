@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends Record<string, AcceptableValue>">
 import { Loader2 } from 'lucide-vue-next';
-import type { AcceptableValue } from 'reka-ui';
-import { computed } from 'vue';
+import { SelectValue, SelectIcon, type AcceptableValue } from 'reka-ui';
+import { computed, ref } from 'vue';
 import {
   UiSelectRoot,
   UiSelectTrigger,
@@ -10,42 +10,55 @@ import {
   UiSelectGroup,
   UiSelectLabel
 } from '.';
+import UiInput from '../input/UiInput.vue';
 
-// Definimos las props con genéricos
 const props = defineProps<{
-  modelValue: T[keyof T] | null; // Valor seleccionado (v-model)
-  options: T[]; // Array de objetos genéricos
+  modelValue: T[keyof T] | null;
+  options: T[];
 
-  valueKey: keyof T; // Clave para el valor
-  labelKey: keyof T; // Clave para la etiqueta
+  valueKey: keyof T;
+  labelKey: keyof T;
 
-  groupBy?: keyof T; // Clave opcional para agrupar
+  groupBy?: keyof T;
   loading?: boolean;
   disabled?: boolean;
+  filter?: boolean;
+  placeholder?: string;
 }>();
 
-// Definimos los eventos emitidos
 const emit = defineEmits<{
   'update:modelValue': [value: AcceptableValue];
 }>();
 
-// Computamos la opción seleccionada y su etiqueta
+const filterText = ref<string | null>(null);
+
+const filteredOptions = computed(() => {
+  if (!props.filter || !filterText.value) {
+    return props.options; // Si no hay filtro o el texto está vacío, mostrar todas las opciones
+  }
+  const lowerFilter = filterText.value.toLowerCase();
+  return props.options.filter((option) =>
+    String(option[props.labelKey]).toLowerCase().includes(lowerFilter)
+  );
+});
+
+// Computes the selected option and label
 const selectedOption = computed(() =>
   props.options.find((option) => option[props.valueKey] === props.modelValue)
 );
 const selectedLabel = computed(() =>
   selectedOption.value
     ? selectedOption.value[props.labelKey]
-    : 'Selecciona una opción'
+    : props.placeholder ?? '...'
 );
 
-// Computamos los grupos si se proporciona groupBy
+// Computes the groups if possible
 const groups = computed(() => {
   if (!props.groupBy) return null;
 
   const map = new Map<string, T[]>();
-  props.options.forEach((option) => {
-    const groupKey = String(option[props.groupBy!]); // Convertimos a string para simplificar
+  filteredOptions.value.forEach((option) => {
+    const groupKey = String(option[props.groupBy!]); // As string to simplify
     if (!map.has(groupKey)) {
       map.set(groupKey, []);
     }
@@ -61,15 +74,26 @@ const groups = computed(() => {
     :disabled="disabled || loading"
     @update:model-value="emit('update:modelValue', $event)"
   >
-    <!-- Trigger: muestra la etiqueta seleccionada o un placeholder -->
+    <!-- Trigger: shows the label or the placeholder -->
     <UiSelectTrigger>
-      <Loader2 v-if="loading" class="w-4 h-4 mr-2 animate-spin" />
-      {{ selectedLabel }}
+      <SelectIcon v-if="loading">
+        <Loader2 class="w-4 h-4 mr-2 animate-spin" />
+      </SelectIcon>
+      <SelectValue>
+        {{ selectedLabel }}
+      </SelectValue>
     </UiSelectTrigger>
 
-    <!-- Contenido del Select -->
     <UiSelectContent>
-      <!-- Si hay agrupaciones -->
+      <!-- If the user wants to filter -->
+      <UiInput
+        v-if="props.filter"
+        v-model="filterText"
+        type="text"
+        class="w-full mb-4"
+      />
+
+      <!-- If there are groups -->
       <template v-if="props.groupBy && groups">
         <UiSelectGroup
           v-for="[groupKey, groupOptions] in groups"
@@ -86,10 +110,9 @@ const groups = computed(() => {
         </UiSelectGroup>
       </template>
 
-      <!-- Sin agrupaciones -->
       <template v-else>
         <UiSelectItem
-          v-for="(option, index) in options"
+          v-for="(option, index) in filteredOptions"
           :key="`i-${index}`"
           :value="option[valueKey]"
         >
