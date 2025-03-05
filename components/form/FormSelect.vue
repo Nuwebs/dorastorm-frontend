@@ -1,16 +1,22 @@
-<script setup lang="ts" generic="T = number, OptionsT = number">
-import { Select } from 'primevue';
+<script
+  setup
+  lang="ts"
+  generic="OptionsT extends Record<string, AcceptableValue>"
+>
+import type { AcceptableValue } from 'reka-ui';
 import { useField, ErrorMessage } from 'vee-validate';
+import UiTest from '../ui/select/UiSelect.vue';
 
 const props = defineProps<{
+  modelValue: OptionsT[keyof OptionsT] | null;
   name: string;
   label: string;
   options: OptionsT[];
   optionLabel: string;
   optionValue: string;
+
   placeholder?: string;
   loading?: boolean;
-  modelValue?: T;
   filter?: boolean;
 }>();
 
@@ -26,17 +32,16 @@ const { value, errorMessage } = useField<typeof props.modelValue>(
 <template>
   <div>
     <label :for="name">{{ label }}</label>
-    <Select
+    <UiTest
       v-model="value"
       :name="name"
       :options="options"
-      :option-label="optionLabel"
-      :option-value="optionValue"
+      :value-key="optionValue"
+      :label-key="optionLabel"
+      :filter="filter"
       :loading="loading"
       :placeholder="loading ? $t('general.loading') : placeholder"
-      :class="{ 'p-invalid': errorMessage }"
-      :filter="!!filter"
-      class="w-full"
+      :class="{ 'border-red-500 dark:border-red-400': errorMessage }"
     />
     <slot name="errorMessage" :error-message-bag="errorMessage">
       <ErrorMessage :name="name" class="text-red-400" />
