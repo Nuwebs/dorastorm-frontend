@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import UiAlertDialogProvider from './components/ui/alert-dialog/UiAlertDialogProvider.vue';
 import { Toaster } from './components/ui/toast';
 </script>
 
 <template>
   <NuxtLoadingIndicator />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <UiAlertDialogProvider>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UiAlertDialogProvider>
   <ClientOnly>
     <Toaster />
   </ClientOnly>
