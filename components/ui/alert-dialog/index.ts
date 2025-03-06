@@ -1,3 +1,5 @@
+import type { ButtonVariants } from '../button';
+
 export { default as UiAlertDialogRoot } from './UiAlertDialogRoot.vue';
 export { default as UiAlertDialogAction } from './UiAlertDialogAction.vue';
 export { default as UiAlertDialogCancel } from './UiAlertDialogCancel.vue';
@@ -15,6 +17,9 @@ export interface UiAlertDialogProps {
   message: string;
   acceptLabel: string;
   rejectLabel: string;
+
+  acceptButtonVariant?: ButtonVariants['variant'];
+  cancelButtonVariant?: ButtonVariants['variant'];
 }
 
 export interface UiAlertDialogProvider {

@@ -44,10 +44,16 @@ function reject(): void {
         </UiAlertDialogDescription>
       </UiAlertDialogHeader>
       <UiAlertDialogFooter>
-        <UiAlertDialogCancel @click="reject">
+        <UiAlertDialogCancel
+          :button-variant="cancelButtonVariant"
+          @click="reject"
+        >
           {{ rejectLabel }}
         </UiAlertDialogCancel>
-        <UiAlertDialogAction @click="accept">
+        <UiAlertDialogAction
+          :button-variant="acceptButtonVariant"
+          @click="accept"
+        >
           {{ acceptLabel }}
         </UiAlertDialogAction>
       </UiAlertDialogFooter>
