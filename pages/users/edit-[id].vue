@@ -8,9 +8,11 @@ import {
 } from '#imports';
 import { useToast } from '~/components/ui/toast';
 import UserFormContainer from '~/components/user/form/UserFormContainer.vue';
+import useCachedPermissions from '~/composables/useCachedPermissions';
+import { PERMISSION } from '~/services/permission-service';
 import { UserService } from '~/services/user-service';
 import useAuthStore from '~/stores/auth-store';
-import type { UpdateUser, User } from '~/types/user';
+import type { User } from '~/types/user';
 
 definePageMeta({
   middleware: ['auth-guard']
@@ -20,6 +22,7 @@ const { t } = useI18n();
 const route = useRoute();
 const { toast } = useToast();
 const authStore = useAuthStore();
+const { userCan } = useCachedPermissions([PERMISSION.USERS_UPDATE]);
 
 const userService = new UserService();
 
@@ -33,10 +36,6 @@ if (error.value || data.value === null) {
     statusMessage: t('error.404.specific.user'),
     fatal: true
   });
-}
-
-async function submitHandler(payload: UpdateUser) {
-  return userService.updateById(Number(route.params.id), payload);
 }
 
 function handleSuccess(user: User): void {
@@ -54,9 +53,8 @@ function handleSuccess(user: User): void {
   <section class="container">
     <h1>{{ $t('modules.users.update') }}</h1>
     <UserFormContainer
-      mode="update"
+      :mode="userCan(PERMISSION.USERS_UPDATE) ? 'admin-update' : 'self-update'"
       :initial-data="data!"
-      :submit-handler="submitHandler"
       @success="(payload) => handleSuccess(payload as User)"
     />
   </section>
