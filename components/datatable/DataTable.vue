@@ -31,6 +31,8 @@ import { valueUpdater } from '@/lib/utils';
 type BaseProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+
+  loading?: boolean;
   expandable?: boolean;
   paginatable?: boolean;
   lazy?: boolean;
@@ -171,7 +173,7 @@ const currentPage = computed({
           <UiTableHead v-if="props.expandable" class="w-4" />
           <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
             <div
-              v-if="header.column.getCanSort()"
+              v-if="header.column.getCanSort() && !loading"
               class="cursor-pointer select-none"
               @click="
                 header.column.toggleSorting(
@@ -203,7 +205,7 @@ const currentPage = computed({
       </UiTableHeader>
 
       <UiTableBody>
-        <template v-if="table.getRowModel().rows?.length">
+        <template v-if="table.getRowModel().rows?.length && !loading">
           <template v-for="row in table.getRowModel().rows" :key="row.id">
             <UiTableRow
               :data-state="row.getIsSelected() ? 'selected' : undefined"
@@ -229,6 +231,7 @@ const currentPage = computed({
               </UiTableCell>
             </UiTableRow>
             <UiTableRow v-if="row.getIsExpanded() && props.expandable">
+              <!-- Expander adds a "virtual" column that is not in the data/columns, so it must add 1 -->
               <UiTableCell :colspan="row.getAllCells().length + 1">
                 <slot name="expanded" :row="row" />
               </UiTableCell>
@@ -237,8 +240,12 @@ const currentPage = computed({
         </template>
         <template v-else>
           <UiTableRow>
-            <UiTableCell :colspan="columns.length" class="h-24 text-center">
-              <slot name="empty-data" />
+            <UiTableCell
+              :colspan="columns.length + (props.expandable ? 1 : 0)"
+              class="h-24 text-center"
+            >
+              <slot v-if="!loading" name="empty-data" />
+              <slot v-else name="loading" />
             </UiTableCell>
           </UiTableRow>
         </template>
@@ -252,6 +259,7 @@ const currentPage = computed({
         v-model:page="currentPage"
         :total-items="totalItems"
         :items-per-page="table.getState().pagination.pageSize"
+        :disabled="loading"
       />
     </div>
   </div>
