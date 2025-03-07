@@ -1,9 +1,14 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef, SortingState } from '@tanstack/vue-table';
+import type {
+  ColumnDef,
+  SortingState,
+  ColumnFiltersState
+} from '@tanstack/vue-table';
 import {
   FlexRender,
   getCoreRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   useVueTable
 } from '@tanstack/vue-table';
 import { ref } from 'vue';
@@ -24,6 +29,8 @@ const props = defineProps<{
 }>();
 
 const sorting = ref<SortingState>([]);
+const columnFilters = ref<ColumnFiltersState>([]);
+const globalFilter = ref<string>('');
 
 const table = useVueTable({
   get data() {
@@ -34,17 +41,36 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  globalFilterFn: 'includesString',
+
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnFilters),
+  onGlobalFilterChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, globalFilter),
+
   state: {
     get sorting() {
       return sorting.value;
+    },
+    get columnFilters() {
+      return columnFilters.value;
+    },
+    get globalFilter() {
+      return globalFilter.value;
     }
   }
 });
 </script>
 
 <template>
-  <div class="border rounded-md">
+  <div>
+    <slot
+      name="table-header"
+      :table="table"
+      :global-filter-value="globalFilter"
+    />
     <UiTable>
       <UiTableHeader>
         <UiTableRow
