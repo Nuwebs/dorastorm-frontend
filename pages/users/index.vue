@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { definePageMeta } from '#imports';
+import type { ColumnDef } from '@tanstack/vue-table';
+import { definePageMeta, useI18n } from '#imports';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
+import DataTable from '~/components/datatable/DataTable.vue';
+import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
+import UiButton from '~/components/ui/button/UiButton.vue';
+import UiInput from '~/components/ui/input/UiInput.vue';
 import UserDeleteButton from '~/components/user/UserDeleteButton.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import useLaravelLazyPagination from '~/composables/useLaravelLazyPagination';
@@ -14,6 +18,7 @@ definePageMeta({
   permissions: [PERMISSION.USERS_READ]
 });
 
+const { t } = useI18n();
 const { userCan, roleCan, userIsAllowed } = useCachedPermissions([
   PERMISSION.USERS_UPDATE,
   PERMISSION.USERS_DELETE
@@ -30,10 +35,36 @@ const {
   search,
   calculatePageAfterNItemsDeletion
 } = await useLaravelLazyPagination<User>(service, {
-  global: { value: '', matchMode: 'contains' }
+  global: null
 });
 
-const expanded = ref<User[]>([]);
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: 'id',
+    header: t('general.id'),
+    enableSorting: false
+  },
+  {
+    accessorKey: 'name',
+    header: t('modules.users.name'),
+    enableSorting: false
+  },
+  {
+    accessorKey: 'role.name',
+    header: t('modules.users.role'),
+    enableSorting: false
+  },
+  {
+    accessorKey: 'email',
+    header: t('forms.email'),
+    enableSorting: false
+  },
+  {
+    accessorKey: 'action',
+    header: t('general.action'),
+    enableSorting: false
+  }
+];
 
 async function handleUserDeleted(): Promise<void> {
   search(calculatePageAfterNItemsDeletion());
@@ -43,69 +74,54 @@ async function handleUserDeleted(): Promise<void> {
   <section class="container">
     <h1>{{ $t('modules.users.list') }}</h1>
     <DataTable
-      v-model:expanded-rows="expanded"
-      v-model:filters="filters"
+      :columns="columns"
+      :data="paginationData?.data ?? []"
       :loading="loading"
-      lazy
-      :value="paginationData?.data"
-      paginator
       :total-records="totalResults"
-      :rows="resultsPerPage"
-      data-key="id"
-      @page="(e: DataTablePageEvent) => search(e.page + 1)"
+      :rows-per-page="resultsPerPage"
+      lazy
+      paginatable
+      @update:pagination="(e) => search(e.pageIndex + 1)"
     >
-      <template #header>
+      <template #table-header="{ table }">
         <div class="flex justify-between">
-          <Button
-            icon="pi pi-refresh"
-            class="mr-2"
-            @click="search(currentPage)"
-          />
+          <UiButton @click="search(currentPage)">R</UiButton>
           <div>
             <div class="flex">
-              <InputText
-                v-model="filters['global'].value"
-                class="rounded-r-none"
+              <UiInput
+                v-model="filters['global']"
+                type="text"
+                @update:model-value="table.setGlobalFilter($event)"
                 @keyup.enter="search()"
               />
-              <Button
-                icon="pi pi-search"
-                class="rounded-l-none"
-                @click="search()"
-              />
+              <UiButton @click="search()">S</UiButton>
             </div>
           </div>
         </div>
       </template>
-      <!-- Use this commented code if you will require extra information -->
-      <!-- <template #expansion="{ data }: { data: User }">
-        
+
+      <template #loading>
+        <TheLoadingSpinner />
       </template>
-      <Column expander /> -->
-      <Column field="id" :header="$t('general.id')" />
-      <Column field="name" :header="$t('modules.users.name')" />
-      <Column field="role.name" :header="$t('modules.users.role')" />
-      <Column field="email" :header="$t('forms.email')" />
-      <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
-        <template #body="{ data }: { data: User }">
-          <UserDeleteButton
-            v-if="
-              userCan(PERMISSION.USERS_UPDATE) &&
-              roleCan(data.role.hierarchy, true)
-            "
-            :user="data"
-            @deleted="handleUserDeleted"
-          />
-          <ButtonActionUpdate
-            v-if="
-              userCan(PERMISSION.USERS_UPDATE) &&
-              roleCan(data.role.hierarchy, true)
-            "
-            route="/users/edit-{id}"
-            :model-id="data.id"
-          />
-        </template>
-      </Column>
+
+      <template v-if="userIsAllowed" #cell-action="{ rowValue: data }">
+        <UserDeleteButton
+          v-if="
+            userCan(PERMISSION.USERS_UPDATE) &&
+            roleCan(data.role.hierarchy, true)
+          "
+          :user="data"
+          @deleted="handleUserDeleted"
+        />
+        <ButtonActionUpdate
+          v-if="
+            userCan(PERMISSION.USERS_UPDATE) &&
+            roleCan(data.role.hierarchy, true)
+          "
+          route="/users/edit-{id}"
+          :model-id="data.id"
+        />
+      </template>
     </DataTable>
   </section>
 </template>

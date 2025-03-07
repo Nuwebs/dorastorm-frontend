@@ -36,8 +36,8 @@ export default async function useLaravelLazyPagination<DataT = unknown>(
   function buildQuery(): string {
     let resultQuery: QueryBuilder = service.query();
     for (const [filter, value] of Object.entries(filters.value)) {
-      if (value.value) {
-        resultQuery = resultQuery.filter(filter, value.value);
+      if (value) {
+        resultQuery = resultQuery.filter(filter, value);
       }
     }
     return resultQuery.page(currentPage.value).build();

@@ -15,6 +15,6 @@ const props = defineProps<SpinnerProps>();
 const { size = '20' } = props;
 
 const spinnerClass = computed(() => {
-  return `w-${size} h-${size} border-4 border-primary-300 rounded-full animate-spin`;
+  return `w-${size} h-${size} border-4 border-zinc-500 animate-spin`;
 });
 </script>
