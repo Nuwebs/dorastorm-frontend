@@ -3,7 +3,8 @@ import type {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
-  ExpandedState
+  ExpandedState,
+  PaginationState
 } from '@tanstack/vue-table';
 import {
   FlexRender,
@@ -27,13 +28,37 @@ import {
 } from '@/components/ui/table';
 import { valueUpdater } from '@/lib/utils';
 
-const props = defineProps<{
+type BaseProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 
   expandable?: boolean;
   paginatable?: boolean;
+  lazy?: boolean;
+};
+
+type LazyProps = {
+  lazy: true;
+  rowsPerPage: number;
+  totalRecords: number;
+};
+
+type NonLazyProps = {
+  lazy?: false;
   rowsPerPage?: number;
+  totalRecords?: number;
+};
+
+// Combine types based on `lazy` value
+const props = defineProps<
+  BaseProps<TData, TValue> & (LazyProps | NonLazyProps)
+>();
+
+const emit = defineEmits<{
+  'update:sorting': [SortingState];
+  'update:filters': [ColumnFiltersState];
+  'update:globalFilter': [string];
+  'update:pagination': [PaginationState];
 }>();
 
 // Reactive state for table features
@@ -41,6 +66,12 @@ const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
 const globalFilter = ref<string>('');
 const expanded = ref<ExpandedState>({});
+const pagination = ref<PaginationState>({
+  pageIndex: 0,
+  pageSize: props.paginatable
+    ? props.rowsPerPage ?? 25
+    : Number.MAX_SAFE_INTEGER
+});
 
 // Initialize the TanStack Table instance
 const table = useVueTable({
@@ -56,20 +87,29 @@ const table = useVueTable({
   getExpandedRowModel: getExpandedRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   globalFilterFn: 'includesString',
-  initialState: {
-    pagination: {
-      pageIndex: 0,
-      pageSize: props.paginatable
-        ? props.rowsPerPage ?? 25
-        : Number.MAX_SAFE_INTEGER
-    }
+
+  onSortingChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, sorting);
+    emit('update:sorting', sorting.value);
   },
-  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, columnFilters),
-  onGlobalFilterChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, globalFilter),
+
+  onColumnFiltersChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, columnFilters);
+    emit('update:filters', columnFilters.value);
+  },
+
+  onGlobalFilterChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, globalFilter);
+    emit('update:globalFilter', globalFilter.value);
+  },
+
+  onPaginationChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, pagination);
+    emit('update:pagination', pagination.value);
+  },
+
   onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
+
   state: {
     get sorting() {
       return sorting.value;
@@ -82,6 +122,9 @@ const table = useVueTable({
     },
     get expanded() {
       return expanded.value;
+    },
+    get pagination() {
+      return pagination.value;
     }
   }
 });
