@@ -30,6 +30,7 @@ defineProps<{
     :items-per-page="itemsPerPage"
     :total="totalItems"
     :sibling-count="siblingCount ?? 2"
+    :disabled="disabled"
     show-edges
   >
     <PaginationList v-slot="{ items }" class="flex items-center gap-1">
