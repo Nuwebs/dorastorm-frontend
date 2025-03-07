@@ -2,16 +2,19 @@
 import type {
   ColumnDef,
   SortingState,
-  ColumnFiltersState
+  ColumnFiltersState,
+  ExpandedState
 } from '@tanstack/vue-table';
 import {
   FlexRender,
   getCoreRowModel,
   getSortedRowModel,
   getFilteredRowModel,
+  getExpandedRowModel,
   useVueTable
 } from '@tanstack/vue-table';
 import { ref } from 'vue';
+import DataTableExpander from './DataTableExpander.vue';
 import {
   UiTable,
   UiTableBody,
@@ -26,11 +29,13 @@ import { valueUpdater } from '@/lib/utils';
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  expandable?: boolean;
 }>();
 
 const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
 const globalFilter = ref<string>('');
+const expanded = ref<ExpandedState>({});
 
 const table = useVueTable({
   get data() {
@@ -42,6 +47,7 @@ const table = useVueTable({
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
+  getExpandedRowModel: getExpandedRowModel(),
   globalFilterFn: 'includesString',
 
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
@@ -49,6 +55,7 @@ const table = useVueTable({
     valueUpdater(updaterOrValue, columnFilters),
   onGlobalFilterChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, globalFilter),
+  onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
 
   state: {
     get sorting() {
@@ -59,6 +66,9 @@ const table = useVueTable({
     },
     get globalFilter() {
       return globalFilter.value;
+    },
+    get expanded() {
+      return expanded.value;
     }
   }
 });
@@ -72,11 +82,13 @@ const table = useVueTable({
       :global-filter-value="globalFilter"
     />
     <UiTable>
+      <!-- Header -->
       <UiTableHeader>
         <UiTableRow
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
         >
+          <UiTableHead v-if="props.expandable" class="w-4" />
           <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
             <!-- Sortable header -->
             <div
@@ -111,28 +123,41 @@ const table = useVueTable({
           </UiTableHead>
         </UiTableRow>
       </UiTableHeader>
+
+      <!-- Rows/Body -->
       <UiTableBody>
         <template v-if="table.getRowModel().rows?.length">
-          <UiTableRow
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            :data-state="row.getIsSelected() ? 'selected' : undefined"
-          >
-            <UiTableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-              <template v-if="$slots[`cell-${cell.column.id}`]">
-                <slot
-                  :name="`cell-${cell.column.id}`"
-                  v-bind="cell.getContext()"
-                />
-              </template>
-              <template v-else>
-                <FlexRender
-                  :render="cell.column.columnDef.cell"
-                  :props="cell.getContext()"
-                />
-              </template>
-            </UiTableCell>
-          </UiTableRow>
+          <template v-for="row in table.getRowModel().rows" :key="row.id">
+            <UiTableRow
+              :data-state="row.getIsSelected() ? 'selected' : undefined"
+            >
+              <UiTableCell v-if="props.expandable">
+                <slot name="expander">
+                  <DataTableExpander :row="row" />
+                </slot>
+              </UiTableCell>
+              <UiTableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <template v-if="$slots[`cell-${cell.column.id}`]">
+                  <slot
+                    :name="`cell-${cell.column.id}`"
+                    v-bind="cell.getContext()"
+                  />
+                </template>
+                <template v-else>
+                  <FlexRender
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                  />
+                </template>
+              </UiTableCell>
+            </UiTableRow>
+            <!-- Expansion row. As the expander column is not in the data/columns array, we need to add 1 to the colspan -->
+            <UiTableRow v-if="row.getIsExpanded() && props.expandable">
+              <UiTableCell :colspan="row.getAllCells().length + 1">
+                <slot name="expanded" :row="row" />
+              </UiTableCell>
+            </UiTableRow>
+          </template>
         </template>
         <template v-else>
           <UiTableRow>
