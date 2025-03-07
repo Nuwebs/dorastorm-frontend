@@ -11,10 +11,12 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getExpandedRowModel,
+  getPaginationRowModel,
   useVueTable
 } from '@tanstack/vue-table';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import DataTableExpander from './DataTableExpander.vue';
+import UiPagination from '../ui/pagination/UiPagination.vue';
 import {
   UiTable,
   UiTableBody,
@@ -23,20 +25,24 @@ import {
   UiTableHeader,
   UiTableRow
 } from '@/components/ui/table';
-
 import { valueUpdater } from '@/lib/utils';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+
   expandable?: boolean;
+  paginatable?: boolean;
+  rowsPerPage?: number;
 }>();
 
+// Reactive state for table features
 const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
 const globalFilter = ref<string>('');
 const expanded = ref<ExpandedState>({});
 
+// Initialize the TanStack Table instance
 const table = useVueTable({
   get data() {
     return props.data;
@@ -48,15 +54,22 @@ const table = useVueTable({
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   getExpandedRowModel: getExpandedRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
   globalFilterFn: 'includesString',
-
+  initialState: {
+    pagination: {
+      pageIndex: 0,
+      pageSize: props.paginatable
+        ? props.rowsPerPage ?? 25
+        : Number.MAX_SAFE_INTEGER
+    }
+  },
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, columnFilters),
   onGlobalFilterChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, globalFilter),
   onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
-
   state: {
     get sorting() {
       return sorting.value;
@@ -72,15 +85,28 @@ const table = useVueTable({
     }
   }
 });
+
+// Computed property for current page (1-based for Pagination, 0-based for TanStack)
+const currentPage = computed({
+  get() {
+    return table.getState().pagination.pageIndex + 1;
+  },
+  set(newPage) {
+    table.setPageIndex(newPage - 1);
+  }
+});
 </script>
 
 <template>
   <div>
+    <!-- Table header slot -->
     <slot
       name="table-header"
       :table="table"
       :global-filter-value="globalFilter"
     />
+
+    <!-- Table structure -->
     <UiTable>
       <!-- Header -->
       <UiTableHeader>
@@ -124,7 +150,7 @@ const table = useVueTable({
         </UiTableRow>
       </UiTableHeader>
 
-      <!-- Rows/Body -->
+      <!-- Body -->
       <UiTableBody>
         <template v-if="table.getRowModel().rows?.length">
           <template v-for="row in table.getRowModel().rows" :key="row.id">
@@ -151,7 +177,7 @@ const table = useVueTable({
                 </template>
               </UiTableCell>
             </UiTableRow>
-            <!-- Expansion row. As the expander column is not in the data/columns array, we need to add 1 to the colspan -->
+            <!-- Expansion row -->
             <UiTableRow v-if="row.getIsExpanded() && props.expandable">
               <UiTableCell :colspan="row.getAllCells().length + 1">
                 <slot name="expanded" :row="row" />
@@ -168,5 +194,15 @@ const table = useVueTable({
         </template>
       </UiTableBody>
     </UiTable>
+
+    <!-- Pagination component/slot -->
+    <div class="w-full flex justify-center mt-2">
+      <UiPagination
+        v-if="props.paginatable"
+        v-model:page="currentPage"
+        :total-items="table.getPrePaginationRowModel().rows.length"
+        :items-per-page="table.getState().pagination.pageSize"
+      />
+    </div>
   </div>
 </template>
