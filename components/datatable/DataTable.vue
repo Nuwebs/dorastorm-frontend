@@ -220,6 +220,7 @@ const currentPage = computed({
                   <slot
                     :name="`cell-${cell.column.id}`"
                     v-bind="cell.getContext()"
+                    :row-value="row.original"
                   />
                 </template>
                 <template v-else>
