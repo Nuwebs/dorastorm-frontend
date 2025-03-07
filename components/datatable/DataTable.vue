@@ -31,7 +31,6 @@ import { valueUpdater } from '@/lib/utils';
 type BaseProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-
   expandable?: boolean;
   paginatable?: boolean;
   lazy?: boolean;
@@ -49,7 +48,6 @@ type NonLazyProps = {
   totalRecords?: number;
 };
 
-// Combine types based on `lazy` value
 const props = defineProps<
   BaseProps<TData, TValue> & (LazyProps | NonLazyProps)
 >();
@@ -68,12 +66,14 @@ const globalFilter = ref<string>('');
 const expanded = ref<ExpandedState>({});
 const pagination = ref<PaginationState>({
   pageIndex: 0,
-  pageSize: props.paginatable
+  pageSize: props.lazy
+    ? props.rowsPerPage
+    : props.paginatable
     ? props.rowsPerPage ?? 25
     : Number.MAX_SAFE_INTEGER
 });
 
-// Initialize the TanStack Table instance
+// Initialize TanStack Table with conditional options
 const table = useVueTable({
   get data() {
     return props.data;
@@ -82,32 +82,35 @@ const table = useVueTable({
     return props.columns;
   },
   getCoreRowModel: getCoreRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
+  getSortedRowModel: props.lazy ? undefined : getSortedRowModel(),
+  getFilteredRowModel: props.lazy ? undefined : getFilteredRowModel(),
   getExpandedRowModel: getExpandedRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
+  getPaginationRowModel: props.lazy ? undefined : getPaginationRowModel(),
+
+  manualPagination: props.lazy,
+  manualSorting: props.lazy,
+  manualFiltering: props.lazy,
+  pageCount: props.lazy
+    ? Math.ceil(props.totalRecords / pagination.value.pageSize)
+    : undefined,
   globalFilterFn: 'includesString',
 
   onSortingChange: (updaterOrValue) => {
     valueUpdater(updaterOrValue, sorting);
     emit('update:sorting', sorting.value);
   },
-
   onColumnFiltersChange: (updaterOrValue) => {
     valueUpdater(updaterOrValue, columnFilters);
     emit('update:filters', columnFilters.value);
   },
-
   onGlobalFilterChange: (updaterOrValue) => {
     valueUpdater(updaterOrValue, globalFilter);
     emit('update:globalFilter', globalFilter.value);
   },
-
   onPaginationChange: (updaterOrValue) => {
     valueUpdater(updaterOrValue, pagination);
     emit('update:pagination', pagination.value);
   },
-
   onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
 
   state: {
@@ -129,7 +132,16 @@ const table = useVueTable({
   }
 });
 
-// Computed property for current page (1-based for Pagination, 0-based for TanStack)
+// Compute total items for pagination
+const totalItems = computed(() => {
+  if (props.lazy) {
+    return props.totalRecords;
+  } else {
+    return table.getFilteredRowModel().rows.length;
+  }
+});
+
+// Current page (1-based for UiPagination, 0-based for TanStack)
 const currentPage = computed({
   get() {
     return table.getState().pagination.pageIndex + 1;
@@ -151,7 +163,6 @@ const currentPage = computed({
 
     <!-- Table structure -->
     <UiTable>
-      <!-- Header -->
       <UiTableHeader>
         <UiTableRow
           v-for="headerGroup in table.getHeaderGroups()"
@@ -159,7 +170,6 @@ const currentPage = computed({
         >
           <UiTableHead v-if="props.expandable" class="w-4" />
           <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
-            <!-- Sortable header -->
             <div
               v-if="header.column.getCanSort()"
               class="cursor-pointer select-none"
@@ -179,7 +189,6 @@ const currentPage = computed({
                 <span v-if="header.column.getIsSorted() === 'desc'">↓</span>
               </slot>
             </div>
-            <!-- Non-sortable header -->
             <div v-else>
               <slot :name="`header-${header.column.id}`" :header="header">
                 <FlexRender
@@ -193,7 +202,6 @@ const currentPage = computed({
         </UiTableRow>
       </UiTableHeader>
 
-      <!-- Body -->
       <UiTableBody>
         <template v-if="table.getRowModel().rows?.length">
           <template v-for="row in table.getRowModel().rows" :key="row.id">
@@ -220,7 +228,6 @@ const currentPage = computed({
                 </template>
               </UiTableCell>
             </UiTableRow>
-            <!-- Expansion row -->
             <UiTableRow v-if="row.getIsExpanded() && props.expandable">
               <UiTableCell :colspan="row.getAllCells().length + 1">
                 <slot name="expanded" :row="row" />
@@ -238,12 +245,12 @@ const currentPage = computed({
       </UiTableBody>
     </UiTable>
 
-    <!-- Pagination component/slot -->
+    <!-- Pagination -->
     <div class="w-full flex justify-center mt-2">
       <UiPagination
-        v-if="props.paginatable"
+        v-if="props.lazy || props.paginatable"
         v-model:page="currentPage"
-        :total-items="table.getPrePaginationRowModel().rows.length"
+        :total-items="totalItems"
         :items-per-page="table.getState().pagination.pageSize"
       />
     </div>
