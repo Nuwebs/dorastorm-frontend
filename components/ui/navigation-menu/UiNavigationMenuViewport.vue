@@ -21,15 +21,13 @@ const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-  <div class="absolute left-0 top-full flex justify-center">
-    <NavigationMenuViewport
-      v-bind="forwardedProps"
-      :class="
-        cn(
-          'origin-top-center relative mt-1.5 h-[--reka-navigation-menu-viewport-height] w-full overflow-hidden rounded-md border border-zinc-200 bg-white text-zinc-950 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[--reka-navigation-menu-viewport-width] dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50',
-          props.class
-        )
-      "
-    />
-  </div>
+  <NavigationMenuViewport
+    v-bind="forwardedProps"
+    :class="
+      cn(
+        'absolute max-w-[700px] left-[--reka-navigation-menu-viewport-left]',
+        props.class
+      )
+    "
+  />
 </template>

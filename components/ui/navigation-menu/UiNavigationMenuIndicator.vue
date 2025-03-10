@@ -25,13 +25,9 @@ const forwardedProps = useForwardProps(delegatedProps);
     v-bind="forwardedProps"
     :class="
       cn(
-        'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in',
+        'absolute bottom-0 translate-x-[calc(var(--reka-navigation-menu-indicator-position)+var(--reka-navigation-menu-indicator-size)/2-6px)] border-l-[6px] border-r-[6px] border-b-[12px] border-l-transparent border-r-transparent border-b-gray-500',
         props.class
       )
     "
-  >
-    <div
-      class="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-zinc-200 shadow-md dark:bg-zinc-800"
-    />
-  </NavigationMenuIndicator>
+  />
 </template>
