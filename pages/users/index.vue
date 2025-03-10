@@ -34,7 +34,7 @@ const {
   currentPage,
   search,
   calculatePageAfterNItemsDeletion
-} = await useLaravelLazyPagination<User>(service, {
+} = useLaravelLazyPagination<User>(service, {
   global: null
 });
 
