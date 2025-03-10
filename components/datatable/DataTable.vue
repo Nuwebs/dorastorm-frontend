@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   useVueTable
 } from '@tanstack/vue-table';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import DataTableExpander from './DataTableExpander.vue';
 import UiPagination from '../ui/pagination/UiPagination.vue';
 import {
@@ -31,7 +31,6 @@ import { valueUpdater } from '@/lib/utils';
 type BaseProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-
   loading?: boolean;
   expandable?: boolean;
   paginatable?: boolean;
@@ -152,6 +151,18 @@ const currentPage = computed({
     table.setPageIndex(newPage - 1);
   }
 });
+
+// Add watcher to update pagination when rowsPerPage changes in lazy mode
+watch(
+  () => props.rowsPerPage,
+  (newRowsPerPage) => {
+    if (props.lazy && newRowsPerPage !== undefined) {
+      pagination.value.pageSize = newRowsPerPage;
+      pagination.value.pageIndex = 0;
+      emit('update:pagination', { ...pagination.value });
+    }
+  }
+);
 </script>
 
 <template>
