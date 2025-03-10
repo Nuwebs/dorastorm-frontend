@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table';
 import { definePageMeta, useI18n } from '#imports';
+import ButtonActionRefresh from '~/components/button/action/ButtonActionRefresh.vue';
+import ButtonActionSearch from '~/components/button/action/ButtonActionSearch.vue';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
 import DataTable from '~/components/datatable/DataTable.vue';
 import RoleDataRow from '~/components/role/RoleDataRow.vue';
 import RoleDeleteButton from '~/components/role/RoleDeleteButton.vue';
 import TheLoadingSpinner from '~/components/TheLoadingSpinner.vue';
-import UiButton from '~/components/ui/button/UiButton.vue';
 import UiInput from '~/components/ui/input/UiInput.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
 import useLaravelLazyPagination from '~/composables/useLaravelLazyPagination';
@@ -84,7 +85,10 @@ async function handleRoleDeleted(): Promise<void> {
     >
       <template #table-header="{ table }">
         <div class="flex justify-between">
-          <UiButton @click="search(currentPage)">R</UiButton>
+          <ButtonActionRefresh
+            :loading="loading"
+            @click="search(currentPage)"
+          />
           <div>
             <div class="flex">
               <UiInput
@@ -93,7 +97,11 @@ async function handleRoleDeleted(): Promise<void> {
                 @update:model-value="table.setGlobalFilter($event)"
                 @keyup.enter="search()"
               />
-              <UiButton @click="search()">S</UiButton>
+              <ButtonActionSearch
+                class="rounded-l-none"
+                :loading="loading"
+                @click="search()"
+              />
             </div>
           </div>
         </div>
