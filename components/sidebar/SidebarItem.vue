@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronRight } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 import SidebarItemList from './SidebarItemList.vue';
 import type { DsMenuItem } from '~/types/menu';
@@ -47,16 +48,20 @@ function handleItemClick(): void {
       @click="handleItemClick"
     >
       <div class="flex items-center">
-        <i :class="`${item.icon} ${collapsed ? '' : 'mr-2'}`" />
+        <component
+          :is="item.icon"
+          v-if="item.icon"
+          :class="{ 'mr-2': !collapsed }"
+        />
         <span v-if="!collapsed">{{ item.label }}</span>
       </div>
       <div v-if="item.items && !collapsed" :class="{ 'ml-2': !collapsed }">
-        <i
+        <ChevronRight
           :class="{
             'rotate-90': isAccordionOpen,
             'rotate-0': !isAccordionOpen
           }"
-          class="transition-transform pi pi-angle-right"
+          class="transition-transform"
         />
       </div>
     </NuxtLinkLocale>

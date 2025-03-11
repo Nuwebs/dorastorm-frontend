@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { Component } from 'vue';
 import UiButton from '~/components/ui/button/UiButton.vue';
 
 interface Props {
-  icon: string;
+  icon: Component;
   aLabel: string;
 }
 

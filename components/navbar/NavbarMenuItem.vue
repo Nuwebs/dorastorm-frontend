@@ -27,9 +27,10 @@ const label = computed<string>(() => {
     <!-- Case 1: Item has sub-items, render as a trigger with content -->
     <template v-if="item.items && item.items.length > 0">
       <UiNavigationMenuTrigger>
-        <i
+        <component
+          :is="item.icon"
           v-if="item.icon"
-          :class="`${item.icon} ${label !== '' ? 'mr-2' : ''}`"
+          :class="{ 'mr-2': label }"
         />
         {{ label }}
       </UiNavigationMenuTrigger>
@@ -48,9 +49,9 @@ const label = computed<string>(() => {
     <template v-else>
       <UiNavigationMenuLink
         v-if="item.to || item.url || item.command"
-        class="px-1"
+        class="px-1 flex items-center"
       >
-        <i v-if="item.icon" :class="`${item.icon} mr-2`" />
+        <component :is="item.icon" v-if="item.icon" class="mr-2" />
         <NuxtLinkLocale v-if="item.to" :to="item.to">
           {{ label }}
         </NuxtLinkLocale>

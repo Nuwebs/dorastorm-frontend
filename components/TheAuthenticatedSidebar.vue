@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu } from 'lucide-vue-next';
+import { Menu, LogOut, LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
 import SidebarItemList from './sidebar/SidebarItemList.vue';
 import UiButton from './ui/button/UiButton.vue';
@@ -87,9 +87,8 @@ async function logout(): Promise<void> {
           <div v-if="!isSidebarCollapsed" class="mr-auto">
             {{ $t('general.logout') }}
           </div>
-          <i
-            :class="`pi ${loggingOut ? 'pi-spin pi-spinner' : 'pi-sign-out'}`"
-          />
+          <LogOut v-if="!loggingOut" />
+          <LoaderCircle v-else class="animate-spin" />
         </footer>
       </slot>
     </div>

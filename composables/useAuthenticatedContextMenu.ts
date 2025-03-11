@@ -1,3 +1,4 @@
+import { Globe, Key, Pen } from 'lucide-vue-next';
 import { computed } from 'vue';
 import useLocaleSwitchMenu from './useLocaleSwitchMenu';
 import { useI18n } from '#imports';
@@ -13,17 +14,17 @@ export default function useAuthenticatedContextMenu() {
     return [
       {
         label: t('general.locales'),
-        icon: 'pi pi-globe',
+        icon: Globe,
         items: localeMenu
       },
       {
         label: t('modules.users.update_self'),
-        icon: 'pi pi-pencil',
+        icon: Pen,
         to: `/users/edit-${user?.id}`
       },
       {
         label: t('modules.users.change_password'),
-        icon: 'pi pi-key',
+        icon: Key,
         //to: '/users/change-password'
         to: '/'
       }

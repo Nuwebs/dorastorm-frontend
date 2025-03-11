@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Globe } from 'lucide-vue-next';
 import NavbarButtonOptions from './navbar/button/NavbarButtonOptions.vue';
 import NavbarBase from './navbar/NavbarBase.vue';
 import useLocaleSwitchMenu from '~/composables/useLocaleSwitchMenu';
@@ -12,7 +13,7 @@ const localeMenu = useLocaleSwitchMenu();
       <NavbarButtonOptions
         :options="{
           label: $t('general.locales'),
-          icon: 'pi pi-globe',
+          icon: Globe,
           items: localeMenu
         }"
       />

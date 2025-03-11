@@ -27,4 +27,11 @@ import { Toaster } from './components/ui/toast';
 .mobilebar-drawer-h {
   min-height: 20rem;
 }
+
+/** Default Lucide Icons config */
+.lucide {
+  width: 1.2rem;
+  height: 1.2rem;
+  stroke-width: 1.5px;
+}
 </style>

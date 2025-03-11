@@ -39,11 +39,11 @@ function handleCloseAnimation(): void {
     <NuxtLink
       v-for="(item, index) in menu"
       :key="`mb-${item.label}-${index}`"
-      class="text-center cursor-pointer"
+      class="flex flex-col items-center cursor-pointer"
       :to="item.to"
       @click="handleClick(item)"
     >
-      <i :class="item.icon" />
+      <component :is="item.icon" v-if="item.icon" />
       <div>{{ item.label }}</div>
     </NuxtLink>
     <UiDrawer
