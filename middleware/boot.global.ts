@@ -34,16 +34,14 @@ async function tryRefreshToken(
     const toastStore = useExternalToastStore();
     if (error instanceof ExpiredTokenException) {
       toastStore.addToast({
-        severity: 'error',
-        detail: 'error.409.session_expired',
-        life: 6000
+        variant: 'destructive',
+        description: 'error.409.session_expired'
       });
     }
     if (error instanceof InvalidTokenException) {
       toastStore.addToast({
-        severity: 'error',
-        detail: 'error.invalid_token',
-        life: 6000
+        variant: 'destructive',
+        description: 'error.invalid_token'
       });
     }
     return false;
