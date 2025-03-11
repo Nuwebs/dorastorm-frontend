@@ -13,6 +13,7 @@ import type {
 
 // Define form modes as a union type
 export type FormMode =
+  | 'change-password'
   | 'register'
   | 'admin-create'
   | 'admin-update'
@@ -27,17 +28,24 @@ type FieldConfig = {
   email: { visible: boolean };
   password: { visible: boolean };
   password_confirmation: { visible: boolean };
+  current_password: { visible: boolean };
   role_id: { visible: boolean };
 };
 
 // Define the composable with explicit types
 export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
-  const { newUserSchema, newUserFromAdminSchema, updateUserSchema } =
-    useUserSchemas();
+  const {
+    newUserSchema,
+    newUserFromAdminSchema,
+    updateUserSchema,
+    changePasswordSchema
+  } = useUserSchemas();
 
   // Select schema based on mode
   const schema = computed(() => {
     switch (mode) {
+      case 'change-password':
+        return toTypedSchema(changePasswordSchema);
       case 'register':
         return toTypedSchema(newUserSchema);
       case 'admin-create':
@@ -51,11 +59,17 @@ export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
   });
 
   // Initialize VeeValidate form with typed values
-  const { handleSubmit, defineField, errors, setFieldError, isSubmitting } =
-    useForm<FormValues>({
-      validationSchema: schema,
-      initialValues: initialData as FormValues // Cast to satisfy VeeValidate
-    });
+  const {
+    handleSubmit,
+    defineField,
+    errors,
+    setFieldError,
+    isSubmitting,
+    resetForm
+  } = useForm<FormValues>({
+    validationSchema: schema,
+    initialValues: initialData as FormValues // Cast to satisfy VeeValidate
+  });
 
   // Define fields with explicit typing
   const [name, nameAttrs] = defineField('name');
@@ -64,6 +78,8 @@ export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
   const [password_confirmation, passwordConfirmationAttrs] = defineField(
     'password_confirmation'
   );
+  const [current_password, currentPasswordAttrs] =
+    defineField('current_password');
   const [role_id, roleIdAttrs] = defineField('role_id');
 
   // Field visibility based on mode
@@ -90,6 +106,9 @@ export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
     password_confirmation: {
       visible: ['register', 'admin-create', 'change-password'].includes(mode)
     },
+    current_password: {
+      visible: ['change-password'].includes(mode)
+    },
     role_id: { visible: mode === 'admin-create' || mode === 'admin-update' }
   }));
 
@@ -103,6 +122,14 @@ export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
         let data: User | null = null;
 
         switch (mode) {
+          case 'change-password':
+            if (!initialData.id)
+              throw new Error('User ID is required for update');
+            await userService.changePasswordById(
+              initialData.id,
+              values as ChangeUserPassword
+            );
+            break;
           case 'register':
             data = await userService.store({
               role_id: 1,
@@ -145,12 +172,15 @@ export function useUserForm(mode: FormMode, initialData: Partial<User> = {}) {
     passwordAttrs,
     password_confirmation,
     passwordConfirmationAttrs,
+    current_password,
+    currentPasswordAttrs,
     role_id,
     roleIdAttrs,
     fields,
 
     errors,
     setFieldError,
+    resetForm,
     isSubmitting,
     onSubmit
   };

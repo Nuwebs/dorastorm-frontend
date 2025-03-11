@@ -4,17 +4,20 @@ import { useI18n } from '#imports';
 export default function useUserSchemas() {
   const { t } = useI18n();
 
-  // Base schema with translated messages
-  const baseUserSchema = object({
-    name: string().min(1),
-    email: string().email(),
+  const basePasswordSchema = object({
     password: string().min(8),
     password_confirmation: string().min(8)
   });
 
+  // Base schema with translated messages
+  const baseUserSchema = basePasswordSchema.extend({
+    name: string().min(1),
+    email: string().email()
+  });
+
   // Reusable password confirmation refinement with translated message
   const passwordConfirmationRefinement = {
-    refine: (data: z.infer<typeof baseUserSchema>) =>
+    refine: (data: z.infer<typeof basePasswordSchema>) =>
       data.password === data.password_confirmation,
     params: {
       message: t('error.validation.confirm_password'),
@@ -45,5 +48,19 @@ export default function useUserSchemas() {
     role_id: number().int().positive().optional()
   });
 
-  return { newUserSchema, newUserFromAdminSchema, updateUserSchema };
+  const changePasswordSchema = basePasswordSchema
+    .extend({
+      current_password: string()
+    })
+    .refine(
+      passwordConfirmationRefinement.refine,
+      passwordConfirmationRefinement.params
+    );
+
+  return {
+    newUserSchema,
+    newUserFromAdminSchema,
+    updateUserSchema,
+    changePasswordSchema
+  };
 }

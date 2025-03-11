@@ -25,8 +25,7 @@ export default function useAuthenticatedContextMenu() {
       {
         label: t('modules.users.change_password'),
         icon: Key,
-        //to: '/users/change-password'
-        to: '/'
+        to: '/users/change-password'
       }
     ];
   });
