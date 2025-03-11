@@ -20,7 +20,7 @@ const delegatedProps = computed(() => {
 const forwardedProps = useForwardProps(delegatedProps);
 
 const positionStyle = computed<string>(() => {
-  return `left: clamp(0px, var(--reka-navigation-menu-viewport-left), calc(100% - var(--reka-navigation-menu-viewport-width) * 1.25));`;
+  return `left: clamp(0px, calc(var(--reka-navigation-menu-viewport-left) - 1rem), calc(100% - var(--reka-navigation-menu-viewport-width) * 1.25));`;
 });
 </script>
 

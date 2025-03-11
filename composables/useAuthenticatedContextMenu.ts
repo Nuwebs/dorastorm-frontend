@@ -1,13 +1,12 @@
 import { computed } from 'vue';
 import useLocaleSwitchMenu from './useLocaleSwitchMenu';
-import { navigateTo, useI18n, useLocalePath } from '#imports';
+import { useI18n } from '#imports';
 import useAuthStore from '~/stores/auth-store';
 import type { DsMenuItem } from '~/types/menu';
 
 export default function useAuthenticatedContextMenu() {
   const localeMenu = useLocaleSwitchMenu();
   const { t } = useI18n();
-  const lp = useLocalePath();
   const { user } = useAuthStore();
 
   const processed = computed<DsMenuItem[]>(() => {
@@ -20,12 +19,13 @@ export default function useAuthenticatedContextMenu() {
       {
         label: t('modules.users.update_self'),
         icon: 'pi pi-pencil',
-        command: () => navigateTo(lp(`/users/edit-${user?.id}`))
+        to: `/users/edit-${user?.id}`
       },
       {
         label: t('modules.users.change_password'),
         icon: 'pi pi-key',
-        command: () => navigateTo(lp(`/users/change-password`))
+        //to: '/users/change-password'
+        to: '/'
       }
     ];
   });

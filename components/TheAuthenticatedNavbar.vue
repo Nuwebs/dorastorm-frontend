@@ -7,9 +7,6 @@ const { processed } = useAuthenticatedContextMenu();
 </script>
 <template>
   <NavbarBase>
-    <template #start>
-      <div />
-    </template>
     <template #end>
       <NavbarButtonOptions
         :options="{
