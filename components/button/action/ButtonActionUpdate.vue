@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Button } from 'primevue';
+import { Pencil } from 'lucide-vue-next';
+import UiButton from '~/components/ui/button/UiButton.vue';
 
 interface Props {
   route: string;
@@ -22,7 +23,9 @@ if (!props.route.includes(props.modelIdReplace)) {
   <NuxtLinkLocale
     :to="route.replace(props.modelIdReplace, String(props.modelId))"
   >
-    <Button icon="pi pi-pencil" text rounded aria-label="Update" />
+    <UiButton variant="outline" aria-label="Update">
+      <Pencil />
+    </UiButton>
   </NuxtLinkLocale>
 </template>
 

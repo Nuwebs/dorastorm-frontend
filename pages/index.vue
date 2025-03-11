@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
-import { Card, Button } from 'primevue';
 import { useForm } from 'vee-validate';
 import { object, string } from 'zod';
 import { definePageMeta, navigateTo, useLocalePath } from '#imports';
 import FormText from '~/components/form/FormText.vue';
+import UiButton from '~/components/ui/button/UiButton.vue';
+import {
+  UiCard,
+  UiCardTitle,
+  UiCardHeader,
+  UiCardContent
+} from '~/components/ui/card';
 import useAuthStore from '~/stores/auth-store';
 
 definePageMeta({
@@ -37,9 +43,13 @@ const submit = handleSubmit(async (payload) => {
 
 <template>
   <section class="flex justify-center py-8">
-    <Card class="w-2/3 md:w-1/3">
-      <template #title>{{ $t('general.login') }}</template>
-      <template #content>
+    <UiCard class="w-2/3 md:w-1/3">
+      <UiCardHeader>
+        <UiCardTitle class="text-center">
+          {{ $t('general.login') }}
+        </UiCardTitle>
+      </UiCardHeader>
+      <UiCardContent>
         <form @submit="submit">
           <FormText
             name="email"
@@ -53,15 +63,12 @@ const submit = handleSubmit(async (payload) => {
             type="password"
             class="mb-4"
           />
-          <Button
-            :loading="isSubmitting"
-            :label="$t('forms.submit')"
-            class="w-full"
-            type="submit"
-          />
+          <UiButton type="submit" :loading="isSubmitting" class="w-full">
+            {{ $t('forms.submit') }}
+          </UiButton>
         </form>
-      </template>
-    </Card>
+      </UiCardContent>
+    </UiCard>
   </section>
 </template>
 

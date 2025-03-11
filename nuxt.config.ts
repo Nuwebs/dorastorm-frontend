@@ -1,4 +1,3 @@
-import Aura from '@primevue/themes/aura';
 import {
   availableLocales,
   DEFAULT_LOCALE,
@@ -17,15 +16,16 @@ export default defineNuxtConfig({
     dirs: []
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-11-04',
   devtools: { enabled: true },
   modules: [
-    '@primevue/nuxt-module',
+    '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     'nuxt-zod-i18n',
     '@nuxtjs/i18n',
     '@nuxt/eslint'
   ],
+
   css: ['~/assets/styles/ds.css', 'primeicons/primeicons.css'],
 
   i18n: {
@@ -44,21 +44,6 @@ export default defineNuxtConfig({
   },
   zodI18n: {
     localeCodesMapping: ZOD_LOCALES_MAP
-  },
-
-  primevue: {
-    options: {
-      theme: {
-        preset: Aura,
-        options: {
-          darkModeSelector: '.ds-dark-mode',
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities'
-          }
-        }
-      }
-    }
   },
 
   runtimeConfig: {

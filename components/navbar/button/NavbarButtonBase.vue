@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Button } from 'primevue';
+import type { Component } from 'vue';
+import UiButton from '~/components/ui/button/UiButton.vue';
 
 interface Props {
-  icon: string;
+  icon: Component;
   aLabel: string;
 }
 
@@ -10,13 +11,9 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <Button
-    text
-    plain
-    :icon="props.icon"
-    class="m-center"
-    :aria-label="props.aLabel"
-  />
+  <UiButton class="m-center" :aria-label="props.aLabel">
+    {{ props.icon }}
+  </UiButton>
 </template>
 
 <style scoped>

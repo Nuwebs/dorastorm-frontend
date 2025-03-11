@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { DataTable, type DataTablePageEvent } from 'primevue';
-import Button from 'primevue/button';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import { ref } from 'vue';
-import { definePageMeta } from '#imports';
+import type { ColumnDef } from '@tanstack/vue-table';
+import { useTemplateRef } from 'vue';
+import { definePageMeta, useI18n } from '#imports';
 import ButtonActionUpdate from '~/components/button/action/ButtonActionUpdate.vue';
 import RoleDataRow from '~/components/role/RoleDataRow.vue';
 import RoleDeleteButton from '~/components/role/RoleDeleteButton.vue';
+import TemplateLazyLoadingIndex from '~/components/template/TemplateLazyLoadingIndex.vue';
 import useCachedPermissions from '~/composables/useCachedPermissions';
-import useLaravelLazyPagination from '~/composables/useLaravelLazyPagination';
 import { PERMISSION } from '~/services/permission-service';
 import { RoleService } from '~/services/role-service';
 import type { Role } from '~/types/role';
@@ -19,95 +16,60 @@ definePageMeta({
   permissions: [PERMISSION.ROLES_READ]
 });
 
+const { t } = useI18n();
 const { userCan, roleCan, userIsAllowed } = useCachedPermissions([
   PERMISSION.ROLES_DELETE,
   PERMISSION.ROLES_UPDATE
 ]);
 const service = new RoleService();
-const {
-  paginationData,
-  filters,
-  loading,
-  totalResults,
-  resultsPerPage,
-  currentPage,
-  search,
-  calculatePageAfterNItemsDeletion
-} = await useLaravelLazyPagination<Role>(service, {
-  global: { value: '', matchMode: 'contains' }
-});
 
-const expanded = ref<Role[]>([]);
+const columns: ColumnDef<Role>[] = [
+  { accessorKey: 'id', header: t('general.id'), enableSorting: false },
+  {
+    accessorKey: 'name',
+    header: t('modules.roles.name'),
+    enableSorting: false
+  },
+  {
+    accessorKey: 'description',
+    header: t('modules.roles.description'),
+    enableSorting: false
+  },
+  { accessorKey: 'action', header: t('general.action'), enableSorting: false }
+];
 
-async function handleRoleDeleted(): Promise<void> {
-  search(calculatePageAfterNItemsDeletion());
-}
+const templateRef = useTemplateRef('index');
+const handleRoleDeleted = () => {
+  templateRef.value?.refresh();
+};
 </script>
+
 <template>
-  <section class="container">
-    <h1>
-      {{ $t('modules.roles.list') }}
-    </h1>
-    <DataTable
-      v-model:expanded-rows="expanded"
-      v-model:filters="filters"
-      :loading="loading"
-      lazy
-      :value="paginationData?.data"
-      paginator
-      :total-records="totalResults"
-      :rows="resultsPerPage"
-      data-key="id"
-      @page="(e: DataTablePageEvent) => search(e.page + 1)"
-    >
-      <template #header>
-        <div class="flex justify-between">
-          <Button
-            icon="pi pi-refresh"
-            class="mr-2"
-            @click="search(currentPage)"
-          />
-          <div>
-            <div class="flex">
-              <InputText
-                v-model="filters['global'].value"
-                class="rounded-r-none"
-                @keyup.enter="search()"
-              />
-              <Button
-                icon="pi pi-search"
-                class="rounded-l-none"
-                @click="search()"
-              />
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #expansion="{ data }: { data: Role }">
-        <RoleDataRow :role="data" />
-      </template>
-      <Column expander />
-      <Column field="id" :header="$t('general.id')" />
-      <Column field="name" :header="$t('modules.roles.name')" />
-      <Column field="description" :header="$t('modules.roles.description')" />
-      <Column v-if="userIsAllowed" field="id" :header="$t('general.action')">
-        <template #body="{ data }: { data: Role }">
-          <RoleDeleteButton
-            v-if="
-              userCan(PERMISSION.ROLES_DELETE) && roleCan(data.hierarchy, false)
-            "
-            :role="data"
-            @deleted="handleRoleDeleted"
-          />
-          <ButtonActionUpdate
-            v-if="
-              userCan(PERMISSION.ROLES_UPDATE) && roleCan(data.hierarchy, false)
-            "
-            route="/roles/edit-{id}"
-            :model-id="data.id"
-          />
-        </template>
-      </Column>
-    </DataTable>
-  </section>
+  <TemplateLazyLoadingIndex
+    ref="index"
+    :service="service"
+    :columns="columns"
+    module-name="roles"
+    has-expandable
+  >
+    <template #expanded="{ row }">
+      <RoleDataRow :role="row.original" />
+    </template>
+    <template v-if="userIsAllowed" #action="{ rowValue: data }">
+      <RoleDeleteButton
+        v-if="
+          userCan(PERMISSION.ROLES_DELETE) && roleCan(data.hierarchy, false)
+        "
+        :role="data"
+        @deleted="handleRoleDeleted"
+      />
+      <ButtonActionUpdate
+        v-if="
+          userCan(PERMISSION.ROLES_UPDATE) && roleCan(data.hierarchy, false)
+        "
+        route="/roles/edit-{id}"
+        :model-id="data.id"
+      />
+    </template>
+  </TemplateLazyLoadingIndex>
 </template>

@@ -1,13 +1,13 @@
-import type { ToastMessageOptions } from 'primevue/toast';
 import { ref } from 'vue';
 import { defineStore } from '#imports';
+import type { Toast } from '~/components/ui/toast/use-toast';
 
-type ToastFunction = (payload: ToastMessageOptions) => void;
+type ToastFunction = (payload: Toast) => void;
 type TFunction = (key: string | number) => string;
 const useExternalToastStore = defineStore('composablesToast', () => {
-  const _toasts = ref<ToastMessageOptions[]>([]);
+  const _toasts = ref<Toast[]>([]);
 
-  function addToast(payload: ToastMessageOptions): void {
+  function addToast(payload: Toast): void {
     _toasts.value.push(payload);
   }
 
@@ -16,7 +16,7 @@ const useExternalToastStore = defineStore('composablesToast', () => {
     tCallback: TFunction
   ): void {
     _toasts.value.forEach((toast) => {
-      toast.detail = tCallback(toast.detail);
+      toast.description = tCallback(String(toast.description));
       toastCallback(toast);
     });
     _toasts.value = [];

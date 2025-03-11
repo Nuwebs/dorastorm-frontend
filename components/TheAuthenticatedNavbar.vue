@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Settings } from 'lucide-vue-next';
 import NavbarButtonOptions from './navbar/button/NavbarButtonOptions.vue';
 import NavbarBase from './navbar/NavbarBase.vue';
 import useAuthenticatedContextMenu from '~/composables/useAuthenticatedContextMenu';
@@ -7,11 +8,13 @@ const { processed } = useAuthenticatedContextMenu();
 </script>
 <template>
   <NavbarBase>
-    <template #start>
-      <div />
-    </template>
     <template #end>
-      <NavbarButtonOptions :options="processed" />
+      <NavbarButtonOptions
+        :options="{
+          icon: Settings,
+          items: processed
+        }"
+      />
     </template>
   </NavbarBase>
 </template>

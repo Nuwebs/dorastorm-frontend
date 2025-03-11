@@ -1,3 +1,4 @@
+import { User, UserPlus, List, IdCard, Plus } from 'lucide-vue-next';
 import { computed } from 'vue';
 import useDsMenuItems from './useDsMenuItems';
 import { useI18n } from '#imports';
@@ -11,7 +12,7 @@ export default function useAuthenticatedMenu() {
     return [
       {
         label: t('modules.users.title'),
-        icon: 'pi pi-user',
+        icon: User,
         permissions: [
           PERMISSION.USERS_CREATE,
           PERMISSION.USERS_READ,
@@ -21,13 +22,13 @@ export default function useAuthenticatedMenu() {
         items: [
           {
             label: t('general.new'),
-            icon: 'pi pi-user-plus',
+            icon: UserPlus,
             to: '/users/create',
             permissions: PERMISSION.USERS_CREATE
           },
           {
             label: t('modules.users.index'),
-            icon: 'pi pi-list',
+            icon: List,
             to: '/users',
             permissions: PERMISSION.USERS_READ
           }
@@ -35,7 +36,7 @@ export default function useAuthenticatedMenu() {
       },
       {
         label: t('modules.roles.title'),
-        icon: 'pi pi-id-card',
+        icon: IdCard,
         permissions: [
           PERMISSION.ROLES_CREATE,
           PERMISSION.ROLES_READ,
@@ -45,13 +46,13 @@ export default function useAuthenticatedMenu() {
         items: [
           {
             label: t('general.new'),
-            icon: 'pi pi-plus',
+            icon: Plus,
             to: '/roles/create',
             permissions: PERMISSION.ROLES_CREATE
           },
           {
             label: t('modules.roles.index'),
-            icon: 'pi pi-list',
+            icon: List,
             to: '/roles',
             permissions: PERMISSION.ROLES_READ
           }
