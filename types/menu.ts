@@ -1,9 +1,9 @@
-import type { Component } from 'vue';
+import type { LucideIcon } from 'lucide-vue-next';
 import type { Permission } from '~/services/permission-service';
 
 export interface DsMenuItem {
   label?: string | (() => string);
-  icon?: Component;
+  icon?: LucideIcon;
   command?: () => unknown;
   url?: string;
 
